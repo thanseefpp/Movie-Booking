@@ -4,6 +4,6 @@ from .import views
 
 
 urlpatterns = [
-    path('',views.theatreLogin,name='theatreLogin'),
-
+    path('theatre_login/',views.theatreLogin,name='theatreLogin'),
+    path('theatre_dashboard/',views.theatreDashboard,name='theatreDashboard')
 ]
