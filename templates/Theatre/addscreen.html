@@ -1,0 +1,50 @@
+{% extends 'Theatre/theatrebase.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <h6 class="h2 text-black d-inline-block mb-0">ADD Screen</h6>
+    </div>
+    <form action="{% url 'addScreens' %}" method="POST">
+    {% csrf_token %}
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Name Of the Screen :</label>
+                <input type="text" name="screen_name" placeholder="Screen Name" style="margin-left: 1px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{ownername}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">VIP Seats Count:</label>
+                <input type="number" name="vip_seat" placeholder="No of Seats Available" style="margin-left: 35px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{TheatreName}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Premium Seats Count :</label>
+                <input type="number" name="premium_seat" placeholder="No of Seats Available" style="margin-left: -13px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{number}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Executive Seats Count :</label>
+                <input type="number" name="executive_seat" placeholder="No of Seats Available" style="margin-left: -16px;text-align: center;height: 32px;border-radius: 0.375rem;">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Normal Seats Count :</label>
+                <input type="number" name="normal_seat" placeholder="No of Seats Available" style="margin-left: 0px;text-align: center; height: 32px;border-radius: 0.375rem;">
+            </div>
+        </div>
+
+        <div class="container" style="margin: 40px;">
+            <label class="control-label" for="submit"></label>
+            <div class="controls" style=" padding-left: 384px;">
+                <button type="submit" class="btn btn-success btn-md" style="margin-left:78px">Save</button>
+            </form>
+                <a href="{% url 'screens' %}"><button type="submit" class="btn btn-danger btn-md" style="margin-left: 17px;">Cancel</button></a>     
+            </div>
+        </div>
+
+{% endblock %}

@@ -17,7 +17,7 @@ def adminlogin(request):
             return redirect('adminDashboard')
 
         else:
-            messages.error(request, "😢 Wrong username/password!")
+            messages.error(request, "😢 Wrong username/password! 😢")
             return redirect(adminlogin)
     else:
         return render(request,'useradmin/adminlogin.html')

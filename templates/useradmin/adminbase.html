@@ -20,7 +20,7 @@
         <!-- Sidebar Holder -->
         <nav id="sidebarone">
             <div class="sidebar-header-one">
-                <h3>ADMIN DASHBOARD</h3>
+                <h3>{{}}ADMIN DASHBOARD</h3>
                 <strong>AD</strong>
             </div>
 
@@ -45,7 +45,7 @@
                         <li><a href="#">Page 3</a></li>
                     </ul>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="#">
                         <i class="glyphicon glyphicon-link"></i>
                         Portfolio
@@ -62,7 +62,7 @@
                         <i class="glyphicon glyphicon-send"></i>
                         Contact
                     </a>
-                </li>
+                </li> -->
             </ul>
         </nav>
         <div id="content" style="width: fit-content;">
@@ -82,7 +82,7 @@
                             Admin
                             </span>
                             <div class="dropdown-content">
-                              <a href="{{'adminout'}}">Logout</a>
+                              <a href="{% url 'adminout' %}">Logout</a>
                             </div>
                         </div>
                     </div>
