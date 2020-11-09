@@ -2,8 +2,14 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
 from .models import Screen
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+import base64
+from PIL import Image
+from base64 import decodestring
+import binascii
+from django.core.files import File
 
-# Create your views here.
 
 
 def theatreLogin(request):
@@ -44,8 +50,9 @@ def theatreout(request):
         return redirect('theatreLogin')
 
 def screens(request):
-    if request.user.is_staff:      
-        screen = Screen.objects.all()
+    if request.user.is_staff:
+        user = request.user
+        screen = Screen.objects.filter(user=user)
         dict = {}
         for i in screen:
             dict[i] = i.vip_seats+i.normal_seats+i.executive_seats+i.premium_seats
@@ -59,13 +66,13 @@ def screens(request):
 def addScreens(request):
     if request.user.is_staff:
         if request.method == 'POST':
-            screen_table=Screen()
+            user = request.user
             screen_name = request.POST['screen_name']
             vip_seat = request.POST['vip_seat']
             premium_seat = request.POST['premium_seat']
             executive_seat = request.POST['executive_seat']
             normal_seat = request.POST['normal_seat']
-            screen_table = Screen(screen_name=screen_name,vip_seats=vip_seat,premium_seats=premium_seat,executive_seats=executive_seat,normal_seats=normal_seat)
+            screen_table = Screen(user=user,screen_name=screen_name,vip_seats=vip_seat,premium_seats=premium_seat,executive_seats=executive_seat,normal_seats=normal_seat)
             print(screen_table)
             screen_table.save()
             return redirect('screens')
@@ -76,13 +83,50 @@ def addScreens(request):
     
 
 def theatreUserActivity(request):
-    return render(request,'Theatre/theatre_user_activity.html')
-
+    if request.user.is_staff:
+        return render(request,'Theatre/theatre_user_activity.html')
+    else:
+        return redirect('theatreLogin')
 
 def upcomingShow(request):
-    return render(request,'Theatre/upcoming.html')
-
+    if request.user.is_staff:
+        return render(request,'Theatre/upcoming.html')
+    else:
+        return redirect('theatreLogin')
+    
 
 def nowShow(request):
-    return render(request,'Theatre/show.html')
+    if request.user.is_staff:
+        return render(request,'Theatre/show.html')
+    else:
+        return redirect('theatreLogin')
 
+
+def addMovie(request):
+    if request.user.is_staff:
+        if request.method == 'POST':
+            user = request.user
+            movie_name = request.POST['movie_name']
+            cast_name = request.POST['cast_name']
+            director_name = request.POST['director_name']
+            release_date = request.POST['release_date']
+            show_time = request.POST['show_time']
+            run_time_hour = request.POST['run_time_hour']
+            run_time_minutes = request.POST['run_time_minutes']
+            language = request.POST['language']
+            type_movie = request.POST['type_movie']
+            trailer_link = request.POST['trailer_link']
+            photo_banner = request.POST['photo_banner']
+            photo_main = request.POST['photo_main']
+
+        else:
+            return render(request,'Theatre/addmovie.html')
+    else:
+        return redirect('theatreLogin')
+    
+
+def upcomingMovie(request):
+    if request.user.is_staff:
+        return render(request,'Theatre/upcoming_movie.html')
+    else:
+        return redirect('theatreLogin')

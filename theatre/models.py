@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Screen(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
     screen_name = models.CharField(max_length = 300)
     vip_seats = models.IntegerField()
     premium_seats = models.IntegerField()
@@ -11,3 +12,64 @@ class Screen(models.Model):
 
     # def __str__(self):
     #     return self.screen_name
+
+
+
+class NowShowingMovies(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
+    movie_title = models.CharField(max_length=300,null=True)
+    cast_name = models.CharField(max_length=300,null=True)
+    director_name = models.CharField(max_length=300,null=True)
+    release_date = models.DateTimeField(auto_now=False, auto_now_add=False)
+    show_time = models.TimeField(auto_now_add=True)
+    runtime_hour = models.IntegerField(default=0, null=True, blank=True)
+    runtime_minute = models.IntegerField(default=0, null=True, blank=True)
+    language = models.CharField(max_length=300,null=True)
+    movie_type = models.CharField(max_length=200,null=True)
+    trailer_link = models.URLField(max_length=500)
+    photo_banner = models.ImageField(null=True, blank=True)
+    photo_main = models.ImageField(null=True, blank=True)
+    
+    @property
+    def BannerURL(self):
+        try:
+            url = self.photo_banner.url
+        except:
+            url = ''
+        return url
+
+    @property
+    def MainURL(self):
+        try:
+            url = self.photo_main.url
+        except:
+            url = ''
+        return url
+
+
+class UpcomingMovies(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
+    movie_title = models.CharField(max_length=300,null=True)
+    cast_name = models.CharField(max_length=300,null=True)
+    director_name = models.CharField(max_length=300,null=True)
+    language = models.CharField(max_length=300,null=True)
+    movie_type = models.CharField(max_length=200,null=True)
+    trailer_link = models.URLField(max_length=500)
+    photo_banner = models.ImageField(null=True, blank=True)
+    photo_main = models.ImageField(null=True, blank=True)
+    
+    @property
+    def BannerURL(self):
+        try:
+            url = self.photo_banner.url
+        except:
+            url = ''
+        return url
+
+    @property
+    def MainURL(self):
+        try:
+            url = self.photo_main.url
+        except:
+            url = ''
+        return url

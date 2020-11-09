@@ -1,0 +1,68 @@
+{% extends 'Theatre/theatrebase.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <h6 class="h2 text-black d-inline-block mb-0">ADD Upcoming Movie</h6>
+    </div>
+    <form action="{% url 'upcoming_movie' %}" method="POST">
+    {% csrf_token %}
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Movie Title :</label>
+                <input type="text" name="movie_name" placeholder="Movie Name" style="margin-left: 35px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{ownername}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Cast Name:</label>
+                <input type="text" name="cast_name" placeholder="No of Cast" style="margin-left: 35px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{TheatreName}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Director :</label>
+                <input type="text" name="premium_seat" placeholder="Director Name" style="margin-left: 54px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{number}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Language :</label>
+                <input type="text" name="language" placeholder="Language of the movie" style="margin-left: 41px;text-align: center; height: 32px;border-radius: 0.375rem;">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Type :</label>
+                <input type="text" name="type_movie" placeholder="Type of the movie (3D or 2D)" style="margin-left: 78px;text-align: center; height: 32px;border-radius: 0.375rem;">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Trailer Link :</label>
+                <input type="text" name="trailer_link" placeholder="Trailer Link" style="margin-left: 36px;text-align: center; height: 32px;border-radius: 0.375rem;">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Photo Banner :</label>
+                <input type="file" name="photo_banner" placeholder="Image for Banner" style="margin-left: 153px;">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Photo main :</label>
+                <input type="file" name="photo_main" placeholder="Image for Main Page" style="margin-left: 153px;">
+            </div>
+        </div>
+
+        <div class="container" style="margin: 40px;">
+            <label class="control-label" for="submit"></label>
+            <div class="controls" style=" padding-left: 384px;">
+                <button type="submit" class="btn btn-success btn-md" style="margin-left:78px">Save</button>
+            </form>
+                <a href="{% url 'upcoming_show' %}"><button type="button" class="btn btn-danger btn-md" style="margin-left: 17px;">Cancel</button></a>     
+            </div>
+        </div>
+
+{% endblock %}

@@ -23,26 +23,18 @@ def index(request):
 def login(request):
     if request.user.is_authenticated:
         return redirect(index)
-    elif request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+
     elif request.method=="POST":
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
-        
+        dict = {'username':username}
         if user is not None:
-            if user.is_active == False:
-                print("User is valid, active and authenticated")
-                messages.error(request, '😢 Account has been Blocked!')
-                return redirect('login')
-            else:
-                auth.login(request,user)
-                return redirect(index)
+            auth.login(request,user)
+            return redirect(index)
         else:
-            print("else")
             messages.error(request, '😢 Wrong username/password!')
-            return redirect('login')
+            return render(request,'user/login/login.html',dict)
     else:
         return render(request,'user/login/login.html')
 
