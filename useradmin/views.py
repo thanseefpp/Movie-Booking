@@ -79,3 +79,13 @@ def ownerAdd(request):
             return render(request,'useradmin/theatre_add_owner.html')
     else:
         return redirect('adminlogin')
+
+
+def userList(request):
+    user = User.objects.filter(is_staff=False,is_superuser=False)
+    context = {'user':user}
+    return render(request,'useradmin/userlist.html',context)
+
+
+def userActivity(request):
+    return render(request,'useradmin/user_activity.html')

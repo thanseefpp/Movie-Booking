@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'user/css/login-reg.css' %}">
+    <title>login</title>
+</head>
+<body>
+    <form class="box" action="{% url 'otp' %}" method="POST" >
+        {% csrf_token %}
+        <h1>OTP</h1>
+        <input type="text" name="otp" id="username" placeholder="Enter the OTP" required autocomplete="off">
+        <div>
+            {% for message in messages %}
+            <h4 style="color: red;">{{message}}</h4>
+            {% endfor %}
+        </div>
+        <input type="submit" id="submit" value="login">
+      </form>
+</body>
+</html>

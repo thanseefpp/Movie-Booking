@@ -1,0 +1,248 @@
+{% extends 'user/userbase.html' %}
+
+{% block content %}
+
+{% load static %}
+<div class="w3l-ab-grids py-5">
+    <div class="container py-lg-4">
+        <div class="row ab-grids-sec align-items-center">
+            <div class="col-lg-12 ab-right">
+                <img class="img-fluid" src="{% static 'user/images/banner1.jpg' %}">
+                <a href="#small-dialog1" class="popup-with-zoom-anim play-view1">
+                    <span class="video-play-icon">
+                        <span class="fa fa-play"></span>
+                    </span>
+                    <h6>Watch Trailer</h6>
+                </a>
+                <!-- dialog itself, mfp-hide class is required to make dialog hidden -->
+                <div id="small-dialog1" class="zoom-anim-dialog mfp-hide">
+                    <iframe src="https://player.vimeo.com/video/358205676" allow="autoplay; fullscreen"
+                        allowfullscreen=""></iframe>
+                </div>
+            </div>
+
+        </div>
+       
+        <div class="w3l-counter-stats-info text-center">
+            <div class="stats_left">
+                <div class="counter_grid">
+                    <div class="icon_info">
+                        <p class="counter">65</p>
+                        <h4>Movies</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="stats_left">
+                <div class="counter_grid">
+                    <div class="icon_info">
+                        <p class="counter">165</p>
+                        <h4>Shows</h4>
+
+                    </div>
+                </div>
+            </div>
+            <div class="stats_left">
+                <div class="counter_grid">
+                    <div class="icon_info">
+                        <p class="counter">463</p>
+                        <h4>Members</h4>
+
+                    </div>
+                </div>
+            </div>
+            <div class="stats_left">
+                <div class="counter_grid">
+                    <div class="icon_info">
+                        <p class="counter">5063</p>
+                        <h4>Year of Use</h4>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- //about-->
+
+    <!--/testimonials-->
+<section class="w3l-clients" id="clients">
+<!-- /grids -->
+<div class="cusrtomer-layout py-5">
+    <div class="container py-lg-4">
+        <div class="headerhny-title">
+            <h3 class="hny-title">Show Time</h3>
+        </div>
+        <!-- /grids -->
+    </div>
+    <!-- /grids -->
+</div>
+<!-- //grids -->
+</section>
+<!--//testimonials-->
+    <!--grids-sec2-->
+    <section class="w3l-grids">
+        <div class="grids-main py-5">
+            <div class="container py-lg-4">
+                <div class="headerhny-title">
+                    <div class="w3l-title-grids">
+                        <div class="headerhny-left">
+                            <h3 class="hny-title">New Releases</h3>
+                        </div>
+                        <div class="headerhny-right text-lg-right">
+                            <h4><a class="show-title" href="{% url 'index' %}">Show all</a></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="owl-three owl-carousel owl-theme">
+                    <div class="item vhny-grid">
+                        <div class="box16">
+                            <a href="genre.html">
+                                <figure>
+                                    <img class="img-fluid" src="assets/images/m12.jpg" alt="">
+                                </figure>
+                                <div class="box-content">
+                                    <h4> <span class="post"><span class="fa fa-clock-o"> </span> 2 Hr 4min
+
+                                        </span>
+
+                                        <span class="post fa fa-heart text-right"></span>
+                                    </h4>
+                                </div>
+                                <span class="fa fa-play video-icon" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <h3> <a class="title-gd" href="genre.html">The Hustle</a></h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+                        <div class="button-center text-center mt-4">
+                            <a href="genre.html" class="btn watch-button">Watch now</a>
+                        </div>
+
+                    </div>
+                    <div class="item vhny-grid">
+                        <div class="box16">
+                            <a href="genre.html">
+                                <figure>
+                                    <img class="img-fluid" src="assets/images/m11.jpg" alt="">
+                                </figure>
+                                <div class="box-content">
+
+                                    <h4> <span class="post"><span class="fa fa-clock-o"> </span> 2 Hr 4min
+
+                                        </span>
+
+                                        <span class="post fa fa-heart text-right"></span>
+                                    </h4>
+                                </div>
+                                <span class="fa fa-play video-icon" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <h3> <a class="title-gd" href="genre.html">The Lego</a></h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+                        <div class="button-center text-center mt-4">
+                            <a href="genre.html" class="btn watch-button">Watch now</a>
+                        </div>
+                    </div>
+                    <div class="item vhny-grid">
+                        <div class="box16">
+                            <a href="genre.html">
+                                <figure>
+                                    <img class="img-fluid" src="assets/images/m9.jpg" alt="">
+                                </figure>
+                                <div class="box-content">
+
+                                    <h4> <span class="post"><span class="fa fa-clock-o"> </span> 2 Hr 4min
+
+                                        </span>
+
+                                        <span class="post fa fa-heart text-right"></span>
+                                    </h4>
+                                </div>
+                                <span class="fa fa-play video-icon" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <h3> <a class="title-gd" href="genre.html">Joker </a></h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+                        <div class="button-center text-center mt-4">
+                            <a href="genre.html" class="btn watch-button">Watch now</a>
+                        </div>
+                    </div>
+                    <div class="item vhny-grid">
+                        <div class="box16">
+                            <a href="genre.html">
+                                <figure>
+                                    <img class="img-fluid" src="assets/images/m8.jpg" alt="">
+                                </figure>
+                                <div class="box-content">
+
+                                    <h4> <span class="post"><span class="fa fa-clock-o"> </span> 2 Hr 4min
+
+                                        </span>
+
+                                        <span class="post fa fa-heart text-right"></span>
+                                    </h4>
+                                </div>
+                                <span class="fa fa-play video-icon" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <h3> <a class="title-gd" href="genre.html">Toy story 4</a></h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+                        <div class="button-center text-center mt-4">
+                            <a href="genre.html" class="btn watch-button">Watch now</a>
+                        </div>
+
+                    </div>
+                    <div class="item vhny-grid">
+                        <div class="box16">
+                            <a href="genre.html">
+                                <figure>
+                                    <img class="img-fluid" src="assets/images/m1.jpg" alt="">
+                                </figure>
+                                <div class="box-content">
+
+                                    <h4> <span class="post"><span class="fa fa-clock-o"> </span> 2 Hr 4min
+
+                                        </span>
+
+                                        <span class="post fa fa-heart text-right"></span>
+                                    </h4>
+                                </div>
+                                <span class="fa fa-play video-icon" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <h3> <a class="title-gd" href="genre.html">Rocketman</a></h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+                        <div class="button-center text-center mt-4">
+                            <a href="genre.html" class="btn watch-button">Watch now</a>
+                        </div>
+                    </div>
+                    <div class="item vhny-grid">
+                        <div class="box16">
+                            <a href="genre.html">
+                                <figure>
+                                    <img class="img-fluid" src="assets/images/m2.jpg" alt="">
+                                </figure>
+                                <div class="box-content">
+
+                                    <h4> <span class="post"><span class="fa fa-clock-o"> </span> 2 Hr 4min
+
+                                        </span>
+
+                                        <span class="post fa fa-heart text-right"></span>
+                                    </h4>
+                                </div>
+                                <span class="fa fa-play video-icon" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <h3> <a class="title-gd" href="genre.html">Doctor Sleep</a></h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+                        <div class="button-center text-center mt-4">
+                            <a href="genre.html" class="btn watch-button">Watch now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}

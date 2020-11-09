@@ -20,7 +20,7 @@
         <!-- Sidebar Holder -->
         <nav id="sidebarone">
             <div class="sidebar-header-one">
-                <h3>{{}}ADMIN DASHBOARD</h3>
+                <h3>ADMIN DASHBOARD</h3>
                 <strong>AD</strong>
             </div>
 
@@ -35,7 +35,16 @@
                     <a href="{% url 'theatremgmt' %}">
                         <i class="glyphicon glyphicon-briefcase"></i>
                         Theatre Manage
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
+                    </a>
+                    <a href="{% url 'user_list' %}">
+                        <i class="glyphicon glyphicon-user"></i>
+                        User Management
+                    </a>
+                    <a href="{% url 'user_activity' %}">
+                        <i class="glyphicon glyphicon-stats"></i>
+                        User Activity Track
+                    </a>
+                    <!-- <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
                         <i class="glyphicon glyphicon-duplicate"></i>
                         Pages
                     </a>
@@ -43,7 +52,7 @@
                         <li><a href="#">Page 1</a></li>
                         <li><a href="#">Page 2</a></li>
                         <li><a href="#">Page 3</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
                 <!-- <li>
                     <a href="#">

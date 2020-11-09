@@ -9,5 +9,8 @@ urlpatterns = [
     path('theatreout',views.theatreout,name='theatreout'),
     path('screen_management/',views.screens,name='screens'),
     path('add_screen/',views.addScreens,name='addScreens'),
+    path('theatre_activity/',views.theatreUserActivity,name='theatre_user_activity'),
+    path('upcoming_show/',views.upcomingShow,name='upcoming_show'),
+    path('now_showing/',views.nowShow,name='now_show'),
     
 ]

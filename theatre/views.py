@@ -46,19 +46,15 @@ def theatreout(request):
 def screens(request):
     if request.user.is_staff:      
         screen = Screen.objects.all()
+        dict = {}
         for i in screen:
-            total = i.vip_seats
-            total2 =i.normal_seats
-            total3 = i.executive_seats
-            total4 = i.premium_seats
-            total5= total+total2+total3+total4
-        print(total5)
-        context = {'screen':screen,'total':total5}
+            dict[i] = i.vip_seats+i.normal_seats+i.executive_seats+i.premium_seats
+
+        context = {'screen':dict}
         return render(request,'Theatre/screen_manage.html',context)
     else:
         return redirect('theatreLogin')
 
- # total_seats = Screen.objects.annotate(i_sum= F('vip_seats')+ F('premium_seats')).filter(i_sum=200)
 
 def addScreens(request):
     if request.user.is_staff:
@@ -78,3 +74,15 @@ def addScreens(request):
     else:
         return redirect('theatreLogin')
     
+
+def theatreUserActivity(request):
+    return render(request,'Theatre/theatre_user_activity.html')
+
+
+def upcomingShow(request):
+    return render(request,'Theatre/upcoming.html')
+
+
+def nowShow(request):
+    return render(request,'Theatre/show.html')
+

@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'user/css/login-reg.css' %}">
+    <title>login</title>
+</head>
+<body>
+    <form class="box" action="" method="POST">
+        {% csrf_token %}
+        <h1>Login</h1>
+        <input type="text" name="username" id="username" placeholder="Username" autocomplete="off">
+        <input type="password" name="password" id="pass" placeholder="Password" autocomplete="off">
+        <a href="{% url 'register' %}" style="color: white;">Create an Account</a>
+        <input type="submit" id="submit" value="login">
+      </form>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'user/css/login-reg.css' %}">
+    <title>Register</title>
+</head>
+<body>
+    <form class="box" action="{% url 'register' %}" method="POST">
+        {% csrf_token %}
+        <h1>Register</h1>
+        <input type="text" name="username" id="username" placeholder="Username" value="{{username}}" required autocomplete="off">
+        <input type="email" name="email" id="username" placeholder="Email" required value="{{email}}" autocomplete="off">
+        <input type="text" name="number" id="username" placeholder="Mobile number" required value="{{mobile}}">
+
+        <input type="password" name="password" id="pass" placeholder="Password" autocomplete="off">
+        <input type="password" name="confirmpassword" id="pass" placeholder="ConfirmPassword" required>
+        <div>
+            {% for message in messages %}
+            <h4 style="color: red;">{{message}}</h4>
+            {% endfor %}
+        </div>
+        <input type="submit" id="submit" value="login">
+      </form>
+</body>
+</html>

@@ -21,11 +21,11 @@
         </tr>
       </thead>
       <tbody class="list">
-        {% for i in screen %}
+        {% for i,j in screen.items %}
         <tr>
           <th scope="row">{{i.id}}</th>
           <td>{{i.screen_name}}</td>
-          <td>{{total}}</td>
+          <td>{{j}}</td>
           <td>test mod</td>
           <td>test mod</td>
         </tr>
