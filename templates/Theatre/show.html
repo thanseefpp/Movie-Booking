@@ -15,25 +15,26 @@
       <thead class="thead-light">
         <tr>
           <th scope="col" class="sort" data-sort="name">ID</th>
-          <th scope="col" class="sort" data-sort="budget">User Name </th>
-          <th scope="col" class="sort" data-sort="status">Join Date</th>
-          <th scope="col">Last Book</th>
-          <th scope="col">Status</th>
-          <th scope="col" class="sort" data-sort="completion">Amount</th>
-
+          <th scope="col" class="sort" data-sort="budget">Movie Name </th>
+          <th scope="col" class="sort" data-sort="status">Release Date</th>
+          <th scope="col">RunTime</th>
+          <th scope="col">ShowTime</th>
+          <th scope="col">Language</th>
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody class="list">
-        
+        {% for data in nowshow %}
         <tr>
-          <th scope="row">test</th>
-          <td>test</td>
-          <td>test</td>
-          <td>test</td>
-          <td>test</td>
+          <th scope="row">{{data.id}}</th>
+          <td>{{data.movie_title}}</td>
+          <td>{{data.release_date}}</td>
+          <td>{{data.runtime_hour}}h {{data.runtime_minute}}m</td>
+          <td>{{data.show_time}}</td>
+          <td>{{data.language}}</td>
           <td>test</td>
         </tr>
-        
+        {% endfor %}
       </tbody>
     </table>
   </div>

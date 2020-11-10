@@ -9,6 +9,13 @@ from PIL import Image
 from base64 import decodestring
 import binascii
 from django.core.files import File
+from django.http import JsonResponse
+import json
+from datetime import *
+import requests
+from .models import *
+from django.views.generic import View
+from django.core.files.base import ContentFile
 
 
 
@@ -97,7 +104,10 @@ def upcomingShow(request):
 
 def nowShow(request):
     if request.user.is_staff:
-        return render(request,'Theatre/show.html')
+        user = request.user
+        nowshow = NowShowingMovies.objects.filter(user=user)
+        context = {'nowshow':nowshow}
+        return render(request,'Theatre/show.html',context)
     else:
         return redirect('theatreLogin')
 
@@ -116,9 +126,16 @@ def addMovie(request):
             language = request.POST['language']
             type_movie = request.POST['type_movie']
             trailer_link = request.POST['trailer_link']
-            photo_banner = request.POST['photo_banner']
-            photo_main = request.POST['photo_main']
-
+            photo_banner = request.FILES.get('photo_banner')
+            photo_main = request.POST['image64data']
+            print('data:', photo_main)
+            value = photo_main.strip('data:image/png;base64,')
+            format, imgstr = photo_main.split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr),name='temp.' + ext)
+            prod = NowShowingMovies(user=user,movie_title=movie_name,cast_name=cast_name,director_name=director_name,release_date=release_date,show_time=show_time,runtime_hour=run_time_hour,runtime_minute=run_time_minutes,language=language,movie_type=type_movie,trailer_link=trailer_link,photo_banner=photo_banner,photo_main = data)
+            prod.save();
+            return redirect('now_show')
         else:
             return render(request,'Theatre/addmovie.html')
     else:
@@ -127,6 +144,7 @@ def addMovie(request):
 
 def upcomingMovie(request):
     if request.user.is_staff:
+        
         return render(request,'Theatre/upcoming_movie.html')
     else:
         return redirect('theatreLogin')

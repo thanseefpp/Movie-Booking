@@ -13,7 +13,7 @@ import json
 import requests
 from django.core.files import File
 from django.core.files.base import ContentFile
-# Create your views here.
+
 
 
 def index(request):
@@ -29,7 +29,7 @@ def login(request):
         password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
         dict = {'username':username}
-        if user is not None:
+        if user is not None and is_staff == False and is_superuser == False:
             auth.login(request,user)
             return redirect(index)
         else:
@@ -39,8 +39,6 @@ def login(request):
         return render(request,'user/login/login.html')
 
 
-# def register(request):
-#     return render(request,'user/login/register.html')
 
 def register(request):
     if request.user.is_authenticated:
