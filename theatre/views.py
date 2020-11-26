@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from .models import Screen
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
@@ -23,20 +25,86 @@ def theatreLogin(request):
     if request.user.is_staff:
         owner = User.objects.filter(is_staff=True)
         return redirect('theatreDashboard')
+    
+    elif request.method == 'POST':
+        otp=request.POST['otp']
 
-    elif request.method=="POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = auth.authenticate(username=username, password=password)
+        id = request.session['id']
 
-        if user is not None and user.is_staff:
-            auth.login(request,user)
-            return redirect(theatreDashboard)
+        print('id one:',id)
+
+        url = "https://d7networks.com/api/verifier/verify"
+
+        payload = {'otp_id': id,
+        'otp_code': otp}
+        files = [
+
+        ]
+        headers = {
+        'Authorization': 'Token ca23c2854b8ab3dc239f449be501299d5fefe86f'
+        }
+
+        response = requests.request("POST", url, headers=headers, data = payload, files = files)
+
+        print(response.text.encode('utf8'))
+        data=response.text.encode('utf8')
+        datadict=json.loads(data)
+        status=datadict['status']
+        
+        if status == 'success':
+            username = request.session['username']
+            if User.objects.filter(username=username,is_staff=True).exists():
+                user = User.objects.get(username=username)
+                auth.login(request,user)
+                return redirect(theatreDashboard)
+            else:
+                messages.error(request,'User not Exist')
+                return render(request,'Theatre/Theatrelogin.html')
+
         else:
-            messages.error(request, '😢 Wrong username/password! 😢')
-            return redirect('theatreLogin')
+            messages.error(request,'Incorrect OTP')
+            return render(request,'Theatre/Theatrelogin.html')
+
     else:
         return render(request,'Theatre/Theatrelogin.html')
+
+
+def mobile(request):
+    number = request.GET.get('mobile', None)
+    user=User.objects.get(last_name=number,is_staff=True)
+    print(user)
+   
+    if user:
+        username = user.username
+        request.session['username'] =  username
+
+        url = "https://d7networks.com/api/verifier/send"
+        number=str(91) + number
+        
+        payload = {'mobile': number,
+        'sender_id': 'SMSINFO',
+        'message': 'Your otp code is {code}',
+        'expiry': '900'}
+        files = [
+
+        ]
+        headers = {
+        'Authorization': 'Token ca23c2854b8ab3dc239f449be501299d5fefe86f'
+        }
+
+        response = requests.request("POST", url, headers=headers, data = payload, files = files)
+
+        print(response.text.encode('utf8'))
+        data=response.text.encode('utf8')
+        datadict=json.loads(data)
+        print('datadict:',datadict)
+
+        id=datadict['otp_id']
+        print('id:',id)
+        request.session['id'] = id
+        
+        data='success'
+        return JsonResponse (data,safe=False)
 
 
 def theatreDashboard(request):

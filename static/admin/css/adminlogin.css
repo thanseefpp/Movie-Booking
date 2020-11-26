@@ -27,7 +27,7 @@ h1 {
 }
 
 
-input{
+#mobile{
     background-color: #333;
     margin: 15px;
     color: #8a8683;
@@ -38,6 +38,27 @@ input{
     border-bottom: 3px solid #8a8683;
 }
 
+#send{
+    background-color: #333;
+    margin: 15px;
+    font-size: 15px;
+    padding: 10px;
+    height: 50px;    
+}
+
+#otp{
+    background-color: #333;
+    margin: 15px;
+    color: #8a8683;
+    font-size: 15px;
+    padding: 10px;
+    height: 50px;   
+    border: none;  
+    border-bottom: 3px solid #8a8683;
+}
+
+
+
 input:focus {
     outline: none;
     -webkit-box-shadow: inset 0px 10px 30px 5px rgba(42,42,42,1);
@@ -45,13 +66,19 @@ input:focus {
     box-shadow: inset 0px 10px 30px 5px rgba(42,42,42,1);
 }
 
-input[type=text],
-input[type=password]
+input[type=text]
  {
     width: 200px;     
 }
 
 input[type=submit] {
+    background-color: #333;
+    margin: 15px;
+    color: #8a8683;
+    font-size: 15px;
+    padding: 10px;
+    height: 50px;   
+    
     width: 200px;
     border: none;
     font-size: 18px;
@@ -66,3 +93,4 @@ input[type=submit]:hover {
     -moz-box-shadow: inset 0px 10px 30px 5px #212121;
     box-shadow: inset 0px 10px 30px 5px #212121;
 }
+

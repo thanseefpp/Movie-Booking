@@ -17,6 +17,7 @@ from django.core.files.base import ContentFile
 
 
 def index(request):
+    
     return render(request,'user/index.html')
 
 
@@ -76,7 +77,7 @@ def register(request):
                 'expiry': '900'}
                 files = []
                 headers = {
-                'Authorization': 'Token 0d21f1e3cb977b24ebd925ec71d3fec0cb0a41f3'
+                'Authorization': 'Token ca23c2854b8ab3dc239f449be501299d5fefe86f'
                 }
                 response = requests.request("POST", url, headers=headers, data = payload, files = files)
                 print(response.text.encode('utf8'))
@@ -110,7 +111,7 @@ def otp(request):
 
         ]
         headers = {
-        'Authorization': 'Token 0d21f1e3cb977b24ebd925ec71d3fec0cb0a41f3'
+        'Authorization': 'Token ca23c2854b8ab3dc239f449be501299d5fefe86f'
         }
 
         response = requests.request("POST", url, headers=headers, data = payload, files = files)

@@ -14,5 +14,5 @@ urlpatterns = [
     path('now_showing/',views.nowShow,name='now_show'),
     path('addMovie/',views.addMovie,name='addMovie'),
     path('upcoming_movie/',views.upcomingMovie,name='upcoming_movie'),
-    
+    path('mobile/',views.mobile,name='mobile'),
 ]

@@ -54,27 +54,22 @@ def ownerAdd(request):
             ownername = request.POST['ownername']
             TheatreName = request.POST['TheatreName']
             number = request.POST['number']
-            password = request.POST['password']
-            confirmpassword = request.POST['confirmpassword']
             dicti = {"ownername":ownername,"TheatreName":TheatreName,"number":number}
-            if password == confirmpassword:
-                if User.objects.filter(first_name=TheatreName).exists():
-                    messages.error(request,'Theatre Name is already Exist')
-                    return render(request,'useradmin/theatre_add_owner.html',dicti)
-                elif User.objects.filter(username=ownername).exists():
-                    messages.error(request,"Username is already taken") 
-                    return render(request,'useradmin/theatre_add_owner.html',dicti)
-                elif User.objects.filter(last_name=number).exists():
-                    messages.error(request,"Phone Number is Exist") 
-                    return render(request,'useradmin/theatre_add_owner.html',dicti)
-                else:
-                    user = User.objects.create_user(username=ownername, password=password, first_name=TheatreName,last_name=number,is_staff=True)
-                    user.save();
-                    print("USER CREATED")
-                    return redirect(theatremgmt)
-            else:
-                messages.error(request,'Password wrong')
+
+            if User.objects.filter(first_name=TheatreName).exists():
+                messages.error(request,'Theatre Name is already Exist')
                 return render(request,'useradmin/theatre_add_owner.html',dicti)
+            elif User.objects.filter(username=ownername).exists():
+                messages.error(request,"Username is already taken") 
+                return render(request,'useradmin/theatre_add_owner.html',dicti)
+            elif User.objects.filter(last_name=number).exists():
+                messages.error(request,"Phone Number is Exist") 
+                return render(request,'useradmin/theatre_add_owner.html',dicti)
+            else:
+                user = User.objects.create_user(username=ownername,first_name=TheatreName,last_name=number,is_staff=True)
+                user.save();
+                print("USER CREATED")
+                return redirect(theatremgmt)
         else:
             return render(request,'useradmin/theatre_add_owner.html')
     else:
