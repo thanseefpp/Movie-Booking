@@ -38,6 +38,26 @@ def book_show(request,id):
     context = {'movie':movie}
     return render(request,'user/bookshow.html',context)
 
+def seat_book(request,id):
+    movie = NowShowingMovies.objects.get(id=id)
+    screen_count = movie.screen
+    vip_seats = screen_count.vip_seats
+    vip_price = screen_count.vip_price
+    premium_seats = screen_count.premium_seats
+    premium_price = screen_count.premium_price
+    executive_seats = screen_count.executive_seats
+    executive_price = screen_count.executive_price
+    normal_seats = screen_count.normal_seats
+    normal_price = screen_count.normal_price
+    print('v,p,e,n:',vip_price,premium_price,executive_price,normal_price)
+    print('vip,premium_seats,executive_seats,normal_seats:',vip_seats,premium_seats,executive_seats,normal_seats)
+    context = {'screen':screen_count}
+    return render(request,'user/seats.html',context)
+
+
+def checkout(request):
+    return render(request,'user/checkout.html')
+
 
 # Login , Register , OTP , Logout
 

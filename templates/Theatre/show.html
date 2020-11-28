@@ -20,7 +20,7 @@
           <th scope="col">RunTime</th>
           <th scope="col">ShowTime</th>
           <th scope="col">Language</th>
-          <th scope="col">Action</th>
+          <th scope="col" style="text-align: center;">Action</th>
         </tr>
       </thead>
       <tbody class="list">
@@ -32,7 +32,12 @@
           <td>{{data.runtime_hour}}h {{data.runtime_minute}}m</td>
           <td>{{data.show_time}}</td>
           <td>{{data.language}}</td>
-          <td>test</td>
+          <td>
+            <div class="button-center text-center">
+              <a href="#" class="btn btn-success">Edit</a>
+							<a href="#" class="btn btn-danger">Delete</a>
+						</div>
+          </td>
         </tr>
         {% endfor %}
       </tbody>

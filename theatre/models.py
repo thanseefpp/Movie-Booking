@@ -7,9 +7,13 @@ class Screen(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
     screen_name = models.CharField(max_length = 300)
     vip_seats = models.IntegerField()
+    vip_price = models.IntegerField(null =True, blank=True)
     premium_seats = models.IntegerField()
+    premium_price = models.IntegerField(null =True, blank=True)
     executive_seats = models.IntegerField()
+    executive_price = models.IntegerField(null =True, blank=True)
     normal_seats = models.IntegerField()
+    normal_price = models.IntegerField(null =True, blank=True)
     select = models.BooleanField(default=False)
 
     # def __str__(self):

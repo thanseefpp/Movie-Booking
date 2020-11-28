@@ -130,10 +130,15 @@ def screens(request):
         user = request.user
         screen = Screen.objects.filter(user=user)
         dict = {}
+        price = {}
         for i in screen:
+            for j in screen:
+                price[j] = j.vip_price+j.premium_price+j.executive_price+j.normal_price
             dict[i] = i.vip_seats+i.normal_seats+i.executive_seats+i.premium_seats
 
-        context = {'screen':dict}
+        print('price:',price)
+        print('screen:',dict)
+        context = {'screen':dict,'price':price}
         return render(request,'Theatre/screen_manage.html',context)
     else:
         return redirect('theatreLogin')
@@ -145,10 +150,14 @@ def addScreens(request):
             user = request.user
             screen_name = request.POST['screen_name']
             vip_seat = request.POST['vip_seat']
+            vip_price = request.POST['vip_price']
             premium_seat = request.POST['premium_seat']
+            premium_price = request.POST['premium_price']
             executive_seat = request.POST['executive_seat']
+            executive_price = request.POST['executive_price']
             normal_seat = request.POST['normal_seat']
-            screen_table = Screen(user=user,screen_name=screen_name,vip_seats=vip_seat,premium_seats=premium_seat,executive_seats=executive_seat,normal_seats=normal_seat)
+            normal_price = request.POST['normal_price']
+            screen_table = Screen(vip_price=vip_price,normal_price=normal_price,premium_price=premium_price,executive_price=executive_price,user=user,screen_name=screen_name,vip_seats=vip_seat,premium_seats=premium_seat,executive_seats=executive_seat,normal_seats=normal_seat)
             print(screen_table)
             screen_table.save()
             return redirect('screens')

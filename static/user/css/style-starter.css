@@ -16524,7 +16524,7 @@ nav#breadcrumbs a:hover {
   margin-top: 56px;
 }
 
-.w3l-counter-stats-info h4 {
+.w3l-counter-stats-info h5 {
   color: var(--theme-para);
   font-size: 16px;
   font-weight: 400;
@@ -16533,7 +16533,7 @@ nav#breadcrumbs a:hover {
 }
 
 .w3l-counter-stats-info p {
-  font-size: 52px;
+  font-size: 25px;
   font-weight: 700;
   color: var(--theme-title);
   margin-bottom: 10px;

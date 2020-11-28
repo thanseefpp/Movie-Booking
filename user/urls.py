@@ -9,6 +9,7 @@ urlpatterns = [
     path('otp/',views.otp,name='otp'),
     path('logout/',views.logout,name='logout'),
     path('book_show/<int:id>/',views.book_show,name='book_show'),
-
+    path('seat_select/<int:id>/',views.seat_book,name='seat_book'),
+    path('checkout/',views.checkout,name='checkout'),
 ]
 

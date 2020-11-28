@@ -16,7 +16,7 @@
           <th scope="col" class="sort" data-sort="name">ID</th>
           <th scope="col" class="sort" data-sort="budget">Screen Name </th>
           <th scope="col" class="sort" data-sort="status">Total Seat Count</th>
-          <th scope="col">Schedule</th>
+          <th scope="col">Total Seat Price</th>
           <th scope="col" class="sort" data-sort="completion">Action</th>
         </tr>
       </thead>
@@ -26,9 +26,12 @@
           <th scope="row">{{i.id}}</th>
           <td>{{i.screen_name}}</td>
           <td>{{j}}</td>
-          <td>test mod</td>
+          {% for k,m in price.items %}
+          <td>{{m}}</td>
+          {% endfor %}
           <td>test mod</td>
         </tr>
+          
         {% endfor %}
       </tbody>
     </table>
