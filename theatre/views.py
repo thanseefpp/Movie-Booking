@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User,auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from .models import Screen
+from useradmin.models import *
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import base64
@@ -124,6 +124,7 @@ def theatreout(request):
     else:
         return redirect('theatreLogin')
 
+
 def screens(request):
     if request.user.is_staff:
         user = request.user
@@ -163,6 +164,7 @@ def theatreUserActivity(request):
     else:
         return redirect('theatreLogin')
 
+
 def upcomingShow(request):
     if request.user.is_staff:
         return render(request,'Theatre/upcoming.html')
@@ -184,6 +186,7 @@ def addMovie(request):
     if request.user.is_staff:
         if request.method == 'POST':
             user = request.user
+            dealer = Dealer.objects.get(user_id=user)
             movie_name = request.POST['movie_name']
             cast_name = request.POST['cast_name']
             director_name = request.POST['director_name']
@@ -194,18 +197,24 @@ def addMovie(request):
             language = request.POST['language']
             type_movie = request.POST['type_movie']
             trailer_link = request.POST['trailer_link']
+            screen_name = request.POST['Screen']
+            screen = Screen.objects.get(screen_name=screen_name)
+            screen.select = True
+            screen.save();
             photo_banner = request.FILES.get('photo_banner')
             photo_main = request.POST['image64data']
-            print('data:', photo_main)
             value = photo_main.strip('data:image/png;base64,')
             format, imgstr = photo_main.split(';base64,')
             ext = format.split('/')[-1]
             data = ContentFile(base64.b64decode(imgstr),name='temp.' + ext)
-            prod = NowShowingMovies(user=user,movie_title=movie_name,cast_name=cast_name,director_name=director_name,release_date=release_date,show_time=show_time,runtime_hour=run_time_hour,runtime_minute=run_time_minutes,language=language,movie_type=type_movie,trailer_link=trailer_link,photo_banner=photo_banner,photo_main = data)
+            print('dealer:',dealer)
+            prod = NowShowingMovies(dealer=dealer,screen=screen,user=user,movie_title=movie_name,cast_name=cast_name,director_name=director_name,release_date=release_date,show_time=show_time,runtime_hour=run_time_hour,runtime_minute=run_time_minutes,language=language,movie_type=type_movie,trailer_link=trailer_link,photo_banner=photo_banner,photo_main = data)
             prod.save();
             return redirect('now_show')
         else:
-            return render(request,'Theatre/addmovie.html')
+            choose_screen = Screen.objects.filter(select=False)
+            context = {'screen':choose_screen}
+            return render(request,'Theatre/addmovie.html',context)
     else:
         return redirect('theatreLogin')
     

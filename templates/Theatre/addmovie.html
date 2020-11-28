@@ -47,13 +47,39 @@
         <div class="container" style="margin: 40px;">
             <div style="padding-left: 100px;">
                 <label style="padding-right: 26px;">Language :</label>
-                <input type="text" name="language" placeholder="Language of the movie" style="margin-left: 41px;text-align: center; height: 32px;border-radius: 0.375rem;">
+                <!-- <input type="text" name="language" placeholder="Language of the movie" style="margin-left: 41px;text-align: center; height: 32px;border-radius: 0.375rem;"> -->
+                <select name="language" style="margin-left: 39px;">
+                    <option>Select Language</option>
+                    <option>HINDI</option>
+                    <option>ENGLISH</option>
+                    <option>MALAYALAM</option>
+                    <option>TELUGU</option>
+                    <option>KANNADA</option>
+                </select>
             </div>
         </div>
         <div class="container" style="margin: 40px;">
             <div style="padding-left: 100px;">
                 <label style="padding-right: 26px;">Type :</label>
-                <input type="text" name="type_movie" placeholder="Type of the movie (3D or 2D)" style="margin-left: 78px;text-align: center; height: 32px;border-radius: 0.375rem;">
+                <!-- <input type="text" name="type_movie" placeholder="Type of the movie (3D or 2D)" style="margin-left: 78px;text-align: center; height: 32px;border-radius: 0.375rem;"> -->
+                <select name="type_movie" style="margin-left: 75px;" >
+                    <option>Select Type</option>
+                    <option>2D</option>
+                    <option>3D</option>
+                </select>
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Choose Screen :</label>
+                
+                <select name="Screen" style="margin-left: 3px;">
+                    <option>Select Screen</option>
+                    {% for i in screen %}
+                    <option>{{i.screen_name}}</option>
+                    {% endfor %}
+                </select>
+
             </div>
         </div>
         <div class="container" style="margin: 40px;">
@@ -89,14 +115,9 @@
                     
                     <div class="box">
                         <div class="options hide">
-                            <label> Width</label>
-                            <input type="number" name="myfile" class="img-w" value="300" min="100" max="1200" />
+                            <input type="number" name="myfile" class="img-w hidden" value="300" min="100" max="1200" />
                         </div>
-                        
-                        <button class="btn save hide">Confirm</button>
-                        
-                        <a href="" id="" class="btn hidden"></a>
-                        <button id="load" class="btn btn-info" type="button" >Upload</button>
+                        <button class="btn btn-info save hide" id="load" type="button">Confirm</button>    
                     </div>
                 </main>
 

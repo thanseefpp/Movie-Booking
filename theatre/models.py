@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from useradmin.models import Dealer
 # Create your models here.
 
 class Screen(models.Model):
@@ -9,14 +10,16 @@ class Screen(models.Model):
     premium_seats = models.IntegerField()
     executive_seats = models.IntegerField()
     normal_seats = models.IntegerField()
+    select = models.BooleanField(default=False)
 
     # def __str__(self):
     #     return self.screen_name
 
 
-
 class NowShowingMovies(models.Model):
+    screen = models.ForeignKey(Screen, on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
+    dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
     movie_title = models.CharField(max_length=300,null=True)
     cast_name = models.CharField(max_length=300,null=True)
     director_name = models.CharField(max_length=300,null=True)

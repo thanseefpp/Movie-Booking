@@ -1,7 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
-
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -13,18 +12,38 @@ import json
 import requests
 from django.core.files import File
 from django.core.files.base import ContentFile
-
-
+from useradmin.models import *
+from theatre.models import *
 
 def index(request):
-    
-    return render(request,'user/index.html')
+    dealer = Dealer.objects.all()
+    # if request.user.is_authenticated:
+    #     dealer = Dealer.objects.all()
+    context = {'dealer':dealer}
+    return render(request,'user/index.html',context)
 
+
+def theatre_movies(request,id):
+    dealer = Dealer.objects.get(id=id)
+    movie = NowShowingMovies.objects.filter(dealer=dealer)
+    # if request.user.is_authenticated:
+    #     dealer = Dealer.objects.get(id=id)
+    #     movie = NowShowingMovies.objects.filter(dealer=dealer)
+    context = {'movie':movie}
+    return render(request,'user/TheatreMovies.html',context)
+
+
+def book_show(request,id):
+    movie = NowShowingMovies.objects.filter(id=id)
+    context = {'movie':movie}
+    return render(request,'user/bookshow.html',context)
+
+
+# Login , Register , OTP , Logout
 
 def login(request):
     if request.user.is_authenticated:
         return redirect(index)
-
     elif request.method=="POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -97,7 +116,6 @@ def register(request):
         return render(request, 'user/login/register.html')
 
 
-
 def otp(request):
     if request.method == 'POST':
         otp=request.POST['otp']
@@ -150,7 +168,3 @@ def logout(request):
         return redirect(index)
     else:
         return redirect(index)
-
-
-def bookShow(request):
-    return render(request,'user/bookshow.html')

@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'bookshow.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bookshow',
+        'NAME': 'bookmyshow',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
@@ -133,3 +133,6 @@ STATICFILES_DIRS =[
 MEDIA_URL = '/image/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/image')
 
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%b %d at %I:%M %P"
+}

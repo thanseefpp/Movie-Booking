@@ -12,6 +12,11 @@
     <!-- admin cards css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.8.13/tailwind.min.css">
     <!-- card -->
+    <!-- crop -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css" type="text/css">
+    <!-- crop -->
     <title>Admin</title>
 </head>
 <body>
@@ -44,34 +49,8 @@
                         <i class="glyphicon glyphicon-stats"></i>
                         User Activity Track
                     </a>
-                    <!-- <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
-                        <i class="glyphicon glyphicon-duplicate"></i>
-                        Pages
-                    </a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li><a href="#">Page 1</a></li>
-                        <li><a href="#">Page 2</a></li>
-                        <li><a href="#">Page 3</a></li>
-                    </ul> -->
                 </li>
-                <!-- <li>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-link"></i>
-                        Portfolio
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-paperclip"></i>
-                        FAQ
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-send"></i>
-                        Contact
-                    </a>
-                </li> -->
+
             </ul>
         </nav>
         <div id="content" style="width: fit-content;">
@@ -109,7 +88,10 @@
         <script src="{% static 'admin/js/admindash.js' %}"></script>    
     <!-- admin dashboard -->
 
-
+	<!-- crop -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+    <!-- crop -->
+    
     <style>
 
         @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";

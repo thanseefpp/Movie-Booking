@@ -1,7 +1,22 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
-# Create your views here.
+from .models import *
+# image crop
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+import base64
+from PIL import Image
+from base64 import decodestring
+import binascii
+from django.core.files import File
+from django.http import JsonResponse
+import json
+from datetime import *
+import requests
+from .models import *
+from django.views.generic import View
+from django.core.files.base import ContentFile
 
 
 def adminlogin(request):
@@ -41,7 +56,7 @@ def adminout(request):
 
 def theatremgmt(request):
     if request.session.has_key('username'):
-        owner=User.objects.filter(is_staff=True)
+        owner=Dealer.objects.all()
         context = {'owner':owner}
         return render(request,'useradmin/admintheatre.html',context)
     else:
@@ -54,6 +69,18 @@ def ownerAdd(request):
             ownername = request.POST['ownername']
             TheatreName = request.POST['TheatreName']
             number = request.POST['number']
+
+            dealer_name = request.POST['ownername']
+            theatre_name = request.POST['TheatreName']
+            dealer_phone = request.POST['number']
+            theatre_location = request.POST['place']
+            theatre_close = request.POST['time']
+            photo_main = request.POST['image64data']
+            value = photo_main.strip('data:image/png;base64,')
+            format, imgstr = photo_main.split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr),name='temp.' + ext)
+
             dicti = {"ownername":ownername,"TheatreName":TheatreName,"number":number}
 
             if User.objects.filter(first_name=TheatreName).exists():
@@ -68,6 +95,8 @@ def ownerAdd(request):
             else:
                 user = User.objects.create_user(username=ownername,first_name=TheatreName,last_name=number,is_staff=True)
                 user.save();
+                dealer = Dealer.objects.create(theatre_close=theatre_close,theatre_location=theatre_location,dealer_name=dealer_name,theatre_name=theatre_name,dealer_phone=dealer_phone,theatre_image=data,user_id=user)
+                dealer.save();
                 print("USER CREATED")
                 return redirect(theatremgmt)
         else:
