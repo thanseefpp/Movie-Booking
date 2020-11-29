@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,26 +11,27 @@
 
 <body>
     <div class="movie-container">
-        <label>Pick a movie:</label>
+        <label>Select Seat:</label>
         <select id="movie">
-            <option value="650">Parasite (₹650)</option>
-            <option value="850">Joker (₹850)</option>
-            <option value="550">Jumanji: Next Level (₹550)</option>
-            <option value="750">Dolittle (₹750)</option>
+            <option value="" selected >Choose</option>
+            <option id="choiceNormal" value="{{normal_price}}">Normal (₹{{normal_price}})</option>
+            <option id="choiceExecutive" value="{{executive_price}}">Executive (₹{{executive_price}})</option>
+            <option id="choicePremium" value="{{premium_price}}">Premium (₹{{premium_price}})</option>
+            <option id="choiceVip" value="{{vip_price}}">VIP (₹{{vip_price}})</option>
         </select>
     </div>
 
     <ul class="showcase">
         <li>
-            <div class="seat"></div>
+            <div class="seatIndication"></div>
             <small>N/A</small>
         </li>
         <li>
-            <div class="seat selected"></div>
+            <div class="seatIndication selected"></div>
             <small>Selected</small>
         </li>
         <li>
-            <div class="seat occupied"></div>
+            <div class="seatIndication occupied"></div>
             <small>Occupied</small>
         </li>
     </ul>
@@ -40,123 +42,16 @@
         </div>
 
         <div class="row-container">
-            
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-            </div>
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat occupied"></div>
-                <div class="seat occupied"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-            </div>
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat occupied"></div>
-                <div class="seat occupied"></div>
-            </div>
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-            </div>
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat occupied"></div>
-                <div class="seat occupied"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-            </div>
+            <div id="normal"></div>
             <h5 class='subtitle'>Normal</h5>
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-            </div>
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat occupied"></div>
-                <div class="seat occupied"></div>
-                <div class="seat occupied"></div>
-                <div class="seat"></div>
-            </div>
+
+            <div id="exicutive"></div>
             <h5 class='subtitle'>EXECUTIVE</h5>
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-            </div>
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat occupied"></div>
-                <div class="seat occupied"></div>
-                <div class="seat occupied"></div>
-                <div class="seat"></div>
-            </div>
+
+            <div id="premium"></div>
             <h5 class='subtitle'>PREMIUM</h5>
 
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-            </div>
-          
-            <div class="row">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat occupied"></div>
-                <div class="seat "></div>
-                <div class="seat occupied"></div>
-                <div class="seat"></div>
-            </div>
-            
+            <div id="vip"></div>
             <h5 class='subtitle'>VIP</h5>
 
             <div class="text-wrapper">
@@ -173,7 +68,304 @@
 
     </div>
 
-    <script src="{% static 'user/seat/js/seat.js' %}"></script>
+    <!-- <script src="{% static 'user/seat/js/seat.js' %}"></script> -->
+    <script>
+        const seats = document.querySelectorAll(".row .seat:not(.occupied)");
+        const seatContainer = document.querySelector(".row-container");
+        const count = document.getElementById("count");
+        const total = document.getElementById("total");
+        const movieSelect = document.getElementById("movie");
+
+        // old one        // Another Approach
+
+        // seats.forEach(function(seat) {
+        //   seat.addEventListener("click", function(e) {
+        //     seat.classList.add("selected");
+        //     const selectedSeats = document.querySelectorAll(".container .selected");
+        //     selectedSeathLength = selectedSeats.length;
+        //     count.textContent = selectedSeathLength;
+        //     let ticketPrice = +movieSelect.value;
+        //     total.textContent = ticketPrice * selectedSeathLength;
+        //   });
+        // });
+
+        // localStorage.clear();
+        
+        // old one
+
+        populateUI();
+
+        let ticketPrice = +movieSelect.value;
+
+        // Save selected movie index and price
+        function setMovieData(movieIndex, moviePrice) {
+            localStorage.setItem("selectedMovieIndex", movieIndex);
+            localStorage.setItem("selectedMoviePrice", moviePrice);
+        }
+
+
+        function updateSelectedCount() {
+            const selectedSeats = document.querySelectorAll(".container .selected");
+            console.log(selectedSeats);
+            seatsIndex = [...selectedSeats].map(function (seat) {
+                return [...seats].indexOf(seat);
+            });
+            console.log(seatsIndex);
+
+            localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
+
+            let selectedSeatsCount = selectedSeats.length;
+            count.textContent = selectedSeatsCount;
+            total.textContent = selectedSeatsCount * ticketPrice;
+        }
+
+        // Get data from localstorage and populate
+        function populateUI() {
+            const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
+
+            if (selectedSeats !== null && selectedSeats.length > 0) {
+                seats.forEach(function (seat, index) {
+                    if (selectedSeats.indexOf(index) > -1) {
+                        // seat.classList.add("selected");
+                    }
+                });
+            }
+
+            const selectedMovieIndex = localStorage.getItem("selectedMovieIndex");
+
+            if (selectedMovieIndex !== null) {
+                movieSelect.selectedIndex = selectedMovieIndex;
+            }
+        }
+
+        // Movie select event
+
+        movieSelect.addEventListener("change", function (e) {
+            ticketPrice = +movieSelect.value;
+            setMovieData(e.target.selectedIndex, e.target.value);
+            console.log(e.target.selectedIndex);
+            findSeatSelection(e.target.selectedIndex);
+            updateSelectedCount();
+        });
+
+        // Adding selected class to only non-occupied seats on 'click'
+
+        seatContainer.addEventListener("click", function (e) {
+            let typeOfSeate = localStorage.getItem("typeOfSeat")
+            if (
+                e.target.classList.contains("seat") &&
+                !e.target.classList.contains("occupied") && e.target.classList.contains(typeOfSeate) 
+            ) {
+                e.target.classList.toggle("selected");
+                updateSelectedCount();
+            }else if (
+                e.target.classList.contains("seat") &&
+                !e.target.classList.contains("occupied") && e.target.classList.contains(typeOfSeate)
+            ) {
+                e.target.classList.toggle("selected");
+                updateSelectedCount();
+            }else if (
+                e.target.classList.contains("seat") &&
+                !e.target.classList.contains("occupied") && e.target.classList.contains(typeOfSeate)
+            ) {
+                e.target.classList.toggle("selected");
+                updateSelectedCount();
+            }else if (
+                e.target.classList.contains("seat") &&
+                !e.target.classList.contains("occupied") && e.target.classList.contains(typeOfSeate)
+            ) {
+                e.target.classList.toggle("selected");
+                updateSelectedCount();
+            }else{
+
+            }
+        });
+
+        // Initial count and total rendering
+        updateSelectedCount();
+
+        let normalSeat = {{ normal_seats }}
+        let exicutiveSeat = {{ executive_seats }}
+        let premiumSeat = {{ premium_seats }}
+        let vipSeat = {{ vip_seats }}
+
+        let choiceNormal = document.getElementById("choiceNormal");
+        let choiceExecutive = document.getElementById("choiceExecutive");
+        let choicePremium = document.getElementById("choicePremium");
+        let choiceVip = document.getElementById("choiceVip");
+
+        seatArragement();
+
+        function findSeatSelection(seatType) {
+            let seatCount = 0;
+            let typeOfSeate = "";
+            if (seatType === 0) {
+                seatCount = null;
+                typeOfSeate = "";
+            } else if(seatType === 1) {
+                seatCount = {{normal_seats}};
+                typeOfSeate = "normal";
+            } else if(seatType === 2) {
+                seatCount = {{executive_seats}};
+                typeOfSeate = "exicutive";
+            } else if(seatType === 3) {
+                seatCount = {{premium_seats}};
+                typeOfSeate = "premium";
+            } else if(seatType === 4) {
+                seatCount = {{vip_seats}};
+                typeOfSeate = "vip";
+            }
+            console.log(typeOfSeate);
+            localStorage.setItem("typeOfSeat",typeOfSeate);
+                console.log(seatCount);
+            let seat = document.querySelectorAll(".seat")
+            console.log(seatType);
+            for (let seatNum = 0; seatNum < {{ totalSeat }}; seatNum++) {
+            // console.log(seat[seatNum]);
+            if(seatCount === null && seatType === 0){
+                console.log("choice");
+                seat[seatNum].style.cursor = "text";
+            } else if (seatNum >= 0 && seatNum < seatCount && seatType ===1) {
+                seat[seatNum].style.cursor = "pointer"
+                console.log("normal");
+            } else if (seatNum >= {{normal_seats}} && seatNum < (seatCount+{{normal_seats}}) &&seatType ===2 ) {
+                seat[seatNum].style.cursor = "pointer"
+                console.log("exicutive");
+            } else if (seatNum >= {{executive_seats}}+{{normal_seats}} && seatNum < (seatCount+{{normal_seats}}+{{executive_seats}}) && seatType === 3) {
+                seat[seatNum].style.cursor = "pointer"
+                console.log("premium");
+            } else if (seatNum >= {{premium_seats}}+{{normal_seats}}+{{executive_seats}} && seatNum < (seatCount+{{normal_seats}}+{{executive_seats}}+{{premium_seats}}) &&seatType ===4 ) {
+                seat[seatNum].style.cursor = "pointer"
+                console.log("vip");
+            } else{
+                seat[seatNum].style.cursor = "text"
+                seat.style.transform = "none";
+                
+                console.log("else");
+            }
+        }
+
+        function choiceHandler(seatType){
+            console.log(seatType);
+        }
+
+            // normal.style.cursor = "pointer !importent"
+            // exicutive.style.cursor = "default !importent"
+            // premium.style.cursor = "default !importent"
+            // vip.style.cursor = "default !importent"
+            // } else if (seatType === "exicutive") {
+            //     exicutive.style.cursor = "default"
+            // } else if (seatType === "premium") {
+            //     premium.style.cursor = "default"
+            // } else {
+            //     vip.style.cursor = "default"
+            // }
+        }
+        function seatArragement() {
+            let normal = document.getElementById("normal")
+            let exicutive = document.getElementById("exicutive")
+            let premium = document.getElementById("premium")
+            let vip = document.getElementById("vip")
+            
+            let seatTolerence = 8
+            for (let outer = 8; seatTolerence <= normalSeat;) {
+                parentDiv = document.createElement("div");
+                parentDiv.classList.add("row");
+                for (let inner = 0; inner < seatTolerence; inner++) {
+                    let childDiv = document.createElement("div");
+                    childDiv.classList.add("seat");
+                    childDiv.classList.add("normal");
+                    parentDiv.appendChild(childDiv);
+
+                }
+                if (seatTolerence === 0) {
+                    break;
+                }
+                normalSeat = normalSeat - seatTolerence
+                if (outer < normalSeat) {
+                    seatTolerence = 8
+                }
+                else {
+                    seatTolerence = normalSeat
+                }
+                normal.appendChild(parentDiv);
+            }
+            console.log(normal);
+
+            seatTolerence = 8
+            for (let outer = 8; seatTolerence <= exicutiveSeat;) {
+                parentDiv = document.createElement("div");
+                parentDiv.classList.add("row");
+                for (let inner = 0; inner < seatTolerence; inner++) {
+                    let childDiv = document.createElement("div");
+                    childDiv.classList.add("seat");
+                    childDiv.classList.add("exicutive");
+                    parentDiv.appendChild(childDiv);
+                }
+                if (seatTolerence === 0) {
+                    break;
+                }
+                exicutiveSeat = exicutiveSeat - seatTolerence
+                if (outer < exicutiveSeat) {
+                    seatTolerence = 8
+                }
+                else {
+                    seatTolerence = exicutiveSeat
+                }
+                exicutive.appendChild(parentDiv);
+            }
+            console.log(exicutive);
+
+            seatTolerence = 8
+            for (let outer = 8; seatTolerence <= premiumSeat;) {
+                parentDiv = document.createElement("div");
+                parentDiv.classList.add("row");
+                for (let inner = 0; inner < seatTolerence; inner++) {
+                    let childDiv = document.createElement("div");
+                    childDiv.classList.add("seat");
+                    childDiv.classList.add("premium");
+                    parentDiv.appendChild(childDiv);
+                }
+                if (seatTolerence === 0) {
+                    break;
+                }
+                premiumSeat = premiumSeat - seatTolerence
+                if (outer < premiumSeat) {
+                    seatTolerence = 8
+                }
+                else {
+                    seatTolerence = premiumSeat
+                }
+                premium.appendChild(parentDiv);
+            }
+            console.log(premium);
+
+            seatTolerence = 8
+            for (let outer = 8; seatTolerence <= vipSeat;) {
+                parentDiv = document.createElement("div");
+                parentDiv.classList.add("row");
+                for (let inner = 0; inner < seatTolerence; inner++) {
+                    let childDiv = document.createElement("div");
+                    childDiv.classList.add("seat");
+                    childDiv.classList.add("vip");
+                    parentDiv.appendChild(childDiv);
+                }
+                if (seatTolerence === 0) {
+                    break;
+                }
+                vipSeat = vipSeat - seatTolerence
+                if (outer < vipSeat) {
+                    seatTolerence = 8
+                }
+                else {
+                    seatTolerence = vipSeat
+                }
+                vip.appendChild(parentDiv);
+            }
+            console.log(vip);
+        }
+
+    </script>
 </body>
 
 </html>

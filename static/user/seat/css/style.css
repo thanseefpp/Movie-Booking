@@ -7,11 +7,7 @@
 
 body {
     font-family: 'Lato', sans-serif;
-    /* background-color: #242333; */
-    /* background: url("myke-simon-atsUqIm3wxo-unsplash.jpg"),
-        linear-gradient(rgba(0, 0, 0, .9), rgba(0, 0, 0, 0.9)); */
-    background: linear-gradient(rgba(0, 18, 50, 0.84), rgba(0, 0, 0, 0.95)),
-        url("./lloyd-dirks-4SLz_RCk6kQ-unsplash.jpg") bottom;
+    background: linear-gradient(rgba(0, 18, 50, 0.84), rgba(0, 0, 0, 0.95)),bottom;
     background-size: cover;
     color: #fff;
     display: flex;
@@ -58,6 +54,30 @@ body {
     margin-top: 30px;
 }
 
+.seatIndication {
+    background-color: #444451;
+    height: 12px;
+    width: 15px;
+    margin: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    height: 30px;
+    width: 35px;
+    background: #01163e;
+    border: 2px solid #314c81;
+    transition: all .2s ease;
+
+}
+
+.seatIndication.selected {
+    background-color: #6feaf6;
+    background-color: #31d7a9;
+}
+
+.seatIndication.occupied {
+    background-color: #fff;
+}
 
 .seat {
     background-color: #444451;
@@ -72,7 +92,9 @@ body {
     background: #01163e;
     border: 2px solid #314c81;
     transition: all .2s ease;
+    
 }
+
 
 .seat.selected {
     background-color: #6feaf6;
@@ -94,7 +116,7 @@ body {
 .seat:not(.occupied):hover {
     /* Selecting seats that do not have "occupied" class */
     cursor: pointer;
-    transform: scale(1.2);
+    /* transform: scale(1.2); */
 }
 
 .showcase .seat:not(.occupied):hover {
