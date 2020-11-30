@@ -17,7 +17,7 @@
           <th scope="col" class="sort" data-sort="budget">Theatre Owner Name </th>
           <th scope="col" class="sort" data-sort="status">Theatre Name</th>
           <th scope="col">Phone Number</th>
-          <th scope="col" class="sort" data-sort="completion">Action</th>
+          <th scope="col" class="sort" style="text-align: center;" data-sort="completion">Action</th>
         </tr>
       </thead>
       <tbody class="list">
@@ -27,7 +27,12 @@
           <td>{{ tvalue.dealer_name }}</td>
           <td>{{ tvalue.theatre_name }}</td>
           <td>{{ tvalue.dealer_phone }}</td>
-          <td>test 5</td>
+          <td>
+            <div class="button-center text-center">
+              <a href="#" class="btn btn-success">Edit</a>
+							<a href="#" class="btn btn-danger">Delete</a>
+						</div>
+          </td>
         </tr>
         {% endfor %}
       </tbody>

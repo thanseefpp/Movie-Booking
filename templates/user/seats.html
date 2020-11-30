@@ -57,6 +57,7 @@
             <div class="text-wrapper">
                 <p class="text">Selected Seats <span id='count'>0</span>
                 <p class="text">Total Price ₹<span id="total">0</span></p>
+                <p class="text">Seat Number <span id="seatValue">0</span></p>
                 <!-- <a href="#"><button class="btn btn-primary">Confirm Seats</button></a>
                 <a href="#"><button class="btn btn-primary">Cancel</button></a> -->
                 <div class="button-center text-center">
@@ -239,8 +240,6 @@
                 console.log("vip");
             } else{
                 seat[seatNum].style.cursor = "text"
-                seat.style.transform = "none";
-                
                 console.log("else");
             }
         }
@@ -266,8 +265,9 @@
             let exicutive = document.getElementById("exicutive")
             let premium = document.getElementById("premium")
             let vip = document.getElementById("vip")
-            
+
             let seatTolerence = 8
+            
             for (let outer = 8; seatTolerence <= normalSeat;) {
                 parentDiv = document.createElement("div");
                 parentDiv.classList.add("row");
@@ -275,8 +275,15 @@
                     let childDiv = document.createElement("div");
                     childDiv.classList.add("seat");
                     childDiv.classList.add("normal");
-                    parentDiv.appendChild(childDiv);
+                    // for (let i = 0; i<seatTolerence;i++){
+                    //     childDiv.innerHTML = rowsCount[i]+i;
+                    //     console.log(rowsCount[i]+i);
+                    // }
+                    
+                    // childDiv.innerHTML = rowsCount[inner]+inner;
+                    // console.log(rowsCount[inner]+inner);
 
+                    parentDiv.appendChild(childDiv);
                 }
                 if (seatTolerence === 0) {
                     break;
@@ -290,7 +297,7 @@
                 }
                 normal.appendChild(parentDiv);
             }
-            console.log(normal);
+            // console.log(normal);
 
             seatTolerence = 8
             for (let outer = 8; seatTolerence <= exicutiveSeat;) {
@@ -314,7 +321,7 @@
                 }
                 exicutive.appendChild(parentDiv);
             }
-            console.log(exicutive);
+            // console.log(exicutive);
 
             seatTolerence = 8
             for (let outer = 8; seatTolerence <= premiumSeat;) {
@@ -338,7 +345,7 @@
                 }
                 premium.appendChild(parentDiv);
             }
-            console.log(premium);
+            // console.log(premium);
 
             seatTolerence = 8
             for (let outer = 8; seatTolerence <= vipSeat;) {
@@ -362,7 +369,104 @@
                 }
                 vip.appendChild(parentDiv);
             }
-            console.log(vip);
+            // console.log(vip);
+            seatNumberAssignment();
+        }
+
+        function seatNumberAssignment(){
+            let rowsCount = ['A','B','C','D','E','F','G','H']
+            let seatStatus = [0,{{ normal_seats }},{{ executive_seats }},{{ premium_seats }},{{ vip_seats }}]
+            let rowIncrementCounter = 1;
+            let startingCount =0;
+            let endingCount=1;
+            let seatStatusCount = 0;
+            seatDiv = document.querySelectorAll(".seat");
+            console.log(seatStatus);
+
+            for (let index = 0; index < seatDiv.length;) {
+                for (let rowindex = 0; rowindex < rowsCount.length; rowindex++) {
+                    // console.log(div);
+                    // index >= seatStatus[startingCount] && 
+                    if (index < seatStatus[endingCount] + seatStatus[2]+seatStatus[3]+seatStatus[4]){
+                        seatDiv[index].innerHTML = rowsCount[rowindex] + rowIncrementCounter;
+                    
+                    }
+                    
+                    // else{
+                    //     console.log('else check');
+                    //     // console.log('else check');
+                    //     // index_one = seatStatus[1]
+                    //     // index_two = seatStatus[2]
+                    //     // index_three = seatStatus[3]
+                    //     // index_four = seatStatus[4]
+                        
+                    //     // if (endingCount === 1 && index_one === seatStatus[1] ){
+                    //     //     startingCount = index_two;
+                    //     //     endingCount++;
+                    //     //     console.log('if one',startingCount,endingCount);
+                    //     //     for (let rowindex = 0; rowindex < rowsCount.length; rowindex++) {
+                    //     //         // console.log(div);
+                    //     //         if (index_two >= seatStatus[0] && index_two < seatStatus[2] ){
+                    //     //             seatDiv[index_two].innerHTML = rowsCount[rowindex] + rowIncrementCounter;
+                    //     //         }  
+                    //     //     }
+                    //     // }else if(endingCount === 2 && index_two === seatStatus[2]){
+                    //     //     startingCount = index_three;
+                    //     //     endingCount++;
+                    //     //     console.log('if second',startingCount,endingCount);
+                    //     // }else if(endingCount === 3 && index_three === seatStatus[3]){
+                    //     //     startingCount = index_four;
+                    //     //     endingCount++;
+                    //     //     console.log('if third',startingCount,endingCount);
+                    //     // }
+                    //     // else if(endingCount === 4 && index_four === seatStatus[4]){
+                    //     //     startingCount = index_four;
+                    //     //     console.log('if four',startingCount,endingCount);
+                    //     // }
+                        
+                    // }
+                    index++;
+                    // if (index === seatStatus[endingCount]){
+                    //     console.log('if seatreach 4 2');
+                    //     startingCount++;
+                    //     endingCount++;
+                    //     console.log(startingCount,endingCount);
+                        
+                    //     if (index >= seatStatus[startingCount] && index < seatStatus[,endingCount] ){
+                    //         seatDiv[index].innerHTML = rowsCount[rowindex] + rowIncrementCounter;
+                    //         console.log('check inner loop of exe')
+                        
+                    //     }else{
+                            
+                    //     }
+                    // }
+                    // else{
+                    //     console.log('check else')
+                    // }
+                    
+                };
+                rowIncrementCounter++;
+
+                
+            }
+            
+            // startingCount = 2;
+            // endingCount = 2;
+            // for (let index = 0; index < seatDiv.length;) {
+            //     console.log('check loop 2')
+            //     for (let rowindex = 0; rowindex < rowsCount.length; rowindex++) {
+            //         // console.log(div);
+            //         if (index >= seatStatus[startingCount] && index < seatStatus[endingCount] ){
+            //             seatDiv[index].innerHTML = rowsCount[rowindex] + rowIncrementCounter;
+                        
+            //         }else{
+                        
+            //         }
+            //         index++;
+                    
+            //     };
+            //     rowIncrementCounter++;
+            // }
         }
 
     </script>

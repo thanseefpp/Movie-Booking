@@ -157,10 +157,30 @@ def addScreens(request):
             executive_price = request.POST['executive_price']
             normal_seat = request.POST['normal_seat']
             normal_price = request.POST['normal_price']
-            screen_table = Screen(vip_price=vip_price,normal_price=normal_price,premium_price=premium_price,executive_price=executive_price,user=user,screen_name=screen_name,vip_seats=vip_seat,premium_seats=premium_seat,executive_seats=executive_seat,normal_seats=normal_seat)
-            print(screen_table)
-            screen_table.save()
-            return redirect('screens')
+            dict = {"screen_name":screen_name,"vip_seat":vip_seat,"vip_price":vip_price,
+            "premium_seat":premium_seat,"premium_price":premium_price,"executive_seat":executive_seat,
+            "executive_price":executive_price,"normal_seat":normal_seat,"normal_price":normal_price}
+            row = 8;
+            if Screen.objects.filter(screen_name=screen_name).exists():
+                messages.error(request,'Screen already taken')
+                return render(request,'Theatre/addscreen.html',dict)
+            elif int(vip_seat) % row != 0:
+                messages.error(request,'VIP seats not count divisible by 8')
+                return render(request,'Theatre/addscreen.html',dict)
+            elif int(premium_seat) % row !=  0:
+                messages.error(request,'Premium seats count not divisible by 8')
+                return render(request,'Theatre/addscreen.html',dict)
+            elif int(executive_seat) % row !=  0:
+                messages.error(request,'Executive seats count not divisible by 8')
+                return render(request,'Theatre/addscreen.html',dict)
+            elif int(normal_seat) % row != 0:
+                messages.error(request,'Normal seats count not divisible by 8')
+                return render(request,'Theatre/addscreen.html',dict)
+            else:
+                screen_table = Screen(vip_price=vip_price,normal_price=normal_price,premium_price=premium_price,executive_price=executive_price,user=user,screen_name=screen_name,vip_seats=vip_seat,premium_seats=premium_seat,executive_seats=executive_seat,normal_seats=normal_seat)
+                print(screen_table)
+                screen_table.save()
+                return redirect('screens')
         else:
             return render(request,'Theatre/addscreen.html')
     else:
@@ -169,6 +189,7 @@ def addScreens(request):
 
 def theatreUserActivity(request):
     if request.user.is_staff:
+        user = request.user
         return render(request,'Theatre/theatre_user_activity.html')
     else:
         return redirect('theatreLogin')
@@ -176,7 +197,10 @@ def theatreUserActivity(request):
 
 def upcomingShow(request):
     if request.user.is_staff:
-        return render(request,'Theatre/upcoming.html')
+        user = request.user
+        upComingShow = UpcomingMovies.objects.filter(user=user)
+        context = {'upComingShow':upComingShow}
+        return render(request,'Theatre/upcoming.html',context)
     else:
         return redirect('theatreLogin')
     
@@ -230,7 +254,25 @@ def addMovie(request):
 
 def upcomingMovie(request):
     if request.user.is_staff:
-        
+        if request.method == 'POST':
+            user = request.user
+            dealer = Dealer.objects.get(user_id=user)
+            movie_name = request.POST['movie_name']
+            cast_name = request.POST['cast_name']
+            director_name = request.POST['director_name']
+            language = request.POST['language']
+            type_movie = request.POST['type_movie']
+            trailer_link = request.POST['trailer_link']
+            photo_banner = request.FILES.get('photo_banner')
+            photo_main = request.POST['image64data']
+            value = photo_main.strip('data:image/png;base64,')
+            format, imgstr = photo_main.split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr),name='temp.' + ext)
+            print('dealer:',dealer)
+            prod = UpcomingMovies(dealer=dealer,user=user,movie_title=movie_name,cast_name=cast_name,director_name=director_name,language=language,movie_type=type_movie,trailer_link=trailer_link,photo_banner=photo_banner,photo_main = data)
+            prod.save();
+            return redirect('upcoming_show')
         return render(request,'Theatre/upcoming_movie.html')
     else:
         return redirect('theatreLogin')

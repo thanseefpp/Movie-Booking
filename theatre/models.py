@@ -56,6 +56,7 @@ class NowShowingMovies(models.Model):
 
 class UpcomingMovies(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
+    dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
     movie_title = models.CharField(max_length=300,null=True)
     cast_name = models.CharField(max_length=300,null=True)
     director_name = models.CharField(max_length=300,null=True)

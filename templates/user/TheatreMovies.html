@@ -32,7 +32,7 @@
 					<li>
 						<div class="slider-info  banner-view banner-top1 bg bg2">
 							<div class="banner-info">
-								<h3>Latest Online Movies</h3>
+								<h3>Latest Movie Trailers</h3>
 								<p><span class="over-para"></span></p>
 								<a href="#small-dialog2" class="popup-with-zoom-anim play-view1">
 									<span class="video-play-icon">
@@ -156,7 +156,7 @@
 						<div class="box16 mb-0">
 							<a href="#small-dialog4" class="popup-with-zoom-anim play-view1">
 								<figure>
-									<img class="img-fluid" src="{{i.MainURL}}" alt="">
+									<img class="img-fluid" style="height: 260px;" src="{{i.MainURL}}" alt="">
 								</figure>
 								<div class="box-content">
 									<h4> <span class="post"><span class="fa fa-clock-o"> </span> {{i.runtime_hour}}h {{i.runtime_minute}}m
@@ -171,7 +171,7 @@
 						<p>Type: {{i.movie_type}}</p>
 						<div id="small-dialog4" class="zoom-anim-dialog mfp-hide">
 							<iframe width="420" height="315"
-								src="https://www.youtube.com/embed/eOrNdBpGMv8?autoplay=1">
+								src="https://www.youtube.com/embed/{{i.trailer_link}}?autoplay=1">
 								</iframe>
 						</div>
 						<div class="button-center text-center mt-4">

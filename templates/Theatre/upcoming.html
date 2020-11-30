@@ -15,27 +15,29 @@
       <thead class="thead-light">
         <tr>
           <th scope="col" class="sort" data-sort="name">ID</th>
-          <th scope="col" class="sort" data-sort="budget">User Name </th>
-          <th scope="col" class="sort" data-sort="status">Join Date</th>
-          <th scope="col">Last Book</th>
-          <th scope="col">Status</th>
-          <th scope="col" class="sort" data-sort="completion">Amount</th>
-
+          <th scope="col" class="sort" data-sort="budget">Movie Name </th>
+          <th scope="col" class="sort" data-sort="status">Type</th>
+          <th scope="col">Language</th>
+          <th scope="col">Cast Name</th>
+          <th scope="col" style="text-align: center;">Action</th>
         </tr>
       </thead>
       <tbody class="list">
-        
+        {% for i in upComingShow %}
         <tr>
-          <th scope="row">test</th>
-          <td>test</td>
-          <td>test</td>
-          <td>test</td>
-          <td>test</td>
+          <th scope="row">{{i.id}}</th>
+          <td>{{i.movie_title}}</td>
+          <td>{{i.movie_type}}</td>
+          <td>{{i.language}}</td>
+          <td>{{i.cast_name}}</td>
           <td>
-            <a href="" onclick="window.mydelete('{{user}}')" data-id="{{user.username}}"  id="delcheck{{user}}" data-id="" class="delete"><i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></a>							
+            <div class="button-center text-center">
+              <a href="#" class="btn btn-success">Edit</a>
+							<a href="#" class="btn btn-danger">Delete</a>
+						</div>
           </td>
         </tr>
-        
+        {% endfor %}
       </tbody>
     </table>
   </div>
