@@ -15,6 +15,7 @@ from django.core.files.base import ContentFile
 from useradmin.models import *
 from theatre.models import *
 
+
 def index(request):
     dealer = Dealer.objects.all()
     # if request.user.is_authenticated:
@@ -38,12 +39,14 @@ def book_show(request,id):
     context = {'movie':movie}
     return render(request,'user/bookshow.html',context)
 
+
 def seat_book(request,id):
     movie = NowShowingMovies.objects.get(id=id)
     screen_count = movie.screen
     print('screen :',screen_count)
     vip_seats = screen_count.vip_seats
     vip_price = screen_count.vip_price
+    row_count = screen_count.row
     premium_seats = screen_count.premium_seats
     premium_price = screen_count.premium_price
     executive_seats = screen_count.executive_seats
@@ -55,12 +58,36 @@ def seat_book(request,id):
     print('v,p,e,n:',vip_price,premium_price,executive_price,normal_price)
     print('vip,premium_seats,executive_seats,normal_seats:',vip_seats,premium_seats,executive_seats,normal_seats)
 
-    context = {'normal_price':normal_price,'executive_price':executive_price,'vip_price':vip_price,'screen':screen_count,'vip_seats':vip_seats,'premium_seats':premium_seats,'executive_seats':executive_seats,'normal_seats':normal_seats,'premium_price':premium_price,'totalSeat':value}
+    context = {'row_count':row_count,'normal_price':normal_price,'executive_price':executive_price,'vip_price':vip_price,'screen':screen_count,'vip_seats':vip_seats,'premium_seats':premium_seats,'executive_seats':executive_seats,'normal_seats':normal_seats,'premium_price':premium_price,'totalSeat':value}
     return render(request,'user/seats.html',context)
 
 
+
 def checkout(request):
+    selectedSeats = request.POST.get('seatNumber')
+    print('selectedSeats:',selectedSeats)
+    return JsonResponse("order_place",safe=False)
+
+
+def orderPlace(request):
     return render(request,'user/checkout.html')
+
+
+def seatreconnect(request):
+    if request.method == 'GET':
+        seatCount = request.GET.get('seatCount', None)
+        seatNumber = request.GET.get('seatNumber', None)
+        typeOfSeat = request.GET.get('typeOfSeat', None)
+        totalPrice = request.GET.get('totalPrice', None)
+        selectedSeats = request.GET.get('selectedSeats', None)
+        selectedMoviePrice = request.GET.get('selectedMoviePrice', None)
+        print('get function check:',seatCount,seatNumber,typeOfSeat,selectedSeats,totalPrice,selectedMoviePrice)
+        # array = []
+        # for i in seatNumber.split(","):
+        #     value=i
+        #     array.append(value) 
+        # print('array:',array)
+        return JsonResponse(seatNumber,safe=False)
 
 
 # Login , Register , OTP , Logout

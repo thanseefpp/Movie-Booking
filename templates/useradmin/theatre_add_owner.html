@@ -1,13 +1,15 @@
-{% extends 'useradmin/adminbase.html' %}
+{% extends 'useradmin/base.html' %}
 
 {% block content %}
+{% load static %}
 
-    <div class="container">
-        <h6 class="h2 text-black d-inline-block mb-0">ADD Theatre Owner</h6>
+    <div class="container pt-3">
+        <h6 class="h2 text-black d-inline-block mb-0">ADD THEATRE OWNER</h6>
     </div>
     <form action="{% url 'ownerAdd' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-        <div class="container" style="margin: 40px;">
+
+        <div class="container" style="margin: 40px;margin-top: 100px;">
             <div style="padding-left: 100px;">
                 <label style="padding-right: 26px;">UserName for Theatre Owner :</label>
                 <input type="text" name="ownername" placeholder="User Name" style="text-align: center;height: 32px;border-radius: 0.375rem;" value="{{ownername}}">

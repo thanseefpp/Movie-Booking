@@ -41,7 +41,7 @@ def adminlogin(request):
 
 def adminDashboard(request):
     if request.session.has_key('username'):
-        return render(request,'useradmin/adminDashboard.html')
+        return render(request,'useradmin/dashboard.html')
     else:
         return redirect('adminlogin')
 
@@ -58,7 +58,7 @@ def theatremgmt(request):
     if request.session.has_key('username'):
         owner=Dealer.objects.all()
         context = {'owner':owner}
-        return render(request,'useradmin/admintheatre.html',context)
+        return render(request,'useradmin/theatre_table.html',context)
     else:
         return redirect('adminlogin')
 
@@ -69,7 +69,6 @@ def ownerAdd(request):
             ownername = request.POST['ownername']
             TheatreName = request.POST['TheatreName']
             number = request.POST['number']
-
             dealer_name = request.POST['ownername']
             theatre_name = request.POST['TheatreName']
             dealer_phone = request.POST['number']
@@ -113,3 +112,8 @@ def userList(request):
 
 def userActivity(request):
     return render(request,'useradmin/user_activity.html')
+
+def delete(request,id):
+    delete_user = Dealer.objects.get(id=id)
+    delete_user.delete()
+    return redirect('theatremgmt')

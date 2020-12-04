@@ -1,0 +1,263 @@
+{% extends 'Theatre/base.html' %}
+
+{% block content %}
+{% load static %}
+    <div class="container">
+        <h6 class="h2 text-black d-inline-block mb-0">Update Nowshowing Movie</h6>
+    </div>
+    <form action="{% url 'now_update' movie_update.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Movie Title :</label>
+                <input type="text" name="movie_name" placeholder="Movie Name" style="margin-left: 35px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{movie_update.movie_title}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Cast Name:</label>
+                <input type="text" name="cast_name" placeholder="No of Cast" style="margin-left: 35px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{movie_update.cast_name}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Director :</label>
+                <input type="text" name="director_name" placeholder="Director Name" style="margin-left: 54px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{movie_update.director_name}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Release Date :</label>
+                <input type="date" name="release_date" placeholder="Date of release" style="margin-left: 20px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{movie_update.release_date}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Show Time :</label>
+                <input type="time" name="show_time" placeholder="Time of Show" style="margin-left: 35px;text-align: center; height: 32px;border-radius: 0.375rem;" value="{{movie_update.show_time}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Run Time :</label>
+                <input type="text" name="run_time_hour" placeholder="Hour" style="margin-left: 46px;width: 75px;text-align: center; height: 32px;border-radius: 0.375rem;" value="{{movie_update.runtime_hour}}">  hour
+                <input type="text" name="run_time_minutes" placeholder="Minutes" style="margin-left: 2px;width: 75px;text-align: center; height: 32px;border-radius: 0.375rem;" value="{{movie_update.runtime_minute}}">  minutes
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Language :</label>
+                <!-- <input type="text" name="language" placeholder="Language of the movie" style="margin-left: 41px;text-align: center; height: 32px;border-radius: 0.375rem;"> -->
+                <select name="language" style="margin-left: 39px;">
+                    <option>{{movie_update.language}}</option>
+                    <option>HINDI</option>
+                    <option>ENGLISH</option>
+                    <option>MALAYALAM</option>
+                    <option>TELUGU</option>
+                    <option>KANNADA</option>
+                </select>
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Type :</label>
+                <!-- <input type="text" name="type_movie" placeholder="Type of the movie (3D or 2D)" style="margin-left: 78px;text-align: center; height: 32px;border-radius: 0.375rem;"> -->
+                <select name="type_movie" style="margin-left: 75px;" >
+                    <option>{{movie_update.movie_type}}</option>
+                    <option>2D</option>
+                    <option>3D</option>
+                </select>
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Choose Screen :</label>
+                
+                <select name="Screen" style="margin-left: 3px;">
+                    <option>{{movie_update.screen.screen_name}}</option>
+                    {% for i in screen %}
+                    <option>{{i.screen_name}}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Trailer Link :</label>
+                <input type="text" name="trailer_link" placeholder="Trailer Link (eg :zAGVQLHvwOY)" style="margin-left: 36px;text-align: center; height: 32px;border-radius: 0.375rem;" value="{{movie_update.trailer_link}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <label style="padding-right: 26px;">Photo Banner :</label>
+                <input type="file" name="photo_banner" placeholder="Image for Banner" style="margin-left: 153px;" value="{{movie_update.photo_banner}}">
+            </div>
+        </div>
+        <div class="container" style="margin: 40px;">
+            <div style="padding-left: 100px;">
+                <input required = True id="imageBaseData" class="hidden" name="image64data" class="input-file" type="text" placeholder="Image for Main Page" value="{{movie_update.photo_main}}">
+                
+                <main class="page">
+                    <label class="control-label" for="full_name" style="margin-left: -81px;">Photo main :</label>
+                   
+                    <div class="box">
+                        <input  type="file" id="file-input">
+                    </div>
+                    
+                    <div class="box-2">
+                        <div class="result"></div>
+                    </div>
+                    
+                    <div class="box-2 img-result hide">
+                        <img id="cropped" class="cropped"  src="" alt="">
+                    </div>
+                    
+                    <div class="box">
+                        <div class="options hide">
+                            <input type="number" name="myfile" class="img-w hidden" value="300" min="100" max="1200" />
+                        </div>
+                        <button class="btn btn-info save hide" id="load" type="button">Confirm</button>    
+                    </div>
+                </main>
+
+            </div>
+        </div>
+
+        <div class="container" style="margin: 40px;">
+            <label class="control-label" for="submit"></label>
+            <div class="controls" style=" padding-left: 384px;">
+                <button type="submit" class="btn btn-success btn-md" style="margin-left:78px">Save</button>
+            </form>
+                <a href="{% url 'now_show' %}"><button type="button" class="btn btn-danger btn-md" style="margin-left: 17px;">Cancel</button></a>     
+            </div>
+        </div>
+
+        <style>
+            .hidden{
+              display:none;
+              visibility:hidden;
+              }
+
+            .page {
+              margin: 1em auto;
+              max-width: 768px;
+              display: flex;
+              align-items: flex-start;
+              flex-wrap: wrap;
+              height: 100%;
+            }
+            
+            .box {
+              padding: 0.8em;
+              width: 100%;
+              margin:0.5em;
+            }
+            
+            .box-2 {
+              padding: 0.5em;
+              width: calc(100%/2 - 1em);
+            }
+            
+            .options label,
+            .options input{
+              width:4em;
+              padding:0.5em 1em;
+            }
+            .btnm{
+              background:white;
+              color:black;
+              border:1px solid black;
+              padding: 0.5em 1em;
+              text-decoration:none;
+              margin:0.8em 0.3em;
+              display:inline-block;
+              cursor:pointer;
+            }
+            
+            .hide {
+              display: none;
+              padding-left: 20px;
+            }
+            
+            img {
+              max-width: 100%;
+            }
+            
+            </style>
+<script>
+// vars
+let result = document.querySelector('.result'),
+img_result = document.querySelector('.img-result'),
+img_w = document.querySelector('.img-w'),
+img_h = document.querySelector('.img-h'),
+options = document.querySelector('.options'),
+save = document.querySelector('.save'),
+cropped = document.querySelector('.cropped'),
+dwn = document.querySelector('.download'),
+upload = document.querySelector('#file-input'),
+cropper = '';
+
+// on change show image with crop options
+upload.addEventListener('change', (e) => {
+if (e.target.files.length) {
+// start file reader
+const reader = new FileReader();
+reader.onload = (e)=> {
+if(e.target.result){
+// create new image
+let img = document.createElement('img');
+img.id = 'image';
+img.src = e.target.result
+// clean result before
+result.innerHTML = '';
+// append new image
+result.appendChild(img);
+// show save btn and options
+save.classList.remove('hide');
+options.classList.remove('hide');
+// init cropper
+cropper = new Cropper(img);
+}
+};
+reader.readAsDataURL(e.target.files[0]);
+}
+});
+
+// save on click
+save.addEventListener('click',(e)=>{
+e.preventDefault();
+// get result to data uri
+let imgSrc = cropper.getCroppedCanvas({
+width: img_w.value // input value
+}).toDataURL();
+// remove hide class of img
+cropped.classList.remove('hide');
+img_result.classList.remove('hide');
+// show image cropped
+cropped.src = imgSrc;
+dwn.classList.remove('hide');
+dwn.download = 'imagename.png';
+dwn.setAttribute('href',imgSrc);
+
+});
+
+</script>
+<script>
+var button = document.getElementById('load');
+button.addEventListener('click',function(){
+setImageData();
+console.log('Cropped')
+})
+
+
+function setImageData(){
+
+var imageElement = document.getElementById('cropped');
+var imageData = imageElement.src;
+var hiddenElement = document.getElementById("imageBaseData");
+hiddenElement.value = imageData;
+console.log("data set")
+}
+</script>
+{% endblock %}

@@ -15,4 +15,12 @@ urlpatterns = [
     path('addMovie/',views.addMovie,name='addMovie'),
     path('upcoming_movie/',views.upcomingMovie,name='upcoming_movie'),
     path('mobile/',views.mobile,name='mobile'),
+    path('now_delete/<int:id>/',views.Nowdelete,name='now_delete'),
+    path('now_update/<int:id>/',views.now_update,name='now_update'),
+    path('screen_delete/<int:id>/',views.screen_delete,name='screen_delete'),
+    path('screen_update/<int:id>/',views.screen_update,name='screen_update'),
+    path('upcome_delete/<int:id>/',views.upcome_delete,name='upcome_delete'),
+    path('upcome_update/<int:id>/',views.upcome_update,name='upcome_update'),
+    
+    # path('delete/<int:id>/',views.Updelete,name='up_delete'),
 ]

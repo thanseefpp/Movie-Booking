@@ -6,6 +6,7 @@ from useradmin.models import Dealer
 class Screen(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
     screen_name = models.CharField(max_length = 300)
+    row = models.IntegerField(null =True, blank=True)
     vip_seats = models.IntegerField()
     vip_price = models.IntegerField(null =True, blank=True)
     premium_seats = models.IntegerField()
@@ -18,7 +19,6 @@ class Screen(models.Model):
 
     # def __str__(self):
     #     return self.screen_name
-
 
 class NowShowingMovies(models.Model):
     screen = models.ForeignKey(Screen, on_delete=models.CASCADE, blank=True, null=True)
@@ -54,6 +54,12 @@ class NowShowingMovies(models.Model):
         return url
 
 
+class SeatSelected(models.Model):
+    dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
+    movie = models.ForeignKey(NowShowingMovies,on_delete=models.CASCADE, null =True, blank=True)
+    occupied_seats = models.CharField(max_length=300,null=True)
+
+
 class UpcomingMovies(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
     dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
@@ -81,3 +87,13 @@ class UpcomingMovies(models.Model):
         except:
             url = ''
         return url
+
+
+class BookingAddress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
+    dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
+    movies = models.ForeignKey(NowShowingMovies,on_delete=models.CASCADE, null =True, blank=True)
+    seatSelect = models.ForeignKey(SeatSelected,on_delete=models.CASCADE, null =True, blank=True)
+    email = models.CharField(max_length=300,null=True)
+    phone_number = models.CharField(max_length=300,null=True)
+    

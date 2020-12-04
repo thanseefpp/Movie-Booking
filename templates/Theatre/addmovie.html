@@ -1,8 +1,8 @@
-{% extends 'Theatre/theatrebase.html' %}
+{% extends 'Theatre/base.html' %}
 
 {% block content %}
-
-    <div class="container">
+{% load static %}
+    <div class="container pt-3">
         <h6 class="h2 text-black d-inline-block mb-0">ADD Movie</h6>
     </div>
     <form action="{% url 'addMovie' %}" method="POST" enctype="multipart/form-data">

@@ -11,5 +11,5 @@ urlpatterns = [
     path('add_owner/',views.ownerAdd,name='ownerAdd'),
     path('user_list/',views.userList,name='user_list'),
     path('user_activity/',views.userActivity,name='user_activity'),
-    
+    path('delete/<int:id>/',views.delete,name='delete')
 ]
