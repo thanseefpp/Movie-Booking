@@ -54,12 +54,6 @@ class NowShowingMovies(models.Model):
         return url
 
 
-class SeatSelected(models.Model):
-    dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
-    movie = models.ForeignKey(NowShowingMovies,on_delete=models.CASCADE, null =True, blank=True)
-    occupied_seats = models.CharField(max_length=300,null=True)
-
-
 class UpcomingMovies(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
     dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
@@ -89,11 +83,46 @@ class UpcomingMovies(models.Model):
         return url
 
 
-class BookingAddress(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
+# class BookingAddress(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
+#     dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
+#     movies = models.ForeignKey(NowShowingMovies,on_delete=models.CASCADE, null =True, blank=True)
+#     seatSelect = models.ForeignKey(SeatSelected,on_delete=models.CASCADE, null =True, blank=True)
+#     email = models.CharField(max_length=300,null=True)
+#     phone_number = models.CharField(max_length=300,null=True)
+
+
+class SeatSelected(models.Model):
     dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
-    movies = models.ForeignKey(NowShowingMovies,on_delete=models.CASCADE, null =True, blank=True)
-    seatSelect = models.ForeignKey(SeatSelected,on_delete=models.CASCADE, null =True, blank=True)
+    movie = models.ForeignKey(NowShowingMovies,on_delete=models.CASCADE, null =True, blank=True)
+    occupied_seats = models.CharField(max_length=300,null=True)
+
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null =True, blank=True)
     email = models.CharField(max_length=300,null=True)
     phone_number = models.CharField(max_length=300,null=True)
-    
+    first_name = models.CharField(max_length=300,null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Booked(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    seatSelect = models.ForeignKey(SeatSelected,on_delete=models.CASCADE, null =True, blank=True)
+    date_orderd = models.DateTimeField(auto_now_add=True)
+    complete = models.BooleanField(default=False, null=True, blank=False)
+    transaction_id = models.CharField(max_length=200, null=True)
+    order_status = models.CharField(default = 'Success',max_length=200,null=True)
+    paid_amount = models.DecimalField(max_digits=8, decimal_places=2)
+
+
+    # def __str__(self):
+    #     return str(self.id)
+
+    # @property
+    # def get_total_book(self):
+    #     # orderitems = self.orderitem_set.all()
+    #     # total = sum([item.quantity for item in orderitems])
+    #     return total

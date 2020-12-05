@@ -3,14 +3,88 @@
 {% block content %}
 
 {% load static %}
+<style>
+  body{
+	font: normal 13px/20px Arial, Helvetica, sans-serif; word-wrap:break-word;
+	background: #fff;
+  padding-top: 100px
+}
+.countdown-label {
+  font: thin 15px Arial, sans-serif;
+	color: #65584c;
+	text-align: center;
+	text-transform: uppercase;
+	display: inline-block;
+  letter-spacing: 0px;
+  margin-top: -1px;
+}
+#countdown{
+  box-shadow: 0 1px 2px 0 rgba(1, 1, 1, 0.4);
+  width: 240px;
+	height: 96px;
+	text-align: center;
+  background: #f1f1f1;
+	border-radius: 5px;
+	margin: auto;
+}
+#countdown #tiles{
+  color: #fff;
+	position: relative;
+	z-index: 1;
+text-shadow: 1px 1px 0px #ccc;
+	display: inline-block;
+  font-family: Arial, sans-serif;
+	text-align: center;
+  padding: 20px;
+  border-radius: 5px 5px 0 0;
+  font-size: 48px;
+  font-weight: thin;
+  display: block;
+}
+.color-full {
+  background: #53bb74;
+}
+.color-half {
+  background: #ebc85d;
+}
+.color-empty {
+  background: #e5554e;
+}
+#countdown #tiles > span{
+	width: 70px;
+	max-width: 70px;
+
+	padding: 18px 0;
+	position: relative;
+}
+#countdown .labels{
+	width: 100%;
+	height: 25px;
+	text-align: center;
+	position: absolute;
+	bottom: 8px;
+}
+#countdown .labels li{
+	width: 102px;
+	font: bold 15px 'Droid Sans', Arial, sans-serif;
+	color: #f47321;
+	text-shadow: 1px 1px 0px #000;
+	text-align: center;
+	text-transform: uppercase;
+	display: inline-block;
+}
+</style>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"> -->
 
 <div class="container pt-5">
   <div class="py-5 text-center">
     
     <h2>Booking form</h2>
     </div>
-
+  
   <div class="row">
     <div class="col-md-4 order-md-2 mb-4">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -18,11 +92,11 @@
       </h4>
       <ul class="list-group mb-3">
         <li class="list-group-item d-flex justify-content-between lh-condensed">
+
           <div>
-            <h6 class="my-0">Movie name</h6>
-            <small class="text-muted">Cast Name</small>
+            <h6 class="my-0">Movie : {{ movie.movie_title }} </h6>
+            <small class="text-muted"> Cast : {{movie.cast_name}}</small>
           </div>
-          <span class="text-muted">$12</span>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
@@ -44,7 +118,19 @@
           <strong>$20</strong>
         </li>
       </ul>
-
+      <!-- <div class="timer" onload="timer(1800)">
+        <div>Section</div>
+        <div class="time">
+          <strong>Time left: <span id="time">Loading...</span></strong>
+        </div>
+      </div> -->
+     
+      <input type="hidden" id="set-time" value="1"/>
+      <div id="countdown">
+        
+        <div id='tiles' class="color-full"></div>
+        <div class="countdown-label">Make Payment Before Ending Countdown</div>
+      </div>
 
     </div>
     <div class="col-md-8 order-md-1">
@@ -79,22 +165,24 @@
       
         <hr class="mb-4">
         
-        <h4 class="mb-3">Payment</h4>
+        
 
-        <div class="d-block my-3">
+        <div class="d-block my-3" >
+          <h4 id="credit" style="display: none;" class="mb-3">Payment</h4>
           <div class="custom-control custom-radio">
-            <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
-            <label class="custom-control-label" for="credit">Razorpay</label>
+            <input id="credit" name="paymentMethod" style="display: none;" type="radio" class="custom-control-input" checked required>
+            <label class="custom-control-label" style="display: none;" for="credit">Razorpay</label>
           </div>
           <div class="custom-control custom-radio">
-            <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
-            <label class="custom-control-label" for="paypal">PayPal</label>
+            <input id="paypal" name="paymentMethod" style="display: none;" type="radio" class="custom-control-input" required>
+            <label class="custom-control-label" style="display: none;" for="paypal">PayPal</label>
           </div>
         </div>
+        <!-- <button style="display: none;">Hello</button> -->
 
  
         <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Confirm Booking</button>
+        <button class="btn btn-primary btn-lg btn-block" id="click" type="submit">Confirm Booking</button>
       </form>
     </div>
   </div>
@@ -102,5 +190,66 @@
   <footer class="my-5 pt-5 text-muted text-center text-small">
   </footer>
 </div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+	var total =localStorage.getItem("selectedMoviePrice");
+	var payment_raz='razorpay';
+
+	var options = {
+		"key": "rzp_test_eMnSXZs7JW5fj7", // Enter the Key ID generated from the Dashboard
+		"amount": total, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+		"currency": "USD",
+		"name": "Acme Corp",
+		"description": "Test Transaction",
+		"image": "https://example.com/your_logo",
+		"order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+		"handler": function (response){
+			submitFormData(payment_raz)
+		},
+		"prefill": {
+			"name": "Gaurav Kumar",
+			"email": "gaurav.kumar@example.com",
+			"contact": "9999999999"
+		},
+		"notes": {
+			"address": "Razorpay Corporate Office"
+		},
+		"theme": {
+			"color": "#F37254"
+		}
+	};
+	var rzp1 = new Razorpay(options);
+	document.getElementById('rzp-button1').onclick = function(e){
+		rzp1.open();
+		e.preventDefault();
+	}
+</script>
+
+<script>
+var time = 160 * 01;
+setInterval(function() {
+  var seconds = time % 60;
+  var minutes = (time - seconds) / 60;
+  if (seconds.toString().length == 1) {
+    seconds = "0" + seconds;
+  }
+  if (minutes.toString().length == 1) {
+    minutes = "0" + minutes;
+  }
+  document.getElementById("tiles").innerHTML = minutes + ":" + seconds;
+  time--;
+  if (time == 0) {
+    window.location.href = "/";
+    localStorage.removeItem("seatCount");
+    localStorage.removeItem("totalPrice");
+    localStorage.removeItem("seatNumber");
+    localStorage.removeItem("typeOfSeat");
+    localStorage.removeItem("selectedMoviePrice");
+    localStorage.removeItem("selectedMovieIndex");
+    localStorage.removeItem("selectedSeats");
+  }
+}, 1000);
+</script>
 
 {% endblock %}

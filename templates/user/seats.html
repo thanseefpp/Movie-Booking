@@ -63,8 +63,7 @@
                 <!-- <a href="#"><button class="btn btn-primary">Confirm Seats</button></a>
                 <a href="#"><button class="btn btn-primary">Cancel</button></a> -->
                 <div class="button-center text-center">
-                    <!-- <form action="{% url 'order_place' %}" method="POST">
-                        {% csrf_token %}   </form>-->
+                    
                     <a> <button id="placeOrder" class="btn btn-info">CONFIRM SEATS</button> </a>
 
                     <a href="{% url 'index' %}"><button id="cancelTicket" class="btn btn-primary">CANCEL</button></a>
@@ -76,7 +75,7 @@
 
     <!-- <script src="{% static 'user/seat/js/seat.js' %}"></script> -->
     <script>
-        occupiedHandler();
+        backpageHandler();
         const seats = document.querySelectorAll(".row .seat:not(.occupied)");
         const seatContainer = document.querySelector(".row-container");
         const count = document.getElementById("count");
@@ -142,7 +141,7 @@
 
         // Get data from localstorage and populate
         function populateUI() {
-            occupiedHandler();
+            backpageHandler();
             const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
 
             if (selectedSeats !== null && selectedSeats.length > 0) {
@@ -474,12 +473,12 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data) {
-                        window.location.href = '/checkout_Ticket/';
+                        window.location.href = '/checkout_Ticket/{{movie_id}}/';
                     }
                 }
             });
         })
-        function occupiedHandler() {
+        function backpageHandler() {
             var seatNumber = localStorage.getItem("seatNumber");
             var seatCount = localStorage.getItem("seatCount");
             var typeOfSeat = localStorage.getItem("typeOfSeat");

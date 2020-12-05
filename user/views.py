@@ -42,8 +42,10 @@ def book_show(request,id):
 
 def seat_book(request,id):
     movie = NowShowingMovies.objects.get(id=id)
+    val=movie.id
+    # print('id :',val)
     screen_count = movie.screen
-    print('screen :',screen_count)
+    # print('screen :',screen_count)
     vip_seats = screen_count.vip_seats
     vip_price = screen_count.vip_price
     row_count = screen_count.row
@@ -54,11 +56,11 @@ def seat_book(request,id):
     normal_seats = screen_count.normal_seats
     normal_price = screen_count.normal_price
     value = normal_seats + vip_seats + premium_seats + executive_seats
-    print('value:',value)
-    print('v,p,e,n:',vip_price,premium_price,executive_price,normal_price)
-    print('vip,premium_seats,executive_seats,normal_seats:',vip_seats,premium_seats,executive_seats,normal_seats)
+    # print('value:',value)
+    # print('v,p,e,n:',vip_price,premium_price,executive_price,normal_price)
+    # print('vip,premium_seats,executive_seats,normal_seats:',vip_seats,premium_seats,executive_seats,normal_seats)
 
-    context = {'row_count':row_count,'normal_price':normal_price,'executive_price':executive_price,'vip_price':vip_price,'screen':screen_count,'vip_seats':vip_seats,'premium_seats':premium_seats,'executive_seats':executive_seats,'normal_seats':normal_seats,'premium_price':premium_price,'totalSeat':value}
+    context = {'movie_id':val,'row_count':row_count,'normal_price':normal_price,'executive_price':executive_price,'vip_price':vip_price,'screen':screen_count,'vip_seats':vip_seats,'premium_seats':premium_seats,'executive_seats':executive_seats,'normal_seats':normal_seats,'premium_price':premium_price,'totalSeat':value}
     return render(request,'user/seats.html',context)
 
 
@@ -69,8 +71,11 @@ def checkout(request):
     return JsonResponse("order_place",safe=False)
 
 
-def orderPlace(request):
-    return render(request,'user/checkout.html')
+def orderPlace(request,id):
+    movie = NowShowingMovies.objects.get(id=id)
+    print('movie orderplace :',movie)
+    context = {'movie':movie}
+    return render(request,'user/checkout.html',context)
 
 
 def seatreconnect(request):
