@@ -22,7 +22,9 @@
             <option id="choiceVip" value="{{vip_price}}">VIP (₹{{vip_price}})</option>
         </select>
     </div>
-
+    <!-- <div id="fulldata" data-normalseatvalue="{{ normal_seats }}" data-executiveseatvalue="{{ executive_seats }}" data-premiumseatvalues="{{ premium_seats }}" data-vipseatvalue="{{ vip_seats }}" data-totalseatvalue="{{ totalSeat }}" data-rowcounttotal="{{ row_count }}" data-movieid="{{movie_id}}"></div> -->
+    <!-- <input type="hidden" name="show_id" id="show_id" value="{{ show_info.id }}" readonly /> -->
+				
     <ul class="showcase">
         <li>
             <div class="seatIndication"></div>
@@ -63,19 +65,17 @@
                 <!-- <a href="#"><button class="btn btn-primary">Confirm Seats</button></a>
                 <a href="#"><button class="btn btn-primary">Cancel</button></a> -->
                 <div class="button-center text-center">
-                    
-                    <a> <button id="placeOrder" class="btn btn-info">CONFIRM SEATS</button> </a>
-
+                    <a><button id="placeOrder" class="btn btn-info">CONFIRM SEATS</button></a>
                     <a href="{% url 'index' %}"><button id="cancelTicket" class="btn btn-primary">CANCEL</button></a>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!-- <script src="{% static 'user/seat/js/seat.js' %}"></script> -->
-    <script>
-        backpageHandler();
+<!-- <script src="{% static 'user/seat/js/seat.js' %}"></script> -->
+<script>
+
+backpageHandler();
         const seats = document.querySelectorAll(".row .seat:not(.occupied)");
         const seatContainer = document.querySelector(".row-container");
         const count = document.getElementById("count");
@@ -468,12 +468,15 @@
                 type: 'POST',
                 data: {
                     seatNumber: localStorage.getItem("seatNumber"),
+                    totalPrice : localStorage.getItem("totalPrice"),
                     csrfmiddlewaretoken: csrftoken,
                 },
                 dataType: 'json',
                 success: function (data) {
                     if (data) {
-                        window.location.href = '/checkout_Ticket/{{movie_id}}/';
+                        // console.log('data:',data.selectseat);
+                        // window.location.href = '/checkout_Ticket/{{movie_id}}/'+data.selectseat+'/'+data.totalSeatprice+'/';
+                        window.location.href = '/checkout_Ticket/'+data.totalSeatprice+'/'+data.selectseat+'/{{movie_id}}/';
                     }
                 }
             });
@@ -521,7 +524,8 @@
             });
         }
 
-    </script>
+
+</script>
 </body>
 
 </html>

@@ -1,4 +1,5 @@
-occupiedHandler();
+
+backpageHandler();
 const seats = document.querySelectorAll(".row .seat:not(.occupied)");
 const seatContainer = document.querySelector(".row-container");
 const count = document.getElementById("count");
@@ -64,7 +65,7 @@ function updateSelectedCount() {
 
 // Get data from localstorage and populate
 function populateUI() {
-    occupiedHandler();
+    backpageHandler();
     const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
 
     if (selectedSeats !== null && selectedSeats.length > 0) {
@@ -127,11 +128,23 @@ seatContainer.addEventListener("click", function (e) {
 
 // Initial count and total rendering
 updateSelectedCount();
+let fullvalues = document.getElementById("fulldata");
 
-let normalSeat = {{ normal_seats }};
-let exicutiveSeat = {{ executive_seats }};
-let premiumSeat = {{ premium_seats }};
-let vipSeat = {{ vip_seats }};
+let valueNormal = fullvalues.dataset.normalseatvalue;
+let valueExecutive = fullvalues.dataset.executiveseatvalue;
+let valuePremium = fullvalues.dataset.premiumseatvalues;
+let valueVip = fullvalues.dataset.vipseatvalue;
+let valueTotalSeats = fullvalues.dataset.totalseatvalue;
+let valueRowcount = fullvalues.dataset.rowcounttotal;
+let moveId = fullvalues.dataset.movieid;
+
+let normalSeat = valueNormal;
+let exicutiveSeat = valueExecutive;
+let premiumSeat = valuePremium;
+let vipSeat = valueVip;
+let totalSeats = valueTotalSeats;
+let rowCountTotal = valueRowcount;
+let movieIdnumber = moveId;
 
 let choiceNormal = document.getElementById("choiceNormal");
 let choiceExecutive = document.getElementById("choiceExecutive");
@@ -147,24 +160,26 @@ function findSeatSelection(seatType) {
         seatCount = null;
         typeOfSeate = "";
     } else if (seatType === 1) {
-        seatCount = {{ normal_seats }};
+        seatCount = normalSeat;
     typeOfSeate = "normal";
 } else if (seatType === 2) {
-    seatCount = {{ executive_seats }};
+    seatCount = exicutiveSeat;
 typeOfSeate = "exicutive";
     } else if (seatType === 3) {
-    seatCount = {{ premium_seats }};
+    seatCount = premiumSeat;
 typeOfSeate = "premium";
     } else if (seatType === 4) {
-    seatCount = {{ vip_seats }};
+    seatCount = vipSeat;
 typeOfSeate = "vip";
     }
-console.log(typeOfSeate);
+
+console.log('seat_type:-',typeOfSeate);
+
 localStorage.setItem("typeOfSeat", typeOfSeate);
 console.log(seatCount);
 let seat = document.querySelectorAll(".seat")
 console.log(seatType);
-for (let seatNum = 0; seatNum < {{ totalSeat }}; seatNum++) {
+for (let seatNum = 0; seatNum < totalSeats; seatNum++) {
     // console.log(seat[seatNum]);
     if (seatCount === null && seatType === 0) {
         console.log("choice");
@@ -172,17 +187,17 @@ for (let seatNum = 0; seatNum < {{ totalSeat }}; seatNum++) {
     } else if (seatNum >= 0 && seatNum < seatCount && seatType === 1) {
         seat[seatNum].style.cursor = "pointer"
         console.log("normal");
-    } else if (seatNum >= {{ normal_seats }} && seatNum < (seatCount + {{ normal_seats }}) && seatType === 2 ) {
+    } else if (seatNum >= normalSeat && seatNum < (seatCount + normalSeat) && seatType === 2 ) {
     seat[seatNum].style.cursor = "pointer"
     console.log("exicutive");
-} else if (seatNum >= {{ executive_seats }}+{{ normal_seats }} && seatNum < (seatCount + {{ normal_seats }}+{{ executive_seats }}) && seatType === 3) {
+} else if (seatNum >= (exicutiveSeat+normalSeat) && seatNum < (seatCount + normalSeat + exicutiveSeat) && seatType === 3) {
     seat[seatNum].style.cursor = "pointer"
     console.log("premium");
-} else if (seatNum >= {{ premium_seats }}+{{ normal_seats }}+{{ executive_seats }} && seatNum < (seatCount + {{ normal_seats }}+{{ executive_seats }}+{{ premium_seats }}) && seatType === 4 ) {
+} else if (seatNum >= (premiumSeat+normalSeat+exicutiveSeat) && seatNum < (seatCount + premiumSeat+normalSeat+exicutiveSeat) && seatType === 4 ) {
     seat[seatNum].style.cursor = "pointer"
     console.log("vip");
 } else {
-    seat[seatNum].style.cursor = "text"
+    seat[seatNum].style.cursor = "no-drop"
     console.log("else");
 }
 }
@@ -191,28 +206,18 @@ function choiceHandler(seatType) {
     console.log(seatType);
 }
 
-    // normal.style.cursor = "pointer !importent"
-    // exicutive.style.cursor = "default !importent"
-    // premium.style.cursor = "default !importent"
-    // vip.style.cursor = "default !importent"
-    // } else if (seatType === "exicutive") {
-    //     exicutive.style.cursor = "default"
-    // } else if (seatType === "premium") {
-    //     premium.style.cursor = "default"
-    // } else {
-    //     vip.style.cursor = "default"
-    // }
 }
 function seatArragement() {
 
-    let normal = document.getElementById("normal")
-    let exicutive = document.getElementById("exicutive")
-    let premium = document.getElementById("premium")
-    let vip = document.getElementById("vip")
-    let seatVal = {{ row_count }};
-let seatTolerence = seatVal
-let outerValue = {{ row_count }}
-console.log('seatTolerence:', seatTolerence, 'outerValue:', outerValue);
+    let normal = document.getElementById("normal");
+    let exicutive = document.getElementById("exicutive");
+    let premium = document.getElementById("premium");
+    let vip = document.getElementById("vip");
+    let seatVal = rowCountTotal;
+    let seatTolerence = seatVal
+    let outerValue = rowCountTotal;
+    console.log('seatTolerence:', seatTolerence, 'outerValue:', outerValue);
+
 for (let outer = outerValue; seatTolerence <= normalSeat;) {
     parentDiv = document.createElement("div");
     parentDiv.classList.add("row");
@@ -220,20 +225,14 @@ for (let outer = outerValue; seatTolerence <= normalSeat;) {
         let childDiv = document.createElement("div");
         childDiv.classList.add("seat");
         childDiv.classList.add("normal");
-        // for (let i = 0; i<seatTolerence;i++){
-        //     childDiv.innerHTML = rowsCount[i]+i;
-        //     console.log(rowsCount[i]+i);
-        // }
-
-        // childDiv.innerHTML = rowsCount[inner]+inner;
-        // console.log(rowsCount[inner]+inner);
 
         parentDiv.appendChild(childDiv);
     }
     if (seatTolerence === 0) {
         break;
     }
-    normalSeat = normalSeat - seatTolerence
+    normalSeat = normalSeat - seatTolerence;
+
     if (outer < normalSeat) {
         seatTolerence = seatVal
     }
@@ -244,8 +243,12 @@ for (let outer = outerValue; seatTolerence <= normalSeat;) {
 }
 // console.log(normal);
 
-seatTolerence = seatVal
-for (let outer = outerValue; seatTolerence <= exicutiveSeat;) {
+seatTolerence = seatVal;
+
+let exitcuti = exicutiveSeat;
+
+
+for (let outer = outerValue; seatTolerence <= exitcuti;) {
     parentDiv = document.createElement("div");
     parentDiv.classList.add("row");
     for (let inner = 0; inner < seatTolerence; inner++) {
@@ -257,12 +260,12 @@ for (let outer = outerValue; seatTolerence <= exicutiveSeat;) {
     if (seatTolerence === 0) {
         break;
     }
-    exicutiveSeat = exicutiveSeat - seatTolerence
-    if (outer < exicutiveSeat) {
+    exitcuti = exitcuti - seatTolerence
+    if (outer < exitcuti) {
         seatTolerence = seatVal
     }
     else {
-        seatTolerence = exicutiveSeat
+        seatTolerence = exitcuti
     }
     exicutive.appendChild(parentDiv);
 }
@@ -283,16 +286,17 @@ for (let outer = outerValue; seatTolerence <= premiumSeat;) {
     }
     premiumSeat = premiumSeat - seatTolerence
     if (outer < premiumSeat) {
-        seatTolerence = seatVal
+        seatTolerence = seatVal;
     }
     else {
-        seatTolerence = premiumSeat
+        seatTolerence = premiumSeat;
     }
     premium.appendChild(parentDiv);
 }
 // console.log(premium);
 
-seatTolerence = seatVal
+seatTolerence = seatVal;
+
 for (let outer = outerValue; seatTolerence <= vipSeat;) {
     parentDiv = document.createElement("div");
     parentDiv.classList.add("row");
@@ -305,12 +309,12 @@ for (let outer = outerValue; seatTolerence <= vipSeat;) {
     if (seatTolerence === 0) {
         break;
     }
-    vipSeat = vipSeat - seatTolerence
+    vipSeat = vipSeat - seatTolerence;
     if (outer < vipSeat) {
-        seatTolerence = seatVal
+        seatTolerence = seatVal;
     }
     else {
-        seatTolerence = vipSeat
+        seatTolerence = vipSeat;
     }
     vip.appendChild(parentDiv);
 }
@@ -320,14 +324,14 @@ seatNumberAssignment();
 
 function seatNumberAssignment() {
     let rowsCount = []
-    let seatStatus = [0, {{ normal_seats }}, {{ executive_seats }}, {{ premium_seats }}, {{ vip_seats }}]
+    let seatStatus = [0, normalSeat, exicutiveSeat, premiumSeat, vipSeat];
 let rowIncrementCounter = 1;
 let startingCount = 0;
 let endingCount = 1;
 let seatStatusCount = 0;
 seatDiv = document.querySelectorAll(".seat");
 console.log(seatStatus);
-let seatvl = {{ row_count }};
+let seatvl = rowCountTotal;
 let ascii = 65;
 // let arrayRow = []
 
@@ -345,7 +349,6 @@ for (let index = 0; index < seatDiv.length;) {
         // index >= seatStatus[startingCount] && 
         if (index < seatStatus[endingCount] + seatStatus[2] + seatStatus[3] + seatStatus[4]) {
             seatDiv[index].innerHTML = rowsCount[rowindex] + rowIncrementCounter;
-
         }
         index++;
     };
@@ -396,12 +399,12 @@ document.getElementById("placeOrder").addEventListener("click", () => {
         dataType: 'json',
         success: function (data) {
             if (data) {
-                window.location.href = '/checkout_Ticket/';
+                window.location.href = '/checkout_Ticket/movieIdnumber/';
             }
         }
     });
 })
-function occupiedHandler() {
+function backpageHandler() {
     var seatNumber = localStorage.getItem("seatNumber");
     var seatCount = localStorage.getItem("seatCount");
     var typeOfSeat = localStorage.getItem("typeOfSeat");
@@ -432,7 +435,7 @@ function occupiedHandler() {
                 for (let value = 0; value < indexOfSeat.length; value++) {
                     for (let count = 0; count < totalSeatIndex.length; count++) {
                         if (indexOfSeat[value].innerHTML == totalSeatIndex[count]) {
-                            indexOfSeat[count].classList.add("selected")
+                            indexOfSeat[value].classList.add("selected")
                             // console.log(indexOfSeat[count]); 
 
                         }       

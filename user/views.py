@@ -14,9 +14,18 @@ from django.core.files import File
 from django.core.files.base import ContentFile
 from useradmin.models import *
 from theatre.models import *
-
+from django.http.response import Http404
+import razorpay
+from datetime import *
 
 def index(request):
+    if request.user.is_authenticated:
+        user=request.user
+        email=request.user.email
+        name=request.user.username
+        customer = Customer.objects.get_or_create(user=user,name=name,email=email)
+    else:
+        pass
     dealer = Dealer.objects.all()
     # if request.user.is_authenticated:
     #     dealer = Dealer.objects.all()
@@ -66,16 +75,94 @@ def seat_book(request,id):
 
 
 def checkout(request):
-    selectedSeats = request.POST.get('seatNumber')
-    print('selectedSeats:',selectedSeats)
-    return JsonResponse("order_place",safe=False)
+    if request.method == 'POST':
+        selectedSeats = request.POST.get('seatNumber')
+        totalSeatprice = request.POST.get('totalPrice')
+        print('selectedSeats:',selectedSeats,'totalprice:',totalSeatprice)
+        dict = {'selectseat':selectedSeats,'totalSeatprice':totalSeatprice}
+        return JsonResponse(dict,safe=False)
+    else:
+        pass
 
 
-def orderPlace(request,id):
-    movie = NowShowingMovies.objects.get(id=id)
-    print('movie orderplace :',movie)
-    context = {'movie':movie}
-    return render(request,'user/checkout.html',context)
+def orderPlace(request,price,val,id):
+    try:
+        client = razorpay.Client(auth=("rzp_test_eMnSXZs7JW5fj7", "v12bdGlbSimIYQOff93S9ziv"))
+        order_amount = price
+        order_amount *= 100
+        order_currency = 'INR'
+        order_receipt = 'order_rcptid_11'
+
+        #creating Order
+        response = client.order.create(dict(amount=order_amount,currency=order_currency,receipt=order_receipt,payment_capture='0'))
+        order_id = response['id']
+        order_status = response['status']
+        
+        print('id',id)
+        print('seat',val)
+        print('price',price)
+        movie = NowShowingMovies.objects.get(id=id)
+        dealer=movie.dealer.id
+        movie_id=movie.id
+        print('dealer:',dealer,movie_id)
+
+        seatvalues = val
+        print('seat:',seatvalues)
+        # array = []
+        # for i in selectedSeat.split(","):
+        #     value = i
+        #     array.append(value)
+        # seatvalues = array
+        # print('values:',seatvalues)
+        totalprice = price
+        context = {'movie':movie,'seatvalues':seatvalues,'totalprice':totalprice,
+        'order_id':order_id,'dealer':dealer,'movie_id':movie_id}
+
+        return render(request,'user/checkout.html',context)
+    except:
+        raise Http404("Page does not exist")
+    
+
+
+def bookedAddress(request,id,pk):
+    if request.method == 'POST':
+        transaction_id = datetime.now().timestamp()
+        firstname = request.POST.get('firstname')
+        number = request.POST.get('number')
+        email = request.POST.get('email')
+        totalPrice = request.POST.get('totalPrice')
+        selectedSeats = request.POST.get('selectedSeats')
+        print('selectedSeats',selectedSeats)
+        movieid = NowShowingMovies.objects.get(id=pk)
+        dealerid = Dealer.objects.get(id=id)
+        movie_id = movieid.id
+        dealer_id = dealerid.id
+        # print('dealerId',movie_id)
+        # print('movieId',dealer_id)
+
+        screentable = SeatSelected.objects.create(dealer=dealerid,movie=movieid,occupied_seats=selectedSeats)
+        screentable.save();
+
+        print('screenselet table check :',screentable)
+        date_now = datetime.now()
+        print('datetime:',date_now)
+        customer = request.user.customer
+        user = User.objects.get(username=request.user)
+        print('User:',user)
+        customer= Customer.objects.get(user=user)
+        print('customer id:',customer)
+        booking = Booked.objects.create(customer=customer,email=email,phone_number=number,
+        firstname=firstname,paid_amount=totalPrice,transaction_id=transaction_id,
+        complete=True,date_booking=date_now,dealer=dealerid,seatSelect=screentable)
+        booking.save();
+
+        return JsonResponse('hi',safe=False)
+    else:
+        pass
+
+
+def pay_success(request):
+    return render(requset,'user/pay_success.html')
 
 
 def seatreconnect(request):
@@ -105,7 +192,7 @@ def login(request):
         password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
         dict = {'username':username}
-        if user is not None and is_staff == False and is_superuser == False:
+        if user is not None and user.is_staff == False and user.is_superuser == False:
             auth.login(request,user)
             return redirect(index)
         else:

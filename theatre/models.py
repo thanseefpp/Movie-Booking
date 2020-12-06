@@ -83,15 +83,6 @@ class UpcomingMovies(models.Model):
         return url
 
 
-# class BookingAddress(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, null =True, blank=True)
-#     dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
-#     movies = models.ForeignKey(NowShowingMovies,on_delete=models.CASCADE, null =True, blank=True)
-#     seatSelect = models.ForeignKey(SeatSelected,on_delete=models.CASCADE, null =True, blank=True)
-#     email = models.CharField(max_length=300,null=True)
-#     phone_number = models.CharField(max_length=300,null=True)
-
-
 class SeatSelected(models.Model):
     dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
     movie = models.ForeignKey(NowShowingMovies,on_delete=models.CASCADE, null =True, blank=True)
@@ -100,18 +91,28 @@ class SeatSelected(models.Model):
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null =True, blank=True)
-    email = models.CharField(max_length=300,null=True)
-    phone_number = models.CharField(max_length=300,null=True)
-    first_name = models.CharField(max_length=300,null=True)
+    name = models.CharField(max_length=200, null=True)
+    email = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.name
 
 
+# class BookingAddress(models.Model):
+#     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+#     email = models.CharField(max_length=300,null=True)
+#     phone_number = models.CharField(max_length=300,null=True)
+#     firstname = models.CharField(max_length=300,null=True)
+
+
 class Booked(models.Model):
+    dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
     seatSelect = models.ForeignKey(SeatSelected,on_delete=models.CASCADE, null =True, blank=True)
-    date_orderd = models.DateTimeField(auto_now_add=True)
+    email = models.CharField(max_length=300,null=True)
+    phone_number = models.CharField(max_length=300,null=True)
+    firstname = models.CharField(max_length=300,null=True)
+    date_booking = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
     transaction_id = models.CharField(max_length=200, null=True)
     order_status = models.CharField(default = 'Success',max_length=200,null=True)

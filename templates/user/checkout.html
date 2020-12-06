@@ -73,11 +73,26 @@ text-shadow: 1px 1px 0px #ccc;
 	text-transform: uppercase;
 	display: inline-block;
 }
+.hidden {
+  display: none;
+}
+.btn-success{
+  color: #53bb74;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  padding: 7px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 4px 2px;
+}
 </style>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"> -->
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"> -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
 <div class="container pt-5">
   <div class="py-5 text-center">
@@ -88,42 +103,43 @@ text-shadow: 1px 1px 0px #ccc;
   <div class="row">
     <div class="col-md-4 order-md-2 mb-4">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
-        <span class="text-muted">Details</span>
+        <span class="text-muted">ORDER SUMMARY</span>
       </h4>
       <ul class="list-group mb-3">
         <li class="list-group-item d-flex justify-content-between lh-condensed">
 
           <div>
-            <h6 class="my-0">Movie : {{ movie.movie_title }} </h6>
+            <h6 class="my-0">Seleted Movie : {{ movie.movie_title }} </h6>
             <small class="text-muted"> Cast : {{movie.cast_name}}</small>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
-            <h6 class="my-0">Second product</h6>
-            <small class="text-muted">Brief description</small>
+            <h6 class="my-0">Show Time </h6>
           </div>
-          <span class="text-muted">$8</span>
+          <span class="text-muted">{{movie.show_time}}</span>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
-            <h6 class="my-0">Third item</h6>
-            <small class="text-muted">Brief description</small>
+            <h6 class="my-0">Language </h6>
           </div>
-          <span class="text-muted">$5</span>
+          <span class="text-muted">{{movie.language}}</span>
         </li>
         
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+          <div>
+            <h6 class="my-0">Selected Seats</h6>
+          </div>
+          <span class="text-muted">{{seatvalues}}</span>
+        </li>
+
+        <!-- <div id="valueAll" data-dealerValue=""></div> -->
+        
         <li class="list-group-item d-flex justify-content-between">
-          <span>Total (USD)</span>
-          <strong>$20</strong>
+          <span>Total Ticket Price</span>
+          <strong>{{totalprice}}</strong>
         </li>
       </ul>
-      <!-- <div class="timer" onload="timer(1800)">
-        <div>Section</div>
-        <div class="time">
-          <strong>Time left: <span id="time">Loading...</span></strong>
-        </div>
-      </div> -->
      
       <input type="hidden" id="set-time" value="1"/>
       <div id="countdown">
@@ -135,18 +151,18 @@ text-shadow: 1px 1px 0px #ccc;
     </div>
     <div class="col-md-8 order-md-1">
       <h4 class="mb-3">Confirm Your Seats</h4>
-      <form class="needs-validation" novalidate>
+      <form id="form" method="POST">
         <div class="row">
-          <div class="col-md-6 mb-3">
+          <div class="form-group col-md-6 mb-3">
             <label for="firstName">First name</label>
-            <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+            <input type="text" class="form-control" name="firstname" id="firstName" placeholder="" required>
             <div class="invalid-feedback">
               Valid first name is required.
             </div>
           </div>
-          <div class="col-md-6 mb-3">
+          <div class="form-group col-md-6 mb-3">
             <label for="lastName">Mobile Number</label>
-            <input type="tel" class="form-control" id="lastName" placeholder="" value="" required>
+            <input type="tel" class="form-control" name="number" id="number" placeholder="" required>
             <div class="invalid-feedback">
               Valid last name is required.
             </div>
@@ -154,9 +170,9 @@ text-shadow: 1px 1px 0px #ccc;
         </div>
 
 
-        <div class="mb-3">
+        <div class="form-group mb-3">
           <label for="email">Email <span class="text-muted"></span></label>
-          <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+          <input type="email" class="form-control" name="email" id="email" placeholder="you@example.com" required>
           <div class="invalid-feedback">
             Please enter a valid email address.
           </div>
@@ -164,25 +180,19 @@ text-shadow: 1px 1px 0px #ccc;
 
       
         <hr class="mb-4">
-        
-        
-
-        <div class="d-block my-3" >
-          <h4 id="credit" style="display: none;" class="mb-3">Payment</h4>
-          <div class="custom-control custom-radio">
-            <input id="credit" name="paymentMethod" style="display: none;" type="radio" class="custom-control-input" checked required>
-            <label class="custom-control-label" style="display: none;" for="credit">Razorpay</label>
-          </div>
-          <div class="custom-control custom-radio">
-            <input id="paypal" name="paymentMethod" style="display: none;" type="radio" class="custom-control-input" required>
-            <label class="custom-control-label" style="display: none;" for="paypal">PayPal</label>
-          </div>
-        </div>
         <!-- <button style="display: none;">Hello</button> -->
 
  
         <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" id="click" type="submit">Confirm Booking</button>
+
+        <input id="button" class="btn-success" type="submit" value="Confirm Seat">
+        <div class="box-element hidden" id="payment-info">
+          <!-- <small>Paypal Options</small> -->
+          <!-- <div id="paypal-button-container"></div> -->
+          <button id="rzp-button1" class="btn btn-success" style="background-color: #7f00bf; text-size-adjust: 2rem;">RazorPay</button>
+          <!-- <button id="cod" class="btn btn-success btn-block" style="background-color: #fc878d; text-size-adjust: 2rem;">Cash On Delivery</button> -->
+        </div>
+        <!-- <button class="btn btn-primary btn-lg btn-block" id="click" type="submit">Confirm Booking</button> -->
       </form>
     </div>
   </div>
@@ -192,9 +202,66 @@ text-shadow: 1px 1px 0px #ccc;
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
-	var total =localStorage.getItem("selectedMoviePrice");
-	var payment_raz='razorpay';
+    var form = document.getElementById('form');
+
+		form.addEventListener('submit', function(e){
+	    	e.preventDefault()
+        console.log('Form Submitted...')
+        document.getElementById('payment-info').classList.remove("hidden");
+	    	document.getElementById('button').classList.add("hidden");
+			  
+	    })
+
+    function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+      var csrftoken = getCookie('csrftoken');
+
+
+
+      // document.getElementById("button").addEventListener("click", () => {
+      //   let firstname = document.getElementById("firstName");
+      //   let number = document.getElementById("number");
+      //   let email = document.getElementById("email");
+        
+        
+      //     $.ajax({
+      //         url: '/booked_address/',
+      //         type: 'POST',
+      //         data: {
+      //             firstname:firstname.value,
+      //             number : number.value,
+      //             email : email.value,
+      //             csrfmiddlewaretoken: csrftoken,
+      //         },
+      //         dataType: 'json',
+      //         success: function (data) {
+      //             if (data) {
+      //                 console.log('success address datapass');
+      //             }
+      //         }
+      //     });
+      // })
+
+  var total ={{totalprice}};
+  // let seatvalues = {{seatvalues}};
+  
+  // console.log(typeof(seatvalues));
+	// var payment_status='razorpay';
 
 	var options = {
 		"key": "rzp_test_eMnSXZs7JW5fj7", // Enter the Key ID generated from the Dashboard
@@ -205,7 +272,7 @@ text-shadow: 1px 1px 0px #ccc;
 		"image": "https://example.com/your_logo",
 		"order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
 		"handler": function (response){
-			submitFormData(payment_raz)
+			submitFormData()
 		},
 		"prefill": {
 			"name": "Gaurav Kumar",
@@ -223,11 +290,66 @@ text-shadow: 1px 1px 0px #ccc;
 	document.getElementById('rzp-button1').onclick = function(e){
 		rzp1.open();
 		e.preventDefault();
-	}
+  }
+
+
+  function submitFormData(){
+	    console.log('Payment button clicked')
+      // console.log(payment_status);
+      let firstname = document.getElementById("firstName");
+      let number = document.getElementById("number");
+      let email = document.getElementById("email");
+      let seatValue = localStorage.getItem("seatNumber");
+
+      // let val = 'E1,F4';
+      // console.log('value:',seatValue);
+      // console.log('seatValue:',seatValue);
+     
+      let totalPrice = {{totalprice}};
+      // let dealerId = {{dealer}};
+      // let movieId = {{movie_id}};
+      
+      $.ajax({
+              url: '/booked_address/{{dealer}}/{{movie_id}}/',
+              type: 'POST',
+              data: {
+                  firstname:firstname.value,
+                  number : number.value,
+                  email : email.value,
+                  totalPrice : totalPrice,
+                  selectedSeats : seatValue,
+                  csrfmiddlewaretoken: csrftoken,
+              },
+              dataType: 'json',
+              success: function (data) {
+                  if (data) {
+                      console.log('saved to database');
+                      alert("sended");
+                  }
+              }
+          });
+
+        // var url = "/booked_address/"
+	    	// fetch(url, {
+	    	// 	method:'POST',
+	    	// 	headers:{
+	    	// 		'Content-Type':'applicaiton/json',
+	    	// 		'X-CSRFToken':csrftoken,
+	    	// 	}, 
+	    	// 	body:JSON.stringify({'firstname':firstname}),
+	    		
+	    	// })
+	    	// .then((response) => response.json())
+	    	// .then((data) => {
+				// console.log('Success:', data);
+				// alert('Transaction completed');
+
+				// })
+	    }
 </script>
 
 <script>
-var time = 160 * 01;
+var time = 1160 * 01;
 setInterval(function() {
   var seconds = time % 60;
   var minutes = (time - seconds) / 60;
@@ -250,6 +372,7 @@ setInterval(function() {
     localStorage.removeItem("selectedSeats");
   }
 }, 1000);
+
 </script>
 
 {% endblock %}
