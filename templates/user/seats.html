@@ -79,6 +79,7 @@
         
         backpageHandler();
         let occupaidSeats = {{occupaid|safe}};
+
         const seats = document.querySelectorAll(".row .seat:not(.occupied)");
         const seatContainer = document.querySelector(".row-container");
         const count = document.getElementById("count");
@@ -541,7 +542,7 @@
 
             console.log('datainside_occupaid',occupaidSeats);
 
-            let totalSeatIndex = occupaidSeats.split(",");
+            let totalSeatIndex = occupaidSeats;
             console.log(totalSeatIndex);
             let indexOfSeat = document.querySelectorAll(".seat");
             console.log('INDEX:',indexOfSeat[0].innerHTML);

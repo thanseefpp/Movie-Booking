@@ -53,14 +53,16 @@ def seat_book(request,id):
     movie = NowShowingMovies.objects.get(id=id)
     if  SeatSelected.objects.filter(movie=movie).exists():
         screen = SeatSelected.objects.filter(movie=movie)
-        # value = screen.occupied_seats
-        # print("screen_select_table:",screen)
-        
+        listed_val = []
         list = []
         for i in screen:
-            list = i.occupied_seats
-        print('check:',list)
-        occupaid_values = json.dumps(list)
+            value = i.occupied_seats
+            splited = value.split(",")
+            for j in splited:
+                listed_val.append(j)
+                
+        occupaid_values = listed_val
+        print('occu',occupaid_values)
     else:
         list = ''
         occupaid_values = json.dumps(list)
