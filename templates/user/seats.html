@@ -71,11 +71,14 @@
             </div>
         </div>
     </div>
-
+    <!-- <div style="display: none;" id="occ" data-occuPaid="{{occupaid}}"></div> -->
 <!-- <script src="{% static 'user/seat/js/seat.js' %}"></script> -->
 <script>
 
-backpageHandler();
+        // let datavalues = document.getElementById("occ")
+        
+        backpageHandler();
+        let occupaidSeats = {{occupaid|safe}};
         const seats = document.querySelectorAll(".row .seat:not(.occupied)");
         const seatContainer = document.querySelector(".row-container");
         const count = document.getElementById("count");
@@ -119,8 +122,8 @@ backpageHandler();
                 return [...seats].indexOf(seat);
 
             });
-            console.log(seatsIndex);
-            console.log(seatNumber);
+            // console.log(seatsIndex);
+            // console.log(seatNumber);
 
             localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
 
@@ -134,7 +137,7 @@ backpageHandler();
             seatNumber.forEach(number => {
                 arragedNumber = `${number},${arragedNumber}`
             })
-            console.log(arragedNumber);
+            // console.log(arragedNumber);
             seatValue.innerHTML = arragedNumber;
 
         }
@@ -164,7 +167,7 @@ backpageHandler();
         movieSelect.addEventListener("change", function (e) {
             ticketPrice = +movieSelect.value;
             setMovieData(e.target.selectedIndex, e.target.value);
-            console.log(e.target.selectedIndex);
+            // console.log(e.target.selectedIndex);
             findSeatSelection(e.target.selectedIndex);
             updateSelectedCount();
         });
@@ -236,11 +239,11 @@ backpageHandler();
             seatCount = {{ vip_seats }};
         typeOfSeate = "vip";
             }
-        console.log(typeOfSeate);
+        // console.log(typeOfSeate);
         localStorage.setItem("typeOfSeat", typeOfSeate);
-        console.log(seatCount);
+        // console.log(seatCount);
         let seat = document.querySelectorAll(".seat")
-        console.log(seatType);
+        // console.log(seatType);
         for (let seatNum = 0; seatNum < {{ totalSeat }}; seatNum++) {
             // console.log(seat[seatNum]);
             if (seatCount === null && seatType === 0) {
@@ -393,7 +396,14 @@ backpageHandler();
         }
         // console.log(vip);
         seatNumberAssignment();
+
+        
+        console.log('INSIDE SEAT FUNCTION',occupaidSeats);
+        if (occupaidSeats != null || occupaidSeats != undefined ){
+            occupaidHanlder();
         }
+        }
+        
 
         function seatNumberAssignment() {
             let rowsCount = []
@@ -514,7 +524,9 @@ backpageHandler();
                                 if (indexOfSeat[value].innerHTML == totalSeatIndex[count]) {
                                     indexOfSeat[value].classList.add("selected")
                                     // console.log(indexOfSeat[count]); 
-
+                                    // document.getElementById("count").innerHTML = 
+                                    // document.getElementById("total").innerHTML = 
+                                    // document.getElementById("seatValue").innerHTML = 
                                 }       
                             }                        
                         }
@@ -522,6 +534,28 @@ backpageHandler();
                     }
                 }
             });
+        }
+
+
+        function occupaidHanlder(){
+
+            console.log('datainside_occupaid',occupaidSeats);
+
+            let totalSeatIndex = occupaidSeats.split(",");
+            console.log(totalSeatIndex);
+            let indexOfSeat = document.querySelectorAll(".seat");
+            console.log('INDEX:',indexOfSeat[0].innerHTML);
+            console.log(totalSeatIndex);
+            for (let value = 0; value < indexOfSeat.length; value++) {
+                for (let count = 0; count < totalSeatIndex.length; count++) {
+                    if (indexOfSeat[value].innerHTML == totalSeatIndex[count]) {
+                        indexOfSeat[value].classList.add("occupied")
+                        // console.log(indexOfSeat[count]); 
+
+                    }       
+                }                        
+            }
+
         }
 
 

@@ -51,6 +51,22 @@ def book_show(request,id):
 
 def seat_book(request,id):
     movie = NowShowingMovies.objects.get(id=id)
+    if  SeatSelected.objects.filter(movie=movie).exists():
+        screen = SeatSelected.objects.filter(movie=movie)
+        # value = screen.occupied_seats
+        # print("screen_select_table:",screen)
+        
+        list = []
+        for i in screen:
+            list = i.occupied_seats
+        print('check:',list)
+        occupaid_values = json.dumps(list)
+    else:
+        list = ''
+        occupaid_values = json.dumps(list)
+        print('list:',occupaid_values)
+
+    print('movie choose')
     val=movie.id
     # print('id :',val)
     screen_count = movie.screen
@@ -69,7 +85,10 @@ def seat_book(request,id):
     # print('v,p,e,n:',vip_price,premium_price,executive_price,normal_price)
     # print('vip,premium_seats,executive_seats,normal_seats:',vip_seats,premium_seats,executive_seats,normal_seats)
 
-    context = {'movie_id':val,'row_count':row_count,'normal_price':normal_price,'executive_price':executive_price,'vip_price':vip_price,'screen':screen_count,'vip_seats':vip_seats,'premium_seats':premium_seats,'executive_seats':executive_seats,'normal_seats':normal_seats,'premium_price':premium_price,'totalSeat':value}
+    context = {'movie_id':val,'row_count':row_count,'normal_price':normal_price,
+    'executive_price':executive_price,'vip_price':vip_price,'screen':screen_count,
+    'vip_seats':vip_seats,'premium_seats':premium_seats,'executive_seats':executive_seats,
+    'normal_seats':normal_seats,'premium_price':premium_price,'totalSeat':value,'occupaid':occupaid_values}
     return render(request,'user/seats.html',context)
 
 
@@ -143,7 +162,7 @@ def bookedAddress(request,id,pk):
         screentable = SeatSelected.objects.create(dealer=dealerid,movie=movieid,occupied_seats=selectedSeats)
         screentable.save();
 
-        print('screenselet table check :',screentable)
+        print('screenselet_table_check :',screentable)
         date_now = datetime.now()
         print('datetime:',date_now)
         customer = request.user.customer
@@ -162,7 +181,7 @@ def bookedAddress(request,id,pk):
 
 
 def pay_success(request):
-    return render(requset,'user/pay_success.html')
+    return render(request,'user/pay_success.html')
 
 
 def seatreconnect(request):
