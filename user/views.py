@@ -36,9 +36,6 @@ def index(request):
 def theatre_movies(request,id):
     dealer = Dealer.objects.get(id=id)
     movie = NowShowingMovies.objects.filter(dealer=dealer)
-    # if request.user.is_authenticated:
-    #     dealer = Dealer.objects.get(id=id)
-    #     movie = NowShowingMovies.objects.filter(dealer=dealer)
     context = {'movie':movie}
     return render(request,'user/TheatreMovies.html',context)
 
@@ -83,9 +80,6 @@ def seat_book(request,id):
     normal_seats = screen_count.normal_seats
     normal_price = screen_count.normal_price
     value = normal_seats + vip_seats + premium_seats + executive_seats
-    # print('value:',value)
-    # print('v,p,e,n:',vip_price,premium_price,executive_price,normal_price)
-    # print('vip,premium_seats,executive_seats,normal_seats:',vip_seats,premium_seats,executive_seats,normal_seats)
 
     context = {'movie_id':val,'row_count':row_count,'normal_price':normal_price,
     'executive_price':executive_price,'vip_price':vip_price,'screen':screen_count,
