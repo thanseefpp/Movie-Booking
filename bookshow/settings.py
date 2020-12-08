@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 
+# PROJECT_DIR=os.path.dirname(__file__)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = Path.joinpath(BASE_DIR, "static")
@@ -130,8 +131,13 @@ STATICFILES_DIRS =[
     os.path.join(BASE_DIR, "static"),
 ]
 
-PROJECT_DIR=os.path.dirname(__file__)
-STATIC_ROOT= os.path.join(PROJECT_DIR,'static/')
+# STATICFILES_DIRS = ( os.path.join(PROJECT_DIR,'static/'),)
+
+# STATIC_ROOT= os.path.join(PROJECT_DIR,'static_media/')
+
+# PROJECT_DIR=os.path.dirname(__file__)
+# STATIC_ROOT= os.path.join(PROJECT_DIR,'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/image/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/image')
