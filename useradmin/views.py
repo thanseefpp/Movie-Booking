@@ -27,7 +27,7 @@ def adminlogin(request):
         username = request.POST['username']
         password = request.POST['password']
 
-        if username == 'thanseef' and password == '1234':
+        if username == 'admin' and password == 'admin':
             request.session['username'] = username
             return redirect('adminDashboard')
 
