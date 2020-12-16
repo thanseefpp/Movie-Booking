@@ -27,8 +27,8 @@ class NowShowingMovies(models.Model):
     movie_title = models.CharField(max_length=300,null=True)
     cast_name = models.CharField(max_length=300,null=True)
     director_name = models.CharField(max_length=300,null=True)
-    release_date = models.DateTimeField(auto_now=False, auto_now_add=False)
-    show_time = models.TimeField(auto_now_add=True)
+    release_date = models.DateField()
+    show_date = models.DateTimeField()
     runtime_hour = models.IntegerField(default=0, null=True, blank=True)
     runtime_minute = models.IntegerField(default=0, null=True, blank=True)
     language = models.CharField(max_length=300,null=True)
@@ -98,12 +98,6 @@ class Customer(models.Model):
         return self.name
 
 
-# class BookingAddress(models.Model):
-#     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
-#     email = models.CharField(max_length=300,null=True)
-#     phone_number = models.CharField(max_length=300,null=True)
-#     firstname = models.CharField(max_length=300,null=True)
-
 
 class Booked(models.Model):
     dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE, null =True, blank=True)
@@ -117,13 +111,12 @@ class Booked(models.Model):
     transaction_id = models.CharField(max_length=200, null=True)
     order_status = models.CharField(default = 'Success',max_length=200,null=True)
     paid_amount = models.DecimalField(max_digits=8, decimal_places=2)
-
+    payment_status = models.CharField(default = 'cash',max_length=300, null=True)
 
     # def __str__(self):
     #     return str(self.id)
 
     # @property
     # def get_total_book(self):
-    #     # orderitems = self.orderitem_set.all()
-    #     # total = sum([item.quantity for item in orderitems])
-    #     return total
+    
+    #     return totalBook

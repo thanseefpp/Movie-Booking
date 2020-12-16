@@ -21,7 +21,7 @@ from django.core.files.base import ContentFile
 
 
 
-def theatreLogin(request):
+def theatreLogin(request,backend='django.contrib.auth.backends.ModelBackend'):
     if request.user.is_staff:
         owner = User.objects.filter(is_staff=True)
         return redirect('theatreDashboard')
@@ -55,7 +55,7 @@ def theatreLogin(request):
             username = request.session['username']
             if User.objects.filter(username=username,is_staff=True).exists():
                 user = User.objects.get(username=username)
-                auth.login(request,user)
+                auth.login(request,user,backend='django.contrib.auth.backends.ModelBackend')
                 return redirect(theatreDashboard)
             else:
                 messages.error(request,'User not Exist')
@@ -109,9 +109,52 @@ def mobile(request):
 
 def theatreDashboard(request):
     if request.user.is_staff:
-        owner = User.objects.filter(is_staff=True)
-        print("Owner:",owner)
-        context = {'Owner':owner}
+        user = request.user
+        dealer = user.id
+        booked_users = Booked.objects.filter(dealer=dealer)
+        nowshow = NowShowingMovies.objects.filter(user=user)
+        Upcomingshow = UpcomingMovies.objects.filter(user=user)
+        year = datetime.now().year
+        month = datetime.now().month
+        today = date.today()
+        # for i in booked_users:
+        #     status = i.payment_status
+        # if status != 'cash':
+        #     if status == 'razorpay':
+        #         razor = status.count()
+        #     else:
+        #         paypal = status.count()
+        # payment = []
+        # print('status',status)
+        booked_total_price = []
+        booked_total = 0
+        for price in booked_users:
+            try:
+                booked_total += price.paid_amount
+            except:
+                booked_total += 0
+        booked_total_price.append(round(booked_total,2))
+        # print('list',booked_total_price[0])
+
+        graph = []
+        for i in range(0,12):
+            booked_values = Booked.objects.filter(date_booking__year = year,date_booking__month = month-11+i,complete=True,dealer=dealer)
+            total_booked_graph = 0
+            for j in booked_values:
+                try:
+                    total_booked_graph += j.paid_amount
+                except:
+                    total_booked_graph += 0
+            graph.append(round(int(total_booked_graph),2))        
+        print('graph',graph)
+
+        customers = booked_users.count()
+        now_showing_movies = nowshow.count()
+        upcoming_shows=Upcomingshow.count()
+        print('cs',customers)
+        context = {"booked_total_price":booked_total_price[0],
+        'customers':customers,'nowshow':now_showing_movies,
+        'upcoming_shows':upcoming_shows,'graph':graph}
         return render(request,'Theatre/dashboard.html',context)
     else:
         return redirect('theatreLogin')
@@ -191,7 +234,10 @@ def addScreens(request):
 def theatreUserActivity(request):
     if request.user.is_staff:
         user = request.user
-        return render(request,'Theatre/theatre_useractivity.html')
+        dealer = user.id
+        activity = Booked.objects.filter(dealer=dealer)
+        context = {'bookedmovies':activity}
+        return render(request,'Theatre/theatre_useractivity.html',context)
     else:
         return redirect('theatreLogin')
 
@@ -215,7 +261,7 @@ def nowShow(request):
     else:
         return redirect('theatreLogin')
 
-
+#adding values to the database
 def addMovie(request):
     if request.user.is_staff:
         if request.method == 'POST':
@@ -225,7 +271,7 @@ def addMovie(request):
             cast_name = request.POST['cast_name']
             director_name = request.POST['director_name']
             release_date = request.POST['release_date']
-            show_time = request.POST['show_time']
+            show_date = request.POST['show_date']
             run_time_hour = request.POST['run_time_hour']
             run_time_minutes = request.POST['run_time_minutes']
             language = request.POST['language']
@@ -242,8 +288,13 @@ def addMovie(request):
             ext = format.split('/')[-1]
             data = ContentFile(base64.b64decode(imgstr),name='temp.' + ext)
             print('dealer:',dealer)
-            prod = NowShowingMovies(dealer=dealer,screen=screen,user=user,movie_title=movie_name,cast_name=cast_name,director_name=director_name,release_date=release_date,show_time=show_time,runtime_hour=run_time_hour,runtime_minute=run_time_minutes,language=language,movie_type=type_movie,trailer_link=trailer_link,photo_banner=photo_banner,photo_main = data)
-            prod.save();
+            show = NowShowingMovies(show_date=show_date,dealer=dealer,
+                screen=screen,user=user,movie_title=movie_name,cast_name=cast_name,
+                director_name=director_name,release_date=release_date,
+                runtime_hour=run_time_hour,runtime_minute=run_time_minutes,
+                language=language,movie_type=type_movie,trailer_link=trailer_link,
+                photo_banner=photo_banner,photo_main = data)
+            show.save();
             return redirect('now_show')
         else:
             choose_screen = Screen.objects.filter(select=False)
@@ -253,6 +304,7 @@ def addMovie(request):
         return redirect('theatreLogin')
     
 
+#adding values to the database
 def upcomingMovie(request):
     if request.user.is_staff:
         if request.method == 'POST':
@@ -279,54 +331,54 @@ def upcomingMovie(request):
         return redirect('theatreLogin')
 
 
+#deleting values from the database
 def Nowdelete(request,id):
     movie_delete = NowShowingMovies.objects.get(id=id)
     movie_delete.delete()
     return redirect(nowShow)
 
+
+#deleting values from the database
 def screen_delete(request,id):
     screen_delete = Screen.objects.get(id=id)
     screen_delete.delete()
     return redirect(screens)
 
+
+#deleting values from the database
 def upcome_delete(request,id):
     upcome_delete = UpcomingMovies.objects.get(id=id)
     upcome_delete.delete()
     return redirect(upcomingShow)
 
 
-
+#Updating Existing nowshowing movies values from the database
 def now_update(request,id):
     movie_update = NowShowingMovies.objects.get(id=id)
     if request.method == 'POST':
-        movie_update.movie_name=request.POST['movie_name']
+        movie_update.movie_title=request.POST['movie_name']
         movie_update.cast_name=request.POST['cast_name']
         movie_update.director_name=request.POST['director_name']
         movie_update.release_date=request.POST['release_date']
-        movie_update.show_time=request.POST['show_time']
-        movie_update.run_time_hour=request.POST['run_time_hour']
-        movie_update.run_time_minutes=request.POST['run_time_minutes']
+        movie_update.show_date=request.POST['show_date']
+        movie_update.runtime_hour=request.POST['run_time_hour']
+        movie_update.runtime_minute=request.POST['run_time_minutes']
         movie_update.language=request.POST['language']
-        movie_update.type_movie=request.POST['type_movie']
+        movie_update.movie_type=request.POST['type_movie']
         movie_update.Screen=request.POST['Screen']
         movie_update.trailer_link=request.POST['trailer_link']
-        photo_crop=request.POST.get('image64data')
+        photo_main=request.POST.get('image64data')
         
         if 'photo_banner' not in request.POST:
             photo_banner = request.FILES['photo_banner']
         else:
             photo_banner=movie_update.photo_banner
 
-        if photo_crop == "":
-            # print('null')
+        if photo_main == "":
             mv = NowShowingMovies.objects.get(id=id)
-            movie_update.photo_crop = mv.photo_crop
+            movie_update.photo_main = mv.photo_main
         else:
-            # print('crop:',photo_crop)
-            # format, imgstr = photo_crop.split(';base64,')
-            # ext = format.split('/')[-1]
-            # data = ContentFile(base64.b64decode(imgstr),name='temp.' + ext)
-            movie_update.photo_main=photo_crop
+            movie_update.photo_main=photo_main
         print('check')
         
         movie_update.photo_banner=photo_banner
@@ -336,14 +388,75 @@ def now_update(request,id):
     context = {'movie_update':movie_update}
     return render(request,'Theatre/update/update_now_movie.html',context)
 
-def screen_update(request,id):
-    screen_update = Screen.objects.get(id=id)
+#Updating Existing upcoming movie items values from the database
+def upcome_update(request,id):
+    upcome_update = UpcomingMovies.objects.get(id=id)
+    if request.method == 'POST':
+        upcome_update.movie_title=request.POST['movie_name']
+        upcome_update.cast_name=request.POST['cast_name']
+        upcome_update.director_name=request.POST['director_name']
+        upcome_update.language=request.POST['language']
+        upcome_update.movie_type=request.POST['type_movie']
+        upcome_update.trailer_link=request.POST['trailer_link']
+        photo_main=request.POST.get('image64data')
+        
+        if 'photo_banner' not in request.POST:
+            photo_banner = request.FILES['photo_banner']
+        else:
+            photo_banner=upcome_update.photo_banner
 
-    context = {'screen_update':screen_update}
+        if photo_main == "":
+            mv = UpcomingMovies.objects.get(id=id)
+            upcome_update.photo_main = mv.photo_main
+        else:
+            upcome_update.photo_main=photo_main
+        print('check')
+        
+        upcome_update.photo_banner=photo_banner
+        upcome_update.save();
+        return redirect(upcomingShow)
+    context = {'upcome_update':upcome_update}
+    return render(request,'Theatre/update/update_up_movie.html',context)
+
+#Updating Existing screent items values from the database
+def screen_update(request,id):
+    screen_id = Screen.objects.get(id=id)
+    if request.method == 'POST':
+        # screen_name = request.POST['screen_name']
+        row = request.POST['row']
+        vip_seats = request.POST['vip_seat']
+        vip_price = request.POST['vip_price']
+        premium_seats = request.POST['premium_seat']
+        premium_price = request.POST['premium_price']
+        executive_seats = request.POST['executive_seat']
+        executive_price = request.POST['executive_price']
+        normal_seats = request.POST['normal_seat']
+        normal_price = request.POST['normal_price']
+
+        if int(row) <= 4 or int(row) > 15 :
+            messages.error(request,'Row value must between 5 & 15')
+        elif int(vip_seats) % int(row) != 0:
+            messages.error(request,'VIP seats count not divisible by row_count')
+            
+        elif int(premium_seats) % int(row) !=  0:
+            messages.error(request,'Premium seats count not divisible by row_count')
+        elif int(executive_seats) % int(row) !=  0:
+            messages.error(request,'Executive seats count not divisible by row_count')
+        elif int(normal_seats) % int(row) != 0:
+            messages.error(request,'Normal seats count not divisible by row_count')
+        else:
+            screen_id.row = row
+            screen_id.vip_seats = vip_seats
+            screen_id.vip_price = vip_price
+            screen_id.premium_seats = premium_seats
+            screen_id.premium_price = premium_price
+            screen_id.executive_seats = executive_seats
+            screen_id.executive_price = executive_price
+            screen_id.normal_seats = normal_seats
+            screen_id.normal_price = normal_price
+            screen_id.save()
+            return redirect('screens')
+    context = {'screen_update':screen_id}
     return render(request,'Theatre/update/update_screen.html',context)
 
 
-def upcome_update(request,id):
-    upcome_update = UpcomingMovies.objects.get(id=id)
-    context = {'upcome_update':upcome_update}
-    return render(request,'Theatre/update/update_up_movie.html',context)

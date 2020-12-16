@@ -66,10 +66,25 @@
     <div class="container py-lg-4">
         <div class="headerhny-title">
             <h3 class="hny-title pb-3">{{i.dealer.theatre_name}} Theatre</h3>
-            <h4 >Show Time : {{i.show_time}} </h4>
-            <a href="{% url 'seat_book' i.id %}">
-                <button style="margin-top: 20px" class="btn btn-info">Seat Book</button>
-            </a>
+            <h4 >Show Time : 
+                {% if show_time %}
+                    {{show_time}}
+                {% else %}
+                    No show Today
+                {% endif %}
+            </h4>
+                {% if user.is_authenticated %}
+                    {% if show_time %}
+                        <a href="{% url 'seat_book' i.id %}">
+                            <button style="margin-top: 20px" class="btn btn-info">Seat Book</button>
+                        </a>
+                    {% else %}
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}">
+                        <button style="margin-top: 20px" class="btn btn-info">Login to Bookseat </button>
+                    </a>
+                {% endif %}
         </div>
         <!-- /grids -->
     </div>

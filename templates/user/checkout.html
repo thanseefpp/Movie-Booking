@@ -117,7 +117,7 @@ text-shadow: 1px 1px 0px #ccc;
           <div>
             <h6 class="my-0">Show Time </h6>
           </div>
-          <span class="text-muted">{{movie.show_time}}</span>
+          <span class="text-muted">{{movie.show_date}}</span>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
@@ -236,7 +236,7 @@ text-shadow: 1px 1px 0px #ccc;
   // let seatvalues = {{seatvalues}};
   
   // console.log(typeof(seatvalues));
-	// var payment_status='razorpay';
+	var payment_Razor='razorpay';
 
 	var options = {
 		"key": "rzp_test_eMnSXZs7JW5fj7", // Enter the Key ID generated from the Dashboard
@@ -247,7 +247,7 @@ text-shadow: 1px 1px 0px #ccc;
 		"image": "https://example.com/your_logo",
 		"order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
 		"handler": function (response){
-			submitFormData()
+			submitFormData(payment_Razor)
 		},
 		"prefill": {
 			"name": "Gaurav Kumar",
@@ -267,9 +267,9 @@ text-shadow: 1px 1px 0px #ccc;
 		e.preventDefault();
   }
 
-  function submitFormData(){
+  function submitFormData(payment_status){
 	    console.log('Payment button clicked')
-      // console.log(payment_status);
+      console.log(payment_status);
       let firstname = document.getElementById("firstName");
       let number = document.getElementById("number");
       let email = document.getElementById("email");
@@ -292,6 +292,7 @@ text-shadow: 1px 1px 0px #ccc;
                   email : email.value,
                   totalPrice : totalPrice,
                   selectedSeats : seatValue,
+                  payment_status :payment_status,
                   csrfmiddlewaretoken: csrftoken,
               },
               dataType: 'json',
@@ -309,23 +310,6 @@ text-shadow: 1px 1px 0px #ccc;
                   }
               }
           });
-
-        // var url = "/booked_address/"
-	    	// fetch(url, {
-	    	// 	method:'POST',
-	    	// 	headers:{
-	    	// 		'Content-Type':'applicaiton/json',
-	    	// 		'X-CSRFToken':csrftoken,
-	    	// 	}, 
-	    	// 	body:JSON.stringify({'firstname':firstname}),
-	    		
-	    	// })
-	    	// .then((response) => response.json())
-	    	// .then((data) => {
-				// console.log('Success:', data);
-				// alert('Transaction completed');
-
-				// })
 	    }
 </script>
 
@@ -333,7 +317,7 @@ text-shadow: 1px 1px 0px #ccc;
 <script>
   // Render the PayPal button into #paypal-button-container
   var total = {{totalprice}};
-  // var payment_paypal='paypal'
+  var payment_paypal='paypal';
 
   paypal.Buttons({
     
@@ -353,7 +337,7 @@ text-shadow: 1px 1px 0px #ccc;
       return actions.order.capture().then(function(details) {
         // Show a success message to the buyer
         // alert('Transaction completed by ' + details.payer.name.given_name + '!');
-        submitFormData()
+        submitFormData(payment_paypal)
       });
     }
 

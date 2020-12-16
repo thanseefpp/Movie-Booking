@@ -10,26 +10,26 @@
         <div class="container" style="margin: 40px;">
             <div style="padding-left: 100px;">
                 <label style="padding-right: 26px;">Movie Title :</label>
-                <input type="text" name="movie_name" placeholder="Movie Name" style="margin-left: 35px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{upcome_update.movie_name}}">
+                <input type="text" name="movie_name" placeholder="Movie Name" style="margin-left: 35px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{upcome_update.movie_title}}">
             </div>
         </div>
         <div class="container" style="margin: 40px;">
             <div style="padding-left: 100px;">
                 <label style="padding-right: 26px;">Cast Name:</label>
-                <input type="text" name="cast_name" placeholder="No of Cast" style="margin-left: 35px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{upcome_update.movie_name}}">
+                <input type="text" name="cast_name" placeholder="No of Cast" style="margin-left: 35px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{upcome_update.cast_name}}">
             </div>
         </div>
         <div class="container" style="margin: 40px;">
             <div style="padding-left: 100px;">
                 <label style="padding-right: 26px;">Director :</label>
-                <input type="text" name="director_name" placeholder="Director Name" style="margin-left: 54px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{upcome_update.movie_name}}">
+                <input type="text" name="director_name" placeholder="Director Name" style="margin-left: 54px;text-align: center;height: 32px;border-radius: 0.375rem;" value="{{upcome_update.director_name}}">
             </div>
         </div>
         <div class="container" style="margin: 40px;">
             <div style="padding-left: 100px;">
                 <label style="padding-right: 26px;">Language :</label>
                 <select name="language" style="margin-left: 39px;">
-                    <option>{{upcome_update.movie_name}}</option>
+                    <option>{{upcome_update.language}}</option>
                     <option>HINDI</option>
                     <option>ENGLISH</option>
                     <option>MALAYALAM</option>
@@ -42,7 +42,7 @@
             <div style="padding-left: 100px;">
                 <label style="padding-right: 26px;">Type :</label>
                 <select name="type_movie" style="margin-left: 75px;" >
-                    <option>{{upcome_update.movie_name}}</option>
+                    <option>{{upcome_update.movie_type}}</option>
                     <option>2D</option>
                     <option>3D</option>
                 </select>    
@@ -167,45 +167,45 @@ cropper = '';
 
 // on change show image with crop options
 upload.addEventListener('change', (e) => {
-if (e.target.files.length) {
-// start file reader
-const reader = new FileReader();
-reader.onload = (e)=> {
-if(e.target.result){
-// create new image
-let img = document.createElement('img');
-img.id = 'image';
-img.src = e.target.result
-// clean result before
-result.innerHTML = '';
-// append new image
-result.appendChild(img);
-// show save btn and options
-save.classList.remove('hide');
-options.classList.remove('hide');
-// init cropper
-cropper = new Cropper(img);
-}
-};
-reader.readAsDataURL(e.target.files[0]);
-}
+    if (e.target.files.length) {
+        // start file reader
+        const reader = new FileReader();
+        reader.onload = (e)=> {
+            if(e.target.result){
+                // create new image
+                let img = document.createElement('img');
+                img.id = 'image';
+                img.src = e.target.result
+                // clean result before
+                result.innerHTML = '';
+                // append new image
+                result.appendChild(img);
+                // show save btn and options
+                save.classList.remove('hide');
+                options.classList.remove('hide');
+                // init cropper
+                cropper = new Cropper(img);
+            }
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    }
 });
 
 // save on click
 save.addEventListener('click',(e)=>{
-e.preventDefault();
-// get result to data uri
-let imgSrc = cropper.getCroppedCanvas({
-width: img_w.value // input value
-}).toDataURL();
-// remove hide class of img
-cropped.classList.remove('hide');
-img_result.classList.remove('hide');
-// show image cropped
-cropped.src = imgSrc;
-dwn.classList.remove('hide');
-dwn.download = 'imagename.png';
-dwn.setAttribute('href',imgSrc);
+    e.preventDefault();
+    // get result to data uri
+    let imgSrc = cropper.getCroppedCanvas({
+        width: img_w.value // input value
+    }).toDataURL();
+    // remove hide class of img
+    cropped.classList.remove('hide');
+    img_result.classList.remove('hide');
+    // show image cropped
+    cropped.src = imgSrc;
+    dwn.classList.remove('hide');
+    dwn.download = 'imagename.png';
+    dwn.setAttribute('href',imgSrc);
 
 });
 
@@ -213,18 +213,17 @@ dwn.setAttribute('href',imgSrc);
 <script>
 var button = document.getElementById('load');
 button.addEventListener('click',function(){
-setImageData();
-console.log('Cropped')
+    setImageData();
+    console.log('Cropped')
 })
 
 
 function setImageData(){
-
-var imageElement = document.getElementById('cropped');
-var imageData = imageElement.src;
-var hiddenElement = document.getElementById("imageBaseData");
-hiddenElement.value = imageData;
-console.log("data set")
+    var imageElement = document.getElementById('cropped');
+    var imageData = imageElement.src;
+    var hiddenElement = document.getElementById("imageBaseData");
+    hiddenElement.value = imageData;
+    console.log("data set")
 }
 </script>
 {% endblock %}

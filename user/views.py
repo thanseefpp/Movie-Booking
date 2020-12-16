@@ -27,8 +27,6 @@ def index(request):
     else:
         pass
     dealer = Dealer.objects.all()
-    # if request.user.is_authenticated:
-    #     dealer = Dealer.objects.all()
     context = {'dealer':dealer}
     return render(request,'user/index.html',context)
 
@@ -42,7 +40,9 @@ def theatre_movies(request,id):
 
 def book_show(request,id):
     movie = NowShowingMovies.objects.filter(id=id)
-    context = {'movie':movie}
+    for i in movie:
+        date = i.show_date
+    context = {'movie':movie,'show_time':date}
     return render(request,'user/bookshow.html',context)
 
 
@@ -123,12 +123,6 @@ def orderPlace(request,price,val,id):
 
         seatvalues = val
         print('seat:',seatvalues)
-        # array = []
-        # for i in selectedSeat.split(","):
-        #     value = i
-        #     array.append(value)
-        # seatvalues = array
-        # print('values:',seatvalues)
         totalprice = price
         context = {'movie':movie,'seatvalues':seatvalues,'totalprice':totalprice,
         'order_id':order_id,'dealer':dealer,'movie_id':movie_id}
@@ -147,13 +141,12 @@ def bookedAddress(request,id,pk):
         email = request.POST.get('email')
         totalPrice = request.POST.get('totalPrice')
         selectedSeats = request.POST.get('selectedSeats')
-        print('selectedSeats',selectedSeats)
+        payment_status = request.POST.get('payment_status')
+        print('payment_status',payment_status)
         movieid = NowShowingMovies.objects.get(id=pk)
         dealerid = Dealer.objects.get(id=id)
         movie_id = movieid.id
         dealer_id = dealerid.id
-        # print('dealerId',movie_id)
-        # print('movieId',dealer_id)
 
         screentable = SeatSelected.objects.create(dealer=dealerid,movie=movieid,occupied_seats=selectedSeats)
         screentable.save();
@@ -167,8 +160,9 @@ def bookedAddress(request,id,pk):
         customer= Customer.objects.get(user=user)
         print('customer id:',customer)
         booking = Booked.objects.create(customer=customer,email=email,phone_number=number,
-        firstname=firstname,paid_amount=totalPrice,transaction_id=transaction_id,
-        complete=True,date_booking=date_now,dealer=dealerid,seatSelect=screentable)
+            firstname=firstname,paid_amount=totalPrice,transaction_id=transaction_id,
+            payment_status=payment_status,complete=True,date_booking=date_now,
+            dealer=dealerid,seatSelect=screentable)
         booking.save();
 
         return JsonResponse('hi',safe=False)
@@ -177,7 +171,26 @@ def bookedAddress(request,id,pk):
 
 
 def pay_success(request):
-    return render(request,'user/pay_success.html')
+    user = request.user
+    customer = Customer.objects.filter(user=user.id)
+    for i in customer:
+        value = i.id
+    booked_details = Booked.objects.filter(customer=value)
+    # print('csmr',booked_details)
+    for k in booked_details:
+        dealer = k.dealer
+    dealer_id = dealer.id
+    for i in booked_details:
+        seat_id = i.seatSelect
+    seat = SeatSelected.objects.filter(id=seat_id.id)
+    for j in seat:
+        movie = j.movie
+    dealer_table = Dealer.objects.filter(id=dealer_id)
+    for i in dealer_table:
+        theatre_name = i.theatre_name
+    context = {'booked_details':booked_details,'theatre_name':theatre_name,
+        'seat_id':seat_id,'movie':movie}
+    return render(request,'user/pay_success.html',context)
 
 
 def seatreconnect(request):
@@ -189,11 +202,6 @@ def seatreconnect(request):
         selectedSeats = request.GET.get('selectedSeats', None)
         selectedMoviePrice = request.GET.get('selectedMoviePrice', None)
         print('get function check:',seatCount,seatNumber,typeOfSeat,selectedSeats,totalPrice,selectedMoviePrice)
-        # array = []
-        # for i in seatNumber.split(","):
-        #     value=i
-        #     array.append(value) 
-        # print('array:',array)
         return JsonResponse(seatNumber,safe=False)
 
 

@@ -39,10 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'useradmin',
-    'theatre',
-    'user'
+    'useradmin',# < -- admin app
+    'theatre',# < -- theatre(dealer) app
+    'user', # < -- user app
+    'django.contrib.sites',
+    'allauth', # <-- Allauth accessing
+    'allauth.account', # <-- Google
+    'allauth.socialaccount', # <-- Social Authentications
+    'allauth.socialaccount.providers.google', # <-- Google login api access
+    'allauth.socialaccount.providers.facebook', # <-- Facebook login api access
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,12 +89,23 @@ WSGI_APPLICATION = 'bookshow.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bookmyshowdata',
+        'NAME': 'moviebooking',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
     }
 }
+
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    # 'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'django.contrib.auth.backends.ModelBackend',
+    # 'social_core.backends.facebook.FacebookOAuth2',
+    # 'social_core.backends.google.GoogleOAuth2',
+]
 
 
 # Password validation
@@ -138,3 +157,46 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/image')
 REST_FRAMEWORK = {
     'DATETIME_FORMAT': "%b %d at %I:%M %P",
 }
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v7.0',
+    },
+        'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+
+}
+

@@ -22,5 +22,5 @@ urlpatterns = [
     path('upcome_delete/<int:id>/',views.upcome_delete,name='upcome_delete'),
     path('upcome_update/<int:id>/',views.upcome_update,name='upcome_update'),
     
-    # path('delete/<int:id>/',views.Updelete,name='up_delete'),
+
 ]
