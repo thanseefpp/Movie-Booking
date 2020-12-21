@@ -1,0 +1,68 @@
+{% extends 'user/index_main_base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+    <!-- ==========Banner-Section========== -->
+    <section class="banner-section">
+        <div class="banner-bg bg_img bg-fixed" data-background="{% static 'user/assets/images/banner/banner01.jpg' %}"></div>
+        <div class="container">
+            <div class="banner-content">
+                <h1 class="title  cd-headline clip">Choose A 
+                    <span class="color-theme cd-words-wrapper p-0 m-0">
+                        <b class="is-visible">Theatre</b>
+                    </span>
+                </h1>
+                <p>Choose a nearst Theatre to book for Movies!</p>
+            </div>
+        </div>
+    </section>
+    <!-- ==========Banner-Section========== -->
+
+<!-- ==========Theatre-Section========== -->
+<section class="movie-section padding-top padding-bottom">
+    <div class="container">
+        <div class="tab">
+            <div class="section-header-2">
+                <div class="left">
+                    <h2 class="title">Theatre</h2>
+                    <p>Select theatre to book for movies</p>
+                </div>
+            </div>
+            <div class="tab-area mb-30-none">
+                <div class="tab-item active">
+                    <div class="owl-carousel owl-theme tab-slider">
+                        {% for i in dealer %}
+                        <div class="item">
+                            <div class="movie-grid">
+                                <div class="movie-thumb c-thumb">
+                                    <a href="{% url 'theatre_movies' i.id %}">
+                                        <img src="{{i.MainURL}}" style="height: 290px;" alt="movie">
+                                    </a>
+                                </div>
+                                <div class="movie-content bg-one">
+                                    <h5 class="title m-0">
+                                        <a href="{% url 'theatre_movies' i.id %}">{{i.theatre_name}} Theatre</a>
+                                    </h5>
+                                    <ul class="movie-rating-percent">
+                                        <li>
+                                            <span class="content">City : {{i.theatre_location}}</span>
+                                        </li>
+                                        <li>
+                                            <span class="content">Close : {{i.theatre_close}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div> 
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ==========Theatre-Section========== -->
+
+{% endblock %}

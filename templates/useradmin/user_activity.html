@@ -5,43 +5,34 @@
 
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">User Activity</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Revenue of Dealer</h1>
                    
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <a class="btn btn-sm btn-info" style="margin-left: 795px;" href="{% url 'ownerAdd' %}">Add Owner</a>
-                        </div>
+                              </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Theatre Owner Name </th>
-                                            <th>Theatre Name</th>
-                                            <th>Phone Number</th>
-                                            <th style="text-align: center;">Action</th>
+                                            <th>Dealer Name</th>
+                                            <th>Phone Number </th>
+                                            <th>Customer</th>
+                                            <th>Date of Booking</th>
+                                            <th>Received Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+                                        {% for i in booked %}
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-                                                <div class="button-center text-center">
-                                                    <form method="POST" >
-                                                      {% csrf_token %}
-                                                      <a href="#" class="btn btn-success">Edit</a>
-                                                      <a href="#" class="btn btn-danger" onclick="window.mytest()">Delete</a>
-                                                    </form>
-                                                </div>
-                                            </td>
+                                            <td>{{i.dealer.dealer_name}}</td>
+                                            <td>{{i.dealer.dealer_phone}}</td>
+                                            <td>{{i.customer.name}}</td>
+                                            <td>{{i.date_booking.date}}</td>
+                                            <td>{{i.paid_amount}}</td>
                                         </tr>
-                                        
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

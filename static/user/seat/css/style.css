@@ -19,6 +19,29 @@ body {
 
 }
 
+#placeOrder {
+    background-color: #4c65d8; /* Green */
+    border: navy;
+    color: white;
+    padding: 11px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-style: revert;
+}
+#cancelTicket{
+    background-color: #d84a31; /* Green */
+    border: rgba(128, 0, 0, 0.692);
+    color: white;
+    padding: 11px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-style: revert;
+}
+
 .movie-container {
     margin: 20px 0;
 }

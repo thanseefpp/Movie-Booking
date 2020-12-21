@@ -36,7 +36,7 @@
                                                 <div class="button-center text-center">
                                                     <form method="POST" >
                                                       {% csrf_token %}
-                                                      <a href="#" class="btn btn-success">Edit</a>
+                                                      <a href="{% url 'edit_theatre' tvalue.id %}" class="btn btn-success">Edit</a>
                                                       <a href="{% url 'delete' tvalue.id %}" class="btn btn-danger" onclick="window.mytest()">Delete</a>
                                                     </form>
                                                 </div>

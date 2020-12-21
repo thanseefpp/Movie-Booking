@@ -1,0 +1,282 @@
+{% extends 'user/index_main_base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+
+    <!-- ==========Banner-Section========== -->
+    <section class="details-banner hero-area bg_img seat-plan-banner" data-background="{% static 'user/assets/images/banner/banner04.jpg' %}">
+        <div class="container">
+            <div class="details-banner-wrapper">
+                <div class="details-banner-content style-two">
+                    <h3 class="title">{{ movie.movie_title }}</h3>
+                    <div class="tags">
+                        <a>{{movie.language}} - {{movie.movie_type}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==========Banner-Section========== -->
+
+    <!-- ==========Page-Title========== -->
+    <section class="page-title bg-one">
+        <div class="container">
+            <div class="page-title-area">
+                <div class="item date-item">
+                    <span class="date">Show Time : {{movie.show_date.time}}</span>
+                </div>
+                <div class="item">
+                    <h5 class="title" id="tiles"></h5>
+                    <p>Mins Left</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==========Page-Title========== -->
+
+    <!-- ==========Movie-Section========== -->
+    <form id="form" method="POST">
+    <div class="movie-facility padding-bottom padding-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="checkout-widget checkout-contact">
+                        <h5 class="title">Share your Contact  Details </h5>
+                        <form class="checkout-contact-form">
+                            <div class="form-group">
+                                <input type="text" name="firstname" id="firstName" placeholder="Full Name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="email" id="email" placeholder="Enter your Mail" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel"  name="number" id="number"  placeholder="Enter your Phone Number " required>
+                            </div>
+                        </form>
+                    </div>
+                   
+                    <div class="checkout-widget checkout-card mb-0">
+                        <h5 class="title">Payment Option </h5>
+                        <ul class="payment-option">
+                           
+                        </ul>
+                            <div class="form-group">
+                                <input type="submit" id="button" class="custom-button" value="make payment">
+                            </div>
+                            <div class="box-element hidden" id="payment-info">
+                                <small>Paypal Options</small>
+                                <div id="paypal-button-container" style="width: 30px;"></div>
+                                <button id="rzp-button1" class="btn btn-success" style="background-color: #7f00bf; text-size-adjust: 2rem;width: 200px;">RazorPay</button>
+                                <!-- <button id="cod" class="btn btn-success btn-block" style="background-color: #fc878d; text-size-adjust: 2rem;">Cash On Delivery</button> -->
+                            </div>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="booking-summery bg-one">
+                        <h4 class="title">booking summery</h4>
+                        <ul>
+                            <li>
+                                <h6 class="subtitle">{{ movie.movie_title }}</h6>
+                                <span class="info">{{movie.language}}-{{movie.movie_type}}</span>
+                            </li>
+                            <li>
+                                <h6 class="subtitle"><span>{{movie.dealer.theatre_name}}</span><span>Theatre</span></h6>
+                                <div class="info"><span></span> <span></span></div>
+                            </li>
+                            <li>
+                                <h6 class="subtitle mb-0"><span>Selected  Seats</span><span>{{seatvalues}}</span></h6>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="proceed-area  text-center">
+                        <h6 class="subtitle"><span>Amount Payable</span><span>₹ {{totalprice}}</span></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    </form>
+    <!-- ==========Movie-Section========== -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<script>
+    var form = document.getElementById('form');
+
+		form.addEventListener('submit', function(e){
+	    	e.preventDefault()
+        console.log('Form Submitted...')
+        document.getElementById('payment-info').classList.remove("hidden");
+	    	document.getElementById('button').classList.add("hidden");
+			  
+	    })
+
+    function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+      var csrftoken = getCookie('csrftoken');
+
+
+  var total ={{totalprice}};
+  // let seatvalues = {{seatvalues}};
+  
+  // console.log(typeof(seatvalues));
+	var payment_Razor='razorpay';
+
+	var options = {
+		"key": "rzp_test_eMnSXZs7JW5fj7", // Enter the Key ID generated from the Dashboard
+		"amount": total, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+		"currency": "USD",
+		"name": "Acme Corp",
+		"description": "Test Transaction",
+		"image": "https://example.com/your_logo",
+		"order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+		"handler": function (response){
+			submitFormData(payment_Razor)
+		},
+		"prefill": {
+			"name": "Gaurav Kumar",
+			"email": "gaurav.kumar@example.com",
+			"contact": "9999999999"
+		},
+		"notes": {
+			"address": "Razorpay Corporate Office"
+		},
+		"theme": {
+			"color": "#F37254"
+		}
+	};
+	var rzp1 = new Razorpay(options);
+	document.getElementById('rzp-button1').onclick = function(e){
+		rzp1.open();
+		e.preventDefault();
+  }
+
+  function submitFormData(payment_status){
+	    console.log('Payment button clicked')
+      console.log(payment_status);
+      let firstname = document.getElementById("firstName");
+      let number = document.getElementById("number");
+      let email = document.getElementById("email");
+      let seatValue = localStorage.getItem("seatNumber");
+
+      // let val = 'E1,F4';
+      // console.log('value:',seatValue);
+      // console.log('seatValue:',seatValue);
+     
+      let totalPrice = {{totalprice}};
+      // let dealerId = {{dealer}};
+      // let movieId = {{movie_id}};
+      
+      $.ajax({
+              url: '/booked_address/{{dealer}}/{{movie_id}}/',
+              type: 'POST',
+              data: {
+                  firstname:firstname.value,
+                  number : number.value,
+                  email : email.value,
+                  totalPrice : totalPrice,
+                  selectedSeats : seatValue,
+                  payment_status :payment_status,
+                  csrfmiddlewaretoken: csrftoken,
+              },
+              dataType: 'json',
+              success: function (data) {
+                  if (data) {
+                      console.log('payment success');
+                      window.location.href = '/pay_success/';
+                      localStorage.removeItem("seatCount")
+                      localStorage.removeItem("totalPrice")
+                      localStorage.removeItem("seatNumber")
+                      localStorage.removeItem("typeOfSeat")
+                      localStorage.removeItem("selectedMoviePrice")
+                      localStorage.removeItem("selectedMovieIndex")
+                      localStorage.removeItem("selectedSeats")
+                  }
+              }
+          });
+	    }
+</script>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AZi4j3g6uXWwKJsugE1qJGc5yxB4-y6XoqDa8uNHO7iJ65YChtJV3bV9Nnm_wvuqt-LC6cT-Fp1MiPT0&currency=USD&disable-funding=card"></script>
+<script>
+  // Render the PayPal button into #paypal-button-container
+  var total = {{totalprice}};
+  var payment_paypal='paypal';
+
+  paypal.Buttons({
+    
+    // Set up the transaction
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: total
+          }
+        }]
+      });
+    },
+
+    // Finalize the transaction
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        // Show a success message to the buyer
+        // alert('Transaction completed by ' + details.payer.name.given_name + '!');
+        submitFormData(payment_paypal)
+      });
+    }
+
+
+  }).render('#paypal-button-container');
+</script>
+
+
+<script>
+    var time = 360 * 01;
+    setInterval(function() {
+      var seconds = time % 60;
+      var minutes = (time - seconds) / 60;
+      if (seconds.toString().length == 1) {
+        seconds = "0" + seconds;
+      }
+      if (minutes.toString().length == 1) {
+        minutes = "0" + minutes;
+      }
+      document.getElementById("tiles").innerHTML = minutes + ":" + seconds;
+      time--;
+      if (time == 0) {
+        window.location.href = "/";
+        localStorage.removeItem("seatCount");
+        localStorage.removeItem("totalPrice");
+        localStorage.removeItem("seatNumber");
+        localStorage.removeItem("typeOfSeat");
+        localStorage.removeItem("selectedMoviePrice");
+        localStorage.removeItem("selectedMovieIndex");
+        localStorage.removeItem("selectedSeats");
+      }
+    }, 1000);
+    
+    </script>
+
+{% endblock %}

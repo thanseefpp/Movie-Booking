@@ -41,7 +41,7 @@ def theatreLogin(request,backend='django.contrib.auth.backends.ModelBackend'):
 
         ]
         headers = {
-        'Authorization': 'Token ca23c2854b8ab3dc239f449be501299d5fefe86f'
+        'Authorization': 'Token 2b42f2e1762714e2ec4f9923541d795bf87ecc23'
         }
 
         response = requests.request("POST", url, headers=headers, data = payload, files = files)
@@ -89,7 +89,7 @@ def mobile(request):
 
         ]
         headers = {
-        'Authorization': 'Token ca23c2854b8ab3dc239f449be501299d5fefe86f'
+        'Authorization': 'Token 2b42f2e1762714e2ec4f9923541d795bf87ecc23'
         }
 
         response = requests.request("POST", url, headers=headers, data = payload, files = files)
@@ -117,15 +117,7 @@ def theatreDashboard(request):
         year = datetime.now().year
         month = datetime.now().month
         today = date.today()
-        # for i in booked_users:
-        #     status = i.payment_status
-        # if status != 'cash':
-        #     if status == 'razorpay':
-        #         razor = status.count()
-        #     else:
-        #         paypal = status.count()
-        # payment = []
-        # print('status',status)
+
         booked_total_price = []
         booked_total = 0
         for price in booked_users:
@@ -134,7 +126,7 @@ def theatreDashboard(request):
             except:
                 booked_total += 0
         booked_total_price.append(round(booked_total,2))
-        # print('list',booked_total_price[0])
+
 
         graph = []
         for i in range(0,12):
@@ -145,16 +137,19 @@ def theatreDashboard(request):
                     total_booked_graph += j.paid_amount
                 except:
                     total_booked_graph += 0
-            graph.append(round(int(total_booked_graph),2))        
-        print('graph',graph)
-
+            graph.append(round(int(total_booked_graph),2))      
+        paypal_status = Booked.objects.filter(dealer=dealer,payment_status='paypal').count()
+        razorpay_status = Booked.objects.filter(dealer=dealer,payment_status='razorpay').count()
         customers = booked_users.count()
         now_showing_movies = nowshow.count()
         upcoming_shows=Upcomingshow.count()
-        print('cs',customers)
+        pay_status = []
+        pay_status.append(paypal_status)
+        pay_status.append(razorpay_status)
+
         context = {"booked_total_price":booked_total_price[0],
         'customers':customers,'nowshow':now_showing_movies,
-        'upcoming_shows':upcoming_shows,'graph':graph}
+        'upcoming_shows':upcoming_shows,'graph':graph,'pay_status':pay_status}
         return render(request,'Theatre/dashboard.html',context)
     else:
         return redirect('theatreLogin')

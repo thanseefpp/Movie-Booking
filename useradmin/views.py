@@ -15,6 +15,7 @@ import json
 from datetime import *
 import requests
 from .models import *
+from theatre.models import *
 from django.views.generic import View
 from django.core.files.base import ContentFile
 
@@ -41,7 +42,17 @@ def adminlogin(request):
 
 def adminDashboard(request):
     if request.session.has_key('username'):
-        return render(request,'useradmin/dashboard.html')
+        user = User.objects.filter(is_staff=False,is_superuser=False)
+        dealer = Dealer.objects.all()
+        booked = Booked.objects.all()
+        showing_movies = NowShowingMovies.objects.all()
+        list = []
+        for i in booked:
+            val = i.paid_amount
+            list.append(val)
+        total_price = sum(list)
+        context = {'user':user,'dealer':dealer,'total_price':total_price,'showing_movies':showing_movies}
+        return render(request,'useradmin/dashboard.html',context)
     else:
         return redirect('adminlogin')
 
@@ -104,6 +115,28 @@ def ownerAdd(request):
         return redirect('adminlogin')
 
 
+def edit_theatre(request,id):
+    theatre_info = Dealer.objects.get(id=id)
+    if request.method == 'POST':
+        theatre_info.dealer_name=request.POST['ownername']
+        theatre_info.dealer_phone=request.POST['number']
+        theatre_info.theatre_name=request.POST['TheatreName']
+        theatre_info.theatre_location=request.POST['place']
+        theatre_info.theatre_close=request.POST['time']
+        theatre_image=request.POST.get('image64data')
+
+        if theatre_image == "":
+            dealer = Dealer.objects.get(id=id)
+            theatre_info.theatre_image = dealer.theatre_image
+        else:
+            theatre_info.theatre_image=theatre_image
+        print('check')
+        theatre_info.save();
+        return redirect(theatremgmt)
+    context = {'theatre_info':theatre_info}
+    return render(request,'useradmin/theatre_owner_edit.html',context)
+
+
 def userList(request):
     user = User.objects.filter(is_staff=False,is_superuser=False)
     context = {'user':user}
@@ -111,9 +144,18 @@ def userList(request):
 
 
 def userActivity(request):
-    return render(request,'useradmin/user_activity.html')
+    booked = Booked.objects.all() 
+    context = {'booked':booked}
+    return render(request,'useradmin/user_activity.html',context)
+
 
 def delete(request,id):
     delete_user = Dealer.objects.get(id=id)
     delete_user.delete()
     return redirect('theatremgmt')
+
+
+def delete_user(request,id):
+    delete_user = User.objects.get(id=id)
+    delete_user.delete()
+    return redirect(userList)

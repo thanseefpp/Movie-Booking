@@ -1,31 +1,56 @@
+{% extends 'user/login/login_base.html' %}
 {% load static %}
-{% load socialaccount %} <!--  for allauth authentications -->
-<!--  for allauth facebook -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <link rel="stylesheet" href="{% static 'user/css/login-reg.css' %}">
-    <title>login</title>
-</head>
-<body>
-    <form class="box" action="" method="POST">
-        {% csrf_token %}
-        <h1>Login</h1>
-        <input type="text" name="username" id="username" placeholder="Username" autocomplete="off" value="{{username}}">
-        <input type="password" name="password" id="pass" placeholder="Password" autocomplete="off">
-        <a href="{% url 'register' %}" style="color: white;">Create an Account</a>
-        <div>
-            {% for message in messages %}
-            <h4 style="color: red;">{{message}}</h4>
-            {% endfor %}
+{% load socialaccount %}
+{% block content %}
+     
+    <!-- ==========Sign-In-Section========== -->
+    <section class="account-section bg_img" data-background="{% static 'user/assets/images/account/account-bg.jpg' %}">
+        <div class="container">
+            <div class="padding-top padding-bottom">
+                <div class="account-area">
+                    <div class="section-header-3">
+                        <span class="cate">Login</span>
+                        <h2 class="title">welcome back</h2>
+                    </div>
+                    <form class="account-form" action="{% url 'login' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Username <span>*</span></label>
+                            <input type="text" name="username" placeholder="Enter Your Username"  value="{{username}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass3">Password<span>*</span></label>
+                            <input type="password" name="password" placeholder="Password" id="pass3" required>
+                        </div>
+                        <div class="form-group checkgroup">
+                                {% for message in messages %}
+                                <h6 style="color: red;">{{message}}</h6>
+                                {% endfor %}
+                        </div>
+                        <div class="form-group text-center">
+                            <input type="submit" value="log in">
+                        </div>
+                    </form>
+                    <div class="option">
+                        Don't have an account? <a href="{% url 'register' %}">sign up now</a>
+                    </div>
+                    <div class="or"><span>Or</span></div>
+                    <ul class="social-icons">
+                        <li>
+                            <a href="{% provider_login_url "facebook" method="oauth2" %}">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% provider_login_url "google" %}">
+                                <i class="fab fa-google"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <input type="submit" id="submit" value="login">
-        <a href="{% provider_login_url "google" %}"><img style="width: 125px;height: 34px;" src="{% static 'image/google/g1_px_1.png' %}" alt=""></a>
-        <a href="{% provider_login_url "facebook" method="oauth2" %}"><img style="width: 125px;height: 34px;" src="{% static 'image/google/facebook.png' %}" alt=""></a>
+    </section>
+    <!-- ==========Sign-In-Section========== -->
 
-    </form>
-</body>
-</html>
+    {% endblock %}

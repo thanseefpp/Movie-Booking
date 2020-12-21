@@ -1,0 +1,100 @@
+{% extends 'user/index_main_base.html' %}
+
+{% block content %}
+
+{% load static %}
+ <!-- Google Fonts -->
+ <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- ==========Banner-Section========== -->
+    <section class="main-page-header speaker-banner bg_img" data-background="assets/images/banner/banner07.jpg">
+        <div class="container">
+            <div class="speaker-banner-content">
+                <h2 class="title">contact us</h2>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="{% url 'index' %}">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        contact us
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- ==========Banner-Section========== -->
+
+    <!-- ==========Contact-Section========== -->
+    <section class="contact-section padding-top">
+        <div class="contact-container">
+            <div class="bg-thumb bg_img" data-background="{% static 'user/assets/images/contact/contact.jpg' %}"></div>
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-md-7 col-lg-6 col-xl-5">
+                        <div class="section-header-3 left-style">
+                            <span class="cate">contact us</span>
+                            <h2 class="title">get in touch</h2>
+                            <p>We’d love to talk about how we can work together. Send us a message below and we’ll respond as soon as possible.</p>
+                        </div>
+                        <form class="contact-form" id="contact_form_submit" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name">Name <span>*</span></label>
+                                <input type="text" name="name" id="name" placeholder="Enter Your Full Name" value="{{name}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email <span>*</span></label>
+                                <input type="email" name="email" id="email" placeholder="Enter Your Email" value="{{email}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject <span>*</span></label>
+                                <input type="text" name="subject" id="subject" placeholder="Enter Your Subject" value="{{subject}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message <span>*</span></label>
+                                <textarea rows="5" name="content" id="message" placeholder="Enter Your Message" required></textarea>
+                            </div>
+                            <div class="form-group checkgroup">
+                                {% for message in messages %}
+                                <h6 style="color: rgb(81, 255, 0);">{{message}}</h6>
+                                {% endfor %}
+                        </div>
+                            <div class="form-group">
+                                <input type="submit" value="Send Message">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-5 col-lg-6">
+                        <div class="padding-top padding-bottom contact-info">
+                            <div class="info-area">
+                                <div class="info-item">
+                                    <div class="info-thumb">
+                                        <img src="{% static 'user/assets/images/contact/contact01.png' %}" alt="contact">
+                                    </div>
+                                    <div class="info-content">
+                                        <h6 class="title">Phone number</h6>
+                                        <a >+1234 56789</a>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-thumb">
+                                        <img src="{% static 'user/assets/images/contact/contact02.png' %}" alt="contact">
+                                    </div>
+                                    <div class="info-content">
+                                        <h6 class="title">Email</h6>
+                                        <a href="demo@gmail.com">info@gmail.com</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==========Contact-Section========== -->
+    <div class="pb-5"></div>
+    <div class="pb-5"></div>
+{% endblock %}

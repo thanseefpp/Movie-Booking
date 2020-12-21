@@ -113,10 +113,6 @@ class Booked(models.Model):
     paid_amount = models.DecimalField(max_digits=8, decimal_places=2)
     payment_status = models.CharField(default = 'cash',max_length=300, null=True)
 
-    # def __str__(self):
-    #     return str(self.id)
-
-    # @property
-    # def get_total_book(self):
-    
-    #     return totalBook
+    @property
+    def revenue(self):
+        return self.paid_amount * 10/100

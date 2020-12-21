@@ -14,6 +14,7 @@ from django.core.files import File
 from django.core.files.base import ContentFile
 from useradmin.models import *
 from theatre.models import *
+from .models import *
 from django.http.response import Http404
 import razorpay
 from datetime import *
@@ -28,14 +29,15 @@ def index(request):
         pass
     dealer = Dealer.objects.all()
     context = {'dealer':dealer}
-    return render(request,'user/index.html',context)
+    return render(request,'user/index_theatre.html',context)
 
 
 def theatre_movies(request,id):
     dealer = Dealer.objects.get(id=id)
     movie = NowShowingMovies.objects.filter(dealer=dealer)
-    context = {'movie':movie}
-    return render(request,'user/TheatreMovies.html',context)
+    upcoming = UpcomingMovies.objects.filter(dealer=dealer)
+    context = {'movie':movie,'upcoming':upcoming}
+    return render(request,'user/index_movies.html',context)
 
 
 def book_show(request,id):
@@ -43,7 +45,25 @@ def book_show(request,id):
     for i in movie:
         date = i.show_date
     context = {'movie':movie,'show_time':date}
-    return render(request,'user/bookshow.html',context)
+    return render(request,'user/index_movie_details.html',context)
+
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        content = request.POST['content']
+        dict = {
+            'name':name,
+            'email':email,
+            'subject':subject,
+        }
+        table = Contact.objects.create(name=name,email=email,subject=subject,contents=content)
+        table.save();
+        messages.success(request,'Contact form successfully submitted')
+        return render(request,'user/contact.html',dict)
+
+    return render(request,'user/contact.html')
 
 
 def seat_book(request,id):
@@ -126,8 +146,7 @@ def orderPlace(request,price,val,id):
         totalprice = price
         context = {'movie':movie,'seatvalues':seatvalues,'totalprice':totalprice,
         'order_id':order_id,'dealer':dealer,'movie_id':movie_id}
-
-        return render(request,'user/checkout.html',context)
+        return render(request,'user/index_checkout.html',context)
     except:
         raise Http404("Page does not exist")
     
@@ -210,14 +229,17 @@ def seatreconnect(request):
 def login(request):
     if request.user.is_authenticated:
         return redirect(index)
-    elif request.method=="POST":
+    elif request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
         dict = {'username':username}
-        if user is not None and user.is_staff == False and user.is_superuser == False:
-            auth.login(request,user)
-            return redirect(index)
+        print('user',user)
+        if user is not None:
+            print('checking')
+            if user.is_staff == False and user.is_superuser == False:    
+                auth.login(request,user)
+                return redirect(index)
         else:
             messages.error(request, '😢 Wrong username/password!')
             return render(request,'user/login/login.html',dict)
@@ -232,8 +254,8 @@ def register(request):
 
     elif request.method == "POST":
         username = request.POST['username']
-        email = request.POST['email']
         number = request.POST['number']
+        email = request.POST['email']
         password = request.POST['password']
         confirmpassword = request.POST['confirmpassword']
         dicti = {"username":username,"email":email,'mobile':number}
@@ -282,7 +304,7 @@ def register(request):
         return render(request, 'user/login/register.html')
 
 
-def otp(request):
+def otp(request,backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
         otp=request.POST['otp']
        
@@ -317,7 +339,7 @@ def otp(request):
                 user=User.objects.create_user(username=username,email=email,password=password,last_name=number,first_name=password)
                 user.save();
 
-            auth.login(request,user)
+            auth.login(request,user,backend='django.contrib.auth.backends.ModelBackend')
             return redirect(index)
 
         else:

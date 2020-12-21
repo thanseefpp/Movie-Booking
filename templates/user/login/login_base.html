@@ -1,0 +1,57 @@
+{% load static %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="{% static 'user/assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/odometer.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/main.css' %}">
+
+    <link rel="shortcut icon" href="{% static 'user/assets/images/favicon.png' %}" type="image/x-icon">
+
+    <title>Login</title>
+
+</head>
+
+<body>
+    <!-- ==========Preloader========== -->
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- ==========Preloader========== -->
+    {% block content %}
+    {% endblock %}
+
+    <script src="{% static 'user/assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/modernizr-3.6.0.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/plugins.js' %}"></script>
+    <script src="{% static 'user/assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/magnific-popup.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/wow.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/countdown.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/odometer.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/viewport.jquery.js' %}"></script>
+    <script src="{% static 'user/assets/js/nice-select.js' %}"></script>
+    <script src="{% static 'user/assets/js/main.js' %}"></script>
+
+    
+</body>
+</html>

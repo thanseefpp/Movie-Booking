@@ -1,28 +1,71 @@
+{% extends 'user/login/login_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'user/css/login-reg.css' %}">
-    <title>Register</title>
-</head>
-<body>
-    <form class="box" action="{% url 'register' %}" method="POST">
-        {% csrf_token %}
-        <h1>Register</h1>
-        <input type="text" name="username" id="username" placeholder="Username" value="{{username}}" required autocomplete="off">
-        <input type="email" name="email" id="username" placeholder="Email" required value="{{email}}" autocomplete="off">
-        <input type="text" name="number" id="username" placeholder="Mobile number" required value="{{mobile}}">
+{% load socialaccount %}
+{% block content %}
 
-        <input type="password" name="password" id="pass" placeholder="Password" autocomplete="off">
-        <input type="password" name="confirmpassword" id="pass" placeholder="ConfirmPassword" required>
-        <div>
-            {% for message in messages %}
-            <h4 style="color: red;">{{message}}</h4>
-            {% endfor %}
+
+  <!-- ==========Sign-In-Section========== -->
+  <section class="account-section bg_img" data-background="{% static 'user/assets/images/account/account-bg.jpg' %}">
+    <div class="container">
+        <div class="padding-top padding-bottom">
+            <div class="account-area">
+                <div class="section-header-3">
+                    <span class="cate">welcome</span>
+                    <h2 class="title">Register </h2>
+                </div>
+                <form class="account-form" action="{% url 'register' %}"  method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label >Username<span>*</span></label>
+                        <input type="text" name="username" placeholder="Enter Your Username" value="{{username}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label >Mobile<span>*</span></label>
+                        <input type="text" name="number" placeholder="Enter Your Mobile Number" value="{{mobile}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email1">Email<span>*</span></label>
+                        <input type="text" name="email" placeholder="Enter Your Email" id="email1" value="{{email}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pass1">Password<span>*</span></label>
+                        <input type="password" name="password" placeholder="Password" id="pass1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pass2">Confirm Password<span>*</span></label>
+                        <input type="password" name="confirmpassword" placeholder="ConfirmPassword" id="pass2" required>
+                    </div>
+                    <div class="form-group checkgroup">
+                            {% for message in messages %}
+                            <h6 style="color: red;">{{message}}</h6>
+                            {% endfor %}
+                    </div>
+   
+                    <div class="form-group text-center">
+                        <input type="submit" value="Sign Up">
+                    </div>
+                </form>
+                <div class="option">
+                    Already have an account? <a href="{% url 'login' %}">Login</a>
+                </div>
+                <div class="or"><span>Or</span></div>
+                <ul class="social-icons">
+                    <li>
+                        <a href="{% provider_login_url "facebook" method="oauth2" %}">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% provider_login_url "google" %}">
+                            <i class="fab fa-google"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <input type="submit" id="submit" value="login">
-      </form>
-</body>
-</html>
+    </div>
+</section>
+<!-- ==========Sign-In-Section========== -->
+
+{% endblock %}
+

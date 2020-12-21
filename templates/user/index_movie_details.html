@@ -1,0 +1,125 @@
+{% extends 'user/index_main_base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+{% for i in movie %}
+  <!-- ==========Banner-Section========== -->
+  <section class="details-banner bg_img" data-background="{{i.BannerURL}}"> <!-- banner photo -->
+     
+    <div class="container">
+          <div class="details-banner-wrapper">
+              <div class="details-banner-thumb">
+                  <img src="{{i.MainURL}}" alt="movie"> <!-- main photo -->
+                  <a href="{{i.trailer_link}}" class="video-popup"> <!-- video Link -->
+                      <img src="{% static 'user/assets/images/movie/video-button.png' %}" alt="movie"> <!-- icon photo -->
+                  </a>
+              </div>
+              <div class="details-banner-content offset-lg-3">
+                  <h3 class="title">{{i.movie_title}}</h3>
+                  <div class="tags">
+                      <a>Language : {{i.language}}</a>
+                      
+                  </div>
+                  <a class="button">{{i.movie_type}}</a>
+                  <div class="social-and-duration">
+                      <div class="duration-area">
+                          <div class="item">
+                              <i class="fas fa-calendar-alt"></i><span>{{i.release_date}}</span>
+                          </div>
+                          <div class="item">
+                              <i class="far fa-clock"></i><span>{{i.runtime_hour}} hrs {{i.runtime_minute}} mins</span>
+                          </div>
+                      </div>
+                      <ul class="social-share">
+                          <li><a href="https://twitter.com/thanseefpptwitt"><i class="fab fa-twitter"></i></a></li>
+                          <li><a href="https://www.linkedin.com/in/thanseefudheen-pp-23419b1b4/"><i class="fab fa-linkedin-in"></i></a></li>
+                          <li><a href="https://www.instagram.com/thanseeftsf/"><i class="fab fa-instagram"></i></a></li>
+                          <li><a><i class="fab fa-facebook-f"></i></a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+  </section>
+  <!-- ==========Banner-Section========== -->
+
+  <!-- ==========Book-Section========== -->
+  <section class="book-section bg-one">
+      <div class="container">
+          <div class="book-wrapper offset-lg-3">
+              <div class="left-side">
+                  <div class="item">
+                      <h5>Show : {% if show_time %} {{show_time}} {% else %} No show Today {% endif %}</h5>
+                          <br>
+                      <h6>{{i.dealer.theatre_name}} Theatre</h6>
+                  </div>
+              </div>
+              {% if user.is_authenticated %}
+                    {% if show_time %}
+                        <a href="{% url 'seat_book' i.id %}" class="custom-button">book tickets</a>
+                    {% else %}
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}" class="custom-button">Login to Booktickets</a>
+                {% endif %}
+          </div>
+      </div>
+  </section>
+  <!-- ==========Book-Section========== -->
+
+  <!-- ==========Movie-Section========== -->
+  <section class="movie-details-section padding-top padding-bottom">
+      <div class="container">
+          <div class="row justify-content-center flex-wrap-reverse mb--50">
+              <div class="col-lg-9 mb-50">
+                  <div class="movie-details">
+                      <div class="tab summery-review">
+                          <ul class="tab-menu">
+                              <li class="active">
+                                  summery
+                              </li>
+                          </ul>
+                          <div class="tab-area">
+                              <div class="tab-item active">
+                                  <div class="item">
+                                      <h5 class="sub-title">Summery</h5>
+                                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula eros sit amet est tincidunt aliquet. Fusce laoreet ligula ac ultrices eleifend. Donec hendrerit fringilla odio, ut feugiat mi convallis nec. Fusce elit ex, blandit vitae mattis sit amet, iaculis ac elit. Ut diam mauris, viverra sit amet dictum vel, aliquam ac quam. Ut mi nisl, fringilla sit amet erat et, convallis porttitor ligula. Sed auctor, orci id luctus venenatis, dui dolor euismod risus, et pharetra orci lectus quis sapien. Duis blandit ipsum ac consectetur scelerisque. </p>
+                                  </div>
+                                  <div class="item">
+                                      <div class="header">
+                                          <h5 class="sub-title">Cast & Director</h5>
+                                      </div>
+                                      <div class="row">
+                                        <div class="cast-item">
+                                            <div class="cast-content">
+                                                <h6 class="cast-title"><a>{{i.cast_name}}</a></h6>
+                                                <span class="cate">actor</span>
+                                                <p>Movie : {{i.movie_title}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="cast-item" style="margin-left: 70px;">
+                                            <div class="cast-content">
+                                                <h6 class="cast-title"><a >{{i.director_name}}</a></h6>
+                                                <span class="cate">Director</span>
+                                                <p>Movie : {{i.movie_title}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  <!-- ==========Movie-Section========== -->
+
+{% endfor %}
+
+{% endblock %}

@@ -15,5 +15,6 @@ urlpatterns = [
     path('seatreconnect/',views.seatreconnect,name='seatreconnect'),
     path('booked_address/<int:id>/<int:pk>/',views.bookedAddress,name='booked_address'),
     path('pay_success/',views.pay_success,name='pay_success'),
+    path('contact_us/',views.contact,name='contact'),
 ]
 

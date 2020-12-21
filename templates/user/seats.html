@@ -21,10 +21,7 @@
             <option id="choicePremium" value="{{premium_price}}">Premium (₹{{premium_price}})</option>
             <option id="choiceVip" value="{{vip_price}}">VIP (₹{{vip_price}})</option>
         </select>
-    </div>
-    <!-- <div id="fulldata" data-normalseatvalue="{{ normal_seats }}" data-executiveseatvalue="{{ executive_seats }}" data-premiumseatvalues="{{ premium_seats }}" data-vipseatvalue="{{ vip_seats }}" data-totalseatvalue="{{ totalSeat }}" data-rowcounttotal="{{ row_count }}" data-movieid="{{movie_id}}"></div> -->
-    <!-- <input type="hidden" name="show_id" id="show_id" value="{{ show_info.id }}" readonly /> -->
-				
+    </div>		
     <ul class="showcase">
         <li>
             <div class="seatIndication"></div>
@@ -62,20 +59,15 @@
                 <p class="text">Selected Seats <span id='count'>0</span>
                 <p class="text">Total Price ₹<span id="total">0</span></p>
                 <p class="text">Seat Number <span id="seatValue">0</span></p>
-                <!-- <a href="#"><button class="btn btn-primary">Confirm Seats</button></a>
-                <a href="#"><button class="btn btn-primary">Cancel</button></a> -->
                 <div class="button-center text-center">
-                    <a><button id="placeOrder" class="btn btn-info">CONFIRM SEATS</button></a>
+                    <a id="check"><button id="placeOrder" class="btn btn-info">CONFIRM SEATS</button></a>
                     <a href="{% url 'index' %}"><button id="cancelTicket" class="btn btn-primary">CANCEL</button></a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- <div style="display: none;" id="occ" data-occuPaid="{{occupaid}}"></div> -->
-<!-- <script src="{% static 'user/seat/js/seat.js' %}"></script> -->
 <script>
 
-        // let datavalues = document.getElementById("occ")
         
         backpageHandler();
         let occupaidSeats = {{occupaid|safe}};
@@ -87,22 +79,6 @@
         const seatValue = document.getElementById("seatValue");
         const movieSelect = document.getElementById("movie");
 
-        // old one        // Another Approach
-
-        // seats.forEach(function(seat) {
-        //   seat.addEventListener("click", function(e) {
-        //     seat.classList.add("selected");
-        //     const selectedSeats = document.querySelectorAll(".container .selected");
-        //     selectedSeathLength = selectedSeats.length;
-        //     count.textContent = selectedSeathLength;
-        //     let ticketPrice = +movieSelect.value;
-        //     total.textContent = ticketPrice * selectedSeathLength;
-        //   });
-        // });
-
-        // localStorage.clear();
-
-        // old one
 
         populateUI();
 
@@ -272,17 +248,6 @@
             console.log(seatType);
         }
 
-            // normal.style.cursor = "pointer !importent"
-            // exicutive.style.cursor = "default !importent"
-            // premium.style.cursor = "default !importent"
-            // vip.style.cursor = "default !importent"
-            // } else if (seatType === "exicutive") {
-            //     exicutive.style.cursor = "default"
-            // } else if (seatType === "premium") {
-            //     premium.style.cursor = "default"
-            // } else {
-            //     vip.style.cursor = "default"
-            // }
         }
         function seatArragement() {
 
@@ -301,13 +266,6 @@
                 let childDiv = document.createElement("div");
                 childDiv.classList.add("seat");
                 childDiv.classList.add("normal");
-                // for (let i = 0; i<seatTolerence;i++){
-                //     childDiv.innerHTML = rowsCount[i]+i;
-                //     console.log(rowsCount[i]+i);
-                // }
-
-                // childDiv.innerHTML = rowsCount[inner]+inner;
-                // console.log(rowsCount[inner]+inner);
 
                 parentDiv.appendChild(childDiv);
             }
