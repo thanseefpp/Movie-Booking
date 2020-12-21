@@ -284,7 +284,7 @@ def register(request):
                 'expiry': '900'}
                 files = []
                 headers = {
-                'Authorization': 'Token ca23c2854b8ab3dc239f449be501299d5fefe86f'
+                'Authorization': 'Token 2b42f2e1762714e2ec4f9923541d795bf87ecc23'
                 }
                 response = requests.request("POST", url, headers=headers, data = payload, files = files)
                 print(response.text.encode('utf8'))
@@ -317,7 +317,7 @@ def otp(request,backend='django.contrib.auth.backends.ModelBackend'):
 
         ]
         headers = {
-        'Authorization': 'Token ca23c2854b8ab3dc239f449be501299d5fefe86f'
+        'Authorization': 'Token 2b42f2e1762714e2ec4f9923541d795bf87ecc23'
         }
 
         response = requests.request("POST", url, headers=headers, data = payload, files = files)
