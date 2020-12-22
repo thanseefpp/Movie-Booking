@@ -47,10 +47,13 @@ def adminDashboard(request):
         booked = Booked.objects.all()
         showing_movies = NowShowingMovies.objects.all()
         list = []
-        for i in booked:
-            val = i.paid_amount
-            list.append(val)
-        total_price = sum(list)
+        try:
+            for i in booked:
+                val = i.paid_amount
+                list.append(val)
+            total_price = sum(list)
+        except:
+            total_price = 0
         context = {'user':user,'dealer':dealer,'total_price':total_price,'showing_movies':showing_movies}
         return render(request,'useradmin/dashboard.html',context)
     else:
