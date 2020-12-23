@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'k)wzx^e^pi3w+-nkea@r*n0q24v8+3e(87vu7gc-xyxjrt!e_6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['choosemyseat.online','www.choosemyseat.online']
 
 
 # Application definition
@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'bookshow.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'moviebooking',
+        'NAME': 'bookmyshowdata',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
@@ -147,7 +147,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-    '/env/lib/python3.8/site-packages/django/contrib/admin/static'
+    '/env/lib/python3.8/site-packages/django/contrib/admin/static',
 )
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 

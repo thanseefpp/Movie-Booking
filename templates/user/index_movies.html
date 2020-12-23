@@ -38,9 +38,9 @@
                 <div class="tab-area mb-30-none">
                     <div class="tab-item active">
                         <div class="owl-carousel owl-theme tab-slider">
+                            {% for i in movie %}
                             <div class="item">
                                 <div class="movie-grid">
-                                    {% for i in movie %}
                                     <div class="movie-thumb c-thumb">
                                         <a href="{% url 'book_show' i.id %}">
                                             <img src="{{i.MainURL}}" style="height: 290px;" alt="movie">
@@ -59,9 +59,9 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    {% endfor %}
-                                </div> 
+                                </div>
                             </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
