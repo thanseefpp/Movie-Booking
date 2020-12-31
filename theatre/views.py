@@ -120,15 +120,15 @@ def theatreDashboard(request):
 
         booked_total_price = []
         booked_total = 0
-        for price in booked_users:
-            try:
+        try:
+            for price in booked_users:
                 booked_total += price.paid_amount
-            except:
-                booked_total += 0
-        booked_total_price.append(round(booked_total,2))
-
+            booked_total_price.append(round(booked_total,2))
+        except:
+            booked_total = 0
 
         graph = []
+        
         for i in range(0,12):
             booked_values = Booked.objects.filter(date_booking__year = year,date_booking__month = month-11+i,complete=True,dealer=dealer)
             total_booked_graph = 0
@@ -137,9 +137,14 @@ def theatreDashboard(request):
                     total_booked_graph += j.paid_amount
                 except:
                     total_booked_graph += 0
-            graph.append(round(int(total_booked_graph),2))      
-        paypal_status = Booked.objects.filter(dealer=dealer,payment_status='paypal').count()
-        razorpay_status = Booked.objects.filter(dealer=dealer,payment_status='razorpay').count()
+            graph.append(round(int(total_booked_graph),2))
+        try:
+            paypal_status = Booked.objects.filter(dealer=dealer,payment_status='paypal').count()
+            razorpay_status = Booked.objects.filter(dealer=dealer,payment_status='razorpay').count()
+        except:
+            paypal_status = 0
+            razorpay_status = 0
+            
         customers = booked_users.count()
         now_showing_movies = nowshow.count()
         upcoming_shows=Upcomingshow.count()
