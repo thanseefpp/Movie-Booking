@@ -159,7 +159,7 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': "%b %d at %I:%M %P",
 }
 
-SITE_ID = 1
+SITE_ID = 3
 
 LOGIN_REDIRECT_URL = '/'
 
